@@ -26,6 +26,17 @@ public class GridManager : MonoBehaviour
         return grid.GetGridPosition(x, y);
     }
 
+    // Returns world position for center of Cell
+    public Vector3 ForceGetGridPosition(Vector3 worldPosition)
+    {
+        return grid.ForceGetGridPosition(worldPosition);
+    }
+
+    public Vector3 ForceGetGridPosition(int x, int y)
+    {
+        return grid.ForceGetGridPosition(x, y);
+    }
+
     // Changes occupied status of 2D array element 
     public void SetCellOccupied(Vector3 worldPosition, bool occupied)
     {

@@ -20,18 +20,6 @@ public class Grid
 
         // Init grid array
         gridArray = new bool[width, height];
-
-        // Debug show grid
-        //for (int x = 0; x < gridArray.GetLength(0); x++)
-        //{
-        //    for (int y = 0; y < gridArray.GetLength(1); y++)
-        //    {
-        //        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, Mathf.Infinity);
-        //        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, Mathf.Infinity);
-        //    }
-        //}
-        //Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, Mathf.Infinity);
-        //Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, Mathf.Infinity);
     }
 
     // Returns a Vector3 representing a world space position
@@ -126,6 +114,22 @@ public class Grid
     public Vector3 GetGridPosition(int x, int y)
     {
         GetAvailableXY(x, y, out x, out y);
+        return GetCellCenter(x, y);
+    }
+
+    // Returns world position for center of Cell
+    public Vector3 ForceGetGridPosition(Vector3 worldPosition)
+    {
+        int x, y;
+        GetXY(worldPosition, out x, out y);
+        return GetCellCenter(x, y);
+    }
+
+    // Returns world position for center of Cell
+    public Vector3 ForceGetGridPosition(int x, int y)
+    {
+        x = Mathf.Clamp(Mathf.FloorToInt(x / cellSize), 0, width - 1);
+        y = Mathf.Clamp(Mathf.FloorToInt(y / cellSize), 0, height - 1);
         return GetCellCenter(x, y);
     }
 
