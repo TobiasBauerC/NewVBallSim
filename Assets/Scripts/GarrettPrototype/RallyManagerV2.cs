@@ -59,6 +59,7 @@ public class RallyManagerV2 : MonoBehaviour
     [SerializeField] private GameObject playerInteractionButton;
 
     [SerializeField] private PawnManager playerPawnManager;
+    [SerializeField] private PawnManager AIPawnManager;
 
     private Pawn[] pawns;
 
@@ -656,11 +657,13 @@ public class RallyManagerV2 : MonoBehaviour
     {
         if (digNumber == 1)
         {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
             Debug.Log("AI forced to set left side");
             return skillManager.AIP1;
         }
         else if (digNumber == 2)
         {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[3].positions);
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 2));
             if (setChoice == 1)
             {
@@ -675,6 +678,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (digNumber == 3)
         {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 3));
             if (setChoice == 1)
             {
@@ -765,6 +769,7 @@ public class RallyManagerV2 : MonoBehaviour
         skillManager.SetPlayersTeamSkills();
         isAteamServing = true;
         playerPawnManager.EnablePawnMove(false);
+        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[5].positions);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
@@ -786,15 +791,6 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "Player serves";
         yield return new WaitForSeconds(1);
 
-        // PLAYER INTERACTION
-        waitingForPlayerInteraction = true;
-        playerInteractionButton.SetActive(true);
-        playerPawnManager.EnablePawnMove(true);
-        messageText.text = "Player chooses where to set up their defence";
-        yield return new WaitUntil(() => !waitingForPlayerInteraction);
-        playerInteractionButton.SetActive(false);
-        playerPawnManager.EnablePawnMove(false);
-
         // check for aces or misses
         if (BpassNumber == 4)
         {
@@ -812,13 +808,23 @@ public class RallyManagerV2 : MonoBehaviour
             yield return true;
             yield break;
         }
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        playerPawnManager.EnablePawnMove(true);
+        messageText.text = "Player chooses where to set up their defence";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
+        playerPawnManager.EnablePawnMove(false);
+
         Debug.Log("B Passed " + BpassNumber);
         messageText.text = "AI passes it up";
         yield return new WaitForSeconds(1);
 
         // PASS SET
         // SET CHOICE
-        AIsetChoiceSkills = AISetSelection(BpassNumber);
+        AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position
         messageText.text = "AI making a set choice";
         yield return new WaitForSeconds(1);
 
@@ -889,6 +895,7 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
                 yield return new WaitForSeconds(1);
+                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -974,6 +981,7 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
+                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1059,6 +1067,7 @@ public class RallyManagerV2 : MonoBehaviour
         skillManager.SetPlayersTeamSkills();
         isAteamServing = false;
         playerPawnManager.EnablePawnMove(false);
+        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
@@ -1077,6 +1086,8 @@ public class RallyManagerV2 : MonoBehaviour
         AservePass.SetPassAbility(skillManager.PlayerP2.pass);
         Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
         ApassNumber = AservePass.GetPassNumber(BserveNumber);
+
+        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 
         messageText.text = "AI serves";
         yield return new WaitForSeconds(1);
@@ -1189,6 +1200,7 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
+                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;

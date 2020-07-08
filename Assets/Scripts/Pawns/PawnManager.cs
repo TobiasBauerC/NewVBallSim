@@ -43,7 +43,7 @@ public class PawnManager : MonoBehaviour
     /// Places one pawn at each location
     /// </summary>
     /// <param name="positions"></param>
-    public void SetPositions(List<Vector2> positions)
+    public void SetPositions(Vector2[] positions)
     {
         for(int i = 0; i < pawns.Length; i++)
         {
