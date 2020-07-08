@@ -82,6 +82,16 @@ public class PawnManager : MonoBehaviour
         // Should never reach here
         return Vector2.zero;
     }
+
+    /// <summary>
+    /// Returns the X and Y grid position in Vector2 format
+    /// </summary>
+    /// <param name="pawnRole"></param>
+    /// <returns></returns>
+    public Vector2 GetPawnGridPositon(Pawn pawn)
+    {
+        return gridManager.GetGridXYPosition(pawn.transform.position);
+    }
 }
 
 /// <summary>
