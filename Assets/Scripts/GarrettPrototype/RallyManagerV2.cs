@@ -68,6 +68,8 @@ public class RallyManagerV2 : MonoBehaviour
 
     [SerializeField] private Ball ballScript;
 
+    private PawnRole setChoiceRole;
+
 
 
     // Start is called before the first frame update
@@ -891,6 +893,7 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
         AblockNumber = AattackDefence.GetBlockNumber();
         AblockQuality = AattackDefence.GetBlockQuality();
+        
         AattackDefence.SetDefenceAbility(skillManager.PlayerP2.defence);
         Debug.Log("Defenders skill is: " + skillManager.PlayerP2.defence);
         AdefenceNumber = AattackDefence.GetDefenceNumber();
