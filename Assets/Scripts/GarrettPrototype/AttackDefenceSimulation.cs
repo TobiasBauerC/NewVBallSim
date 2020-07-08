@@ -129,7 +129,7 @@ public class AttackDefenceSimulation : MonoBehaviour
 
         // take block value and quality
         int blockValue = GetBlockValue(blockAbility);
-        int blockQuality = GetBlockQuality();
+        float blockQuality = GetBlockQuality();
 
         // check if hitter makes an error
         if(attackQuality == 1)
@@ -144,7 +144,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         // does it hit the block
         int blockChance = Mathf.CeilToInt(UnityEngine.Random.Range(0, blockAbility));
         bool contactBlock = false;
-        int threshold = blockQuality * 10;
+        float threshold = blockQuality * 10;
         if (blockChance < threshold)
             contactBlock = true;
         if (contactBlock)
@@ -188,7 +188,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         }
     }
 
-    public int GetResultNumber(int attackValue, int attackQuality, int blockValue, int blockQuality, int defenceValue)
+    public int GetResultNumber(int attackValue, int attackQuality, int blockValue, float blockQuality, int defenceValue)
     {
         float q = attackQuality * 1.0f;
         float v = attackValue * 1.0f;
@@ -199,7 +199,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         // does it hit the block
         int blockChance = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
         bool contactBlock = false;
-        int threshold = blockQuality * 15;
+        float threshold = blockQuality * 15;
         if (blockChance < threshold)
             contactBlock = true;
         if (contactBlock)
@@ -377,7 +377,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         return blockValue;
     }
 
-    public int GetBlockQuality()
+    public float GetBlockQuality()
     {
         int blockQuality = (Mathf.CeilToInt(UnityEngine.Random.Range(0.00000000001f, 4)) - 1) * 2; // block should be 0, 2, 4 or 6 for no, single, double or triple block
         return blockQuality;

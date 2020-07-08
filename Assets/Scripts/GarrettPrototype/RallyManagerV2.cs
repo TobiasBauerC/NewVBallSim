@@ -16,7 +16,7 @@ public class RallyManagerV2 : MonoBehaviour
     private int AattackNumber = 0;
     private int AattackQuality = 0;
     private int AblockNumber = 0;
-    private int AblockQuality = 0;
+    private float AblockQuality = 0;
     private int AdefenceNumber = 0;
     private int AresultNumber = 0;
 
@@ -31,7 +31,7 @@ public class RallyManagerV2 : MonoBehaviour
     private int BattackNumber = 0;
     private int BattackQuality = 0;
     private int BblockNumber = 0;
-    private int BblockQuality = 0;
+    private float BblockQuality = 0;
     private int BdefenceNumber = 0;
     private int BresultNumber = 0;
 
@@ -62,6 +62,11 @@ public class RallyManagerV2 : MonoBehaviour
     [SerializeField] private PawnManager AIPawnManager;
 
     private Pawn[] pawns;
+
+    [SerializeField] private GridManager playerGridManager;
+    [SerializeField] private GridManager aiGridManager;
+
+    [SerializeField] private Ball ballScript;
 
 
 
@@ -100,6 +105,7 @@ public class RallyManagerV2 : MonoBehaviour
     public void PlayerSetLeftSide()
     {
         Debug.Log("Setting left side");
+        ballScript.SetPosition(playerGridManager, 8, 8);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerP1;
     }
@@ -107,6 +113,7 @@ public class RallyManagerV2 : MonoBehaviour
     public void PlayerSetMiddle()
     {
         Debug.Log("Setting middle");
+        ballScript.SetPosition(playerGridManager, 8, 4);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerM1;
     }
@@ -114,6 +121,7 @@ public class RallyManagerV2 : MonoBehaviour
     public void PlayerSetRightSide()
     {
         Debug.Log("Setting right side");
+        ballScript.SetPosition(playerGridManager, 8, 0);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerRS;
     }
@@ -657,8 +665,9 @@ public class RallyManagerV2 : MonoBehaviour
     {
         if (digNumber == 1)
         {
-            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
             Debug.Log("AI forced to set left side");
+            ballScript.SetPosition(aiGridManager, 0, 0);
             return skillManager.AIP1;
         }
         else if (digNumber == 2)
@@ -668,31 +677,37 @@ public class RallyManagerV2 : MonoBehaviour
             if (setChoice == 1)
             {
                 Debug.Log("AI sets left side");
+                ballScript.SetPosition(aiGridManager, 0, 0);
                 return skillManager.AIP1;
             }
             else
             {
                 Debug.Log("AI sets right side");
+                ballScript.SetPosition(aiGridManager, 0, 8);
                 return skillManager.AIRS;
             }
         }
         else if (digNumber == 3)
         {
-            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
+            ballScript.SetPosition(aiGridManager, 1, 6);
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 3));
             if (setChoice == 1)
             {
                 Debug.Log("AI sets left side");
+                ballScript.SetPosition(aiGridManager, 0, 0);
                 return skillManager.AIP1;
             }
             else if (setChoice == 2)
             {
                 Debug.Log("AI sets right side");
+                ballScript.SetPosition(aiGridManager, 0, 8);
                 return skillManager.AIRS;
             }
             else
             {
                 Debug.Log("AI sets middle");
+                ballScript.SetPosition(aiGridManager, 0, 4);
                 return skillManager.AIM1;
             }
         }
@@ -775,7 +790,15 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to serve";
-        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        // yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        while (waitingForPlayerInteraction)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+            }
+            yield return null;
+        }
         playerInteractionButton.SetActive(false);
 
         // SERVE PASS
@@ -795,6 +818,7 @@ public class RallyManagerV2 : MonoBehaviour
         if (BpassNumber == 4)
         {
             messageText.text = "Player crushed it into the net";
+            ballScript.SetPosition(playerGridManager, VBallTools.GetCursorPosition());
             Debug.Log("A Miss Serve");
             falseCallback();
             yield return false;
@@ -803,6 +827,7 @@ public class RallyManagerV2 : MonoBehaviour
         else if (BpassNumber == 0)
         {
             messageText.text = "Player rips an ace";
+
             Debug.Log("A Ace");
             trueCallback();
             yield return true;
@@ -824,7 +849,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         // PASS SET
         // SET CHOICE
-        AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position
+        AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position, and the ball position
         messageText.text = "AI making a set choice";
         yield return new WaitForSeconds(1);
 
@@ -892,6 +917,7 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 int digNumber = resultNumber;
                 // A SIDE WITH A DIG
+                ballScript.SetPosition(playerGridManager, 4, 4);
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
                 yield return new WaitForSeconds(1);
@@ -931,7 +957,14 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 messageText.text = "Player chooses where to attack";
-                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                while (waitingForPlayerInteraction)
+                {
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                    }
+                    yield return null;
+                }
                 playerInteractionButton.SetActive(false);
 
                 // SET ATTACK
@@ -982,6 +1015,7 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
                 AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+                ballScript.SetPosition(aiGridManager, 4, 4);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1068,6 +1102,7 @@ public class RallyManagerV2 : MonoBehaviour
         isAteamServing = false;
         playerPawnManager.EnablePawnMove(false);
         AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
+        ballScript.SetPosition(aiGridManager, 8, 8);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
@@ -1112,8 +1147,10 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("A Passed " + ApassNumber);
         messageText.text = "Player passes it up";
         yield return new WaitForSeconds(1);
-        // PASS SET
+        ballScript.SetPosition(playerGridManager, 4, 4);
 
+
+        // PASS SET
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
@@ -1147,7 +1184,14 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to attack";
-        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        while (waitingForPlayerInteraction)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+            }
+            yield return null;
+        }
         playerInteractionButton.SetActive(false);
 
         // get the attack quality based on the set
@@ -1201,6 +1245,7 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
                 AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+                ballScript.SetPosition(aiGridManager, 4, 4);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1282,6 +1327,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
+                ballScript.SetPosition(playerGridManager, 4, 4);
                 yield return new WaitForSeconds(1);
 
                 // PLAYER INTERACTION
@@ -1316,7 +1362,15 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 messageText.text = "Player chooses where to attack";
-                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                // yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                while (waitingForPlayerInteraction)
+                {
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                    }
+                    yield return null;
+                }
                 playerInteractionButton.SetActive(false);
 
                 // SET ATTACK

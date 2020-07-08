@@ -12,7 +12,7 @@ public class RallyManager : MonoBehaviour
     private int AattackNumber = 0;
     private int AattackQuality = 0;
     private int AblockNumber = 0;
-    private int AblockQuality = 0;
+    private float AblockQuality = 0;
     private int AdefenceNumber = 0;
     private int AresultNumber = 0;
 
@@ -27,7 +27,7 @@ public class RallyManager : MonoBehaviour
     private int BattackNumber = 0;
     private int BattackQuality = 0;
     private int BblockNumber = 0;
-    private int BblockQuality = 0;
+    private float BblockQuality = 0;
     private int BdefenceNumber = 0;
     private int BresultNumber = 0;
 
