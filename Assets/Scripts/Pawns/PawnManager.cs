@@ -43,6 +43,14 @@ public class PawnManager : MonoBehaviour
             pawns[i].transform.position = gridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
         }
     }
+
+    public void EnablePawnMove(bool enabled, Pawn[] pawns)
+    {
+        if (pawns.Length == 0)
+            pawns = this.pawns;
+        foreach (Pawn p in pawns)
+            p.enabled = false;
+    }
 }
 
 [Serializable]
