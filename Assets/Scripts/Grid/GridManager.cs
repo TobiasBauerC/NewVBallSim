@@ -43,8 +43,18 @@ public class GridManager : MonoBehaviour
         grid.SetCellOccupied(worldPosition, occupied);
     }
 
-    public void PrintGridOccupied(Vector3 worldPosition)
+    public float GetDefenceScore(int attackerRow, int defenderColumn)
     {
-        grid.PrintGridOccupied(worldPosition);
+        float result = 0;
+
+        for(int i = attackerRow -2; i <= attackerRow + 2; i++)
+        {
+            if(grid.GetGridOccupied(i, defenderColumn))
+            {
+                result += Mathf.Abs(i - attackerRow) > 1 ? 1 : 2;
+            }
+        }
+
+        return result;
     }
 }

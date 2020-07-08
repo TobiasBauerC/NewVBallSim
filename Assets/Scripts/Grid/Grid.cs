@@ -142,10 +142,16 @@ public class Grid
     }
 
     // Debug to get info on cell at world position
-    public void PrintGridOccupied(Vector3 worldPosition)
+    public bool GetGridOccupied(Vector3 worldPosition)
     {
         int x, y;
         GetXY(worldPosition, out x, out y);
-        Debug.LogFormat("[{0}, {1}] is {2}", x, y, gridArray[x, y]);
+        return gridArray[x, y];
+    }
+    
+    // Debug to get info on cell at world position
+    public bool GetGridOccupied(int x, int y)
+    {
+        return gridArray[x, y];
     }
 }

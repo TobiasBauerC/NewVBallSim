@@ -44,7 +44,6 @@ public class Pawn : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
-                pawnManager.gridManager.PrintGridOccupied(transform.position);
                 transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition());
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
                 //worldGrid.grid.PrintGridOccupied(transform.position);
