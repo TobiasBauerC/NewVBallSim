@@ -56,9 +56,9 @@ public class PawnManager : MonoBehaviour
     /// </summary>
     /// <param name="enabled"></param>
     /// <param name="pawns"></param>
-    public void EnablePawnMove(bool enabled, Pawn[] pawns)
+    public void EnablePawnMove(bool enabled, Pawn[] pawns = null)
     {
-        if (pawns.Length == 0)
+        if (pawns == null || pawns.Length == 0)
             pawns = this.pawns;
         foreach (Pawn p in pawns)
             p.enabled = false;
