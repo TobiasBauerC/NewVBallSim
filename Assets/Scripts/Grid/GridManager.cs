@@ -61,6 +61,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        return result;
+        return Mathf.Clamp(result, 0f, 6f);
     }
 }
