@@ -6,6 +6,9 @@ public class Pawn : MonoBehaviour
 {
     private PawnManager pawnManager;
     private bool selected = false;
+    [Header("Role")]
+    [SerializeField] private PawnRole _pawnRole;
+    public PawnRole pawnRole { get { return _pawnRole; } }
 
     [Header("Starting Pos")]
     [SerializeField] private int x;

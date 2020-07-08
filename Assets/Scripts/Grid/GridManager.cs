@@ -16,9 +16,15 @@ public class GridManager : MonoBehaviour
     }
 
     // Returns world position for center of Cell
+    public Vector2 GetGridXYPosition(Vector3 worldPosition)
+    {
+        return grid.GetGridXYPosition(worldPosition);
+    }
+
+    // Returns world position for center of Cell
     public Vector3 GetGridPosition(Vector3 worldPosition)
     {
-        return grid.GetGridPosition(worldPosition);
+        return grid.GetGridXYPosition(worldPosition);
     }
 
     public Vector3 GetGridPosition(int x, int y)

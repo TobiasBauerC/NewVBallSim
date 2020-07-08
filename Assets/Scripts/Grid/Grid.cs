@@ -102,6 +102,14 @@ public class Grid
         };
     }
 
+    // Returns grid position for center of Cell
+    public Vector2 GetGridXYPosition(Vector3 worldPosition)
+    {
+        int x, y;
+        GetXY(worldPosition, out x, out y);
+        return new Vector2(x, y);
+    }
+
     // Returns world position for center of Cell
     public Vector3 GetGridPosition(Vector3 worldPosition)
     {

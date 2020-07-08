@@ -63,6 +63,25 @@ public class PawnManager : MonoBehaviour
         foreach (Pawn p in pawns)
             p.enabled = enabled;
     }
+
+    /// <summary>
+    /// Returns the X and Y grid position in Vector2 format
+    /// </summary>
+    /// <param name="pawnRole"></param>
+    /// <returns></returns>
+    public Vector2 GetPawnGridPositon(PawnRole pawnRole)
+    {
+        foreach(Pawn pawn in pawns)
+        {
+            if(pawn.pawnRole == pawnRole)
+            {
+                return gridManager.GetGridXYPosition(pawn.transform.position);
+            }
+        }
+
+        // Should never reach here
+        return Vector2.zero;
+    }
 }
 
 /// <summary>
@@ -72,4 +91,14 @@ public class PawnManager : MonoBehaviour
 public class PositionSets
 {
     public Vector2[] positions;
+}
+
+public enum PawnRole
+{
+    Power1, 
+    Power2, 
+    Middle1,
+    Middle2,
+    RightSide,
+    Setter
 }
