@@ -19,7 +19,10 @@ public class PawnManager : MonoBehaviour
     [SerializeField] private PositionSets[] _allPositionSets;
     public PositionSets[] allPositionSets { get { return _allPositionSets; } }
 
-
+    /// <summary>
+    /// Gets the cursor's position in world space
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetCursorPosition()
     {
         Vector3 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -36,6 +39,10 @@ public class PawnManager : MonoBehaviour
         }    
     }
 
+    /// <summary>
+    /// Places one pawn at each location
+    /// </summary>
+    /// <param name="positions"></param>
     public void SetPositions(List<Vector2> positions)
     {
         for(int i = 0; i < pawns.Length; i++)
@@ -44,6 +51,11 @@ public class PawnManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Enables/Disables all the passed in pawns. If none are passed in, all will be set to the desired state.
+    /// </summary>
+    /// <param name="enabled"></param>
+    /// <param name="pawns"></param>
     public void EnablePawnMove(bool enabled, Pawn[] pawns)
     {
         if (pawns.Length == 0)
@@ -53,6 +65,9 @@ public class PawnManager : MonoBehaviour
     }
 }
 
+/// <summary>
+/// A class for holding several Vector2 positions
+/// </summary>
 [Serializable]
 public class PositionSets
 {
