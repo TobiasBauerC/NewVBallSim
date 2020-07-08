@@ -61,7 +61,7 @@ public class PawnManager : MonoBehaviour
         if (pawns == null || pawns.Length == 0)
             pawns = this.pawns;
         foreach (Pawn p in pawns)
-            p.enabled = false;
+            p.enabled = enabled;
     }
 }
 

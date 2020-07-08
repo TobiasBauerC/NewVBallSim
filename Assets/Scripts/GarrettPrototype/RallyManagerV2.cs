@@ -58,6 +58,10 @@ public class RallyManagerV2 : MonoBehaviour
 
     [SerializeField] private GameObject playerInteractionButton;
 
+    [SerializeField] private PawnManager playerPawnManager;
+
+    private Pawn[] pawns;
+
 
 
     // Start is called before the first frame update
@@ -760,6 +764,7 @@ public class RallyManagerV2 : MonoBehaviour
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
         isAteamServing = true;
+        playerPawnManager.EnablePawnMove(false);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
@@ -784,9 +789,11 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
+        playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player chooses where to set up their defence";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
+        playerPawnManager.EnablePawnMove(false);
 
         // check for aces or misses
         if (BpassNumber == 4)
@@ -825,9 +832,11 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
+        playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to have their blockers react";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
+        playerPawnManager.EnablePawnMove(false);
 
         // SET ATTACK
         // get the attack quality based on the set
@@ -884,9 +893,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player can transition their players to offensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // PASS SET
 
@@ -967,9 +978,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to transition to defensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // PASS SET
                 // SET CHOICE
@@ -986,9 +999,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1043,13 +1058,16 @@ public class RallyManagerV2 : MonoBehaviour
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
         isAteamServing = false;
+        playerPawnManager.EnablePawnMove(false);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
+        playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to set up their reception positions";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
+        playerPawnManager.EnablePawnMove(false);
 
         // SERVE PASS
         Debug.Log("B serves");
@@ -1088,9 +1106,11 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
+        playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to move their attackers into position";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
+        playerPawnManager.EnablePawnMove(false);
 
         // SET CHOICE
         // PLAYER INTERACTION
@@ -1173,9 +1193,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have transition to defensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // PASS SET
                 // SET CHOICE
@@ -1194,9 +1216,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1251,9 +1275,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player transitions to attack positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
+                playerPawnManager.EnablePawnMove(false);
 
                 // PASS SET
                 // SET CHOICE
