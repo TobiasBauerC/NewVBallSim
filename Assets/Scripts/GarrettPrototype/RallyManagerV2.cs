@@ -54,6 +54,10 @@ public class RallyManagerV2 : MonoBehaviour
 
     [SerializeField] private Text messageText;
 
+    private bool waitingForPlayerInteraction = false;
+
+    [SerializeField] private GameObject playerInteractionButton;
+
 
 
     // Start is called before the first frame update
@@ -107,6 +111,12 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("Setting right side");
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerRS;
+    }
+
+    public void PlayerInteractionDone()
+    {
+        waitingForPlayerInteraction = false;
+        Debug.Log("Player interacted");
     }
 
     public IEnumerator SimulateRallyAServing()
@@ -749,9 +759,15 @@ public class RallyManagerV2 : MonoBehaviour
     {
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
-
-
         isAteamServing = true;
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player chooses where to serve";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
+
         // SERVE PASS
         Debug.Log("A serves");
         AservePass.SetServeAbility(skillManager.AIM2.serve);
@@ -764,6 +780,13 @@ public class RallyManagerV2 : MonoBehaviour
 
         messageText.text = "Player serves";
         yield return new WaitForSeconds(1);
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player chooses where to set up their defence";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
 
         // check for aces or misses
         if (BpassNumber == 4)
@@ -789,7 +812,6 @@ public class RallyManagerV2 : MonoBehaviour
         // PASS SET
         // SET CHOICE
         AIsetChoiceSkills = AISetSelection(BpassNumber);
-
         messageText.text = "AI making a set choice";
         yield return new WaitForSeconds(1);
 
@@ -799,6 +821,13 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("Setters Skill is: " + skillManager.AIS.set);
         BsetNumber = BpassSet.GetSetNumber(BpassNumber);
         Debug.Log("B Set " + BsetNumber);
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player has a chance to have their blockers react";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
 
         // SET ATTACK
         // get the attack quality based on the set
@@ -852,9 +881,17 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player digs it up";
                 yield return new WaitForSeconds(1);
 
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player can transition their players to offensive positions";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
+
                 // PASS SET
 
                 // SET CHOICE
+                // PLAYER INTERACTION
                 playerSetDecision = false;
                 PlayerSetChoiceButtonsActivate(digNumber);
                 messageText.text = "Player choose who to set";
@@ -871,6 +908,13 @@ public class RallyManagerV2 : MonoBehaviour
 
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(1);
+
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player chooses where to attack";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -920,6 +964,13 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
 
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player has a chance to transition to defensive positions";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
+
                 // PASS SET
                 // SET CHOICE
                 AIsetChoiceSkills = AISetSelection(digNumber);
@@ -931,6 +982,13 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Setters Skill is: " + skillManager.AIS.set);
                 BsetNumber = BpassSet.GetSetNumber(digNumber);
                 Debug.Log("B Set " + BsetNumber);
+
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player has a chance to have their blockers react";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -984,8 +1042,15 @@ public class RallyManagerV2 : MonoBehaviour
     {
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
-
         isAteamServing = false;
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player has a chance to set up their reception positions";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
+
         // SERVE PASS
         Debug.Log("B serves");
         BservePass.SetServeAbility(skillManager.AIM2.serve);
@@ -1020,13 +1085,19 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(1);
         // PASS SET
 
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player has a chance to move their attackers into position";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
+
         // SET CHOICE
+        // PLAYER INTERACTION
         playerSetDecision = false;
         PlayerSetChoiceButtonsActivate(ApassNumber);
-
         messageText.text = "Player choose who to set";
         yield return new WaitUntil(() => playerSetDecision);
-
         setLeftSideButton.SetActive(false);
         setMiddleButton.SetActive(false);
         setRightSideButton.SetActive(false);
@@ -1040,6 +1111,13 @@ public class RallyManagerV2 : MonoBehaviour
         // SET ATTACK
         messageText.text = "Player sets it up";
         yield return new WaitForSeconds(1);
+
+        // PLAYER INTERACTION
+        waitingForPlayerInteraction = true;
+        playerInteractionButton.SetActive(true);
+        messageText.text = "Player chooses where to attack";
+        yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerInteractionButton.SetActive(false);
 
         // get the attack quality based on the set
         AsetAttack.SetAttackAbility(setChoiceSkills.attack);
@@ -1092,6 +1170,13 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI digs it up";
                 yield return new WaitForSeconds(1);
 
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player has a chance to have transition to defensive positions";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
+
                 // PASS SET
                 // SET CHOICE
                 AIsetChoiceSkills = AISetSelection(digNumber);
@@ -1105,6 +1190,13 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Setters Skill is: " + skillManager.AIS.set);
                 BsetNumber = BpassSet.GetSetNumber(digNumber);
                 Debug.Log("B Set " + AsetNumber);
+
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player has a chance to have their blockers react";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1155,14 +1247,20 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
                 yield return new WaitForSeconds(1);
-                // PASS SET
 
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player transitions to attack positions";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
+
+                // PASS SET
                 // SET CHOICE
                 playerSetDecision = false;
                 PlayerSetChoiceButtonsActivate(ApassNumber);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
-
                 setLeftSideButton.SetActive(false);
                 setMiddleButton.SetActive(false);
                 setRightSideButton.SetActive(false);
@@ -1175,6 +1273,13 @@ public class RallyManagerV2 : MonoBehaviour
 
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(1);
+
+                // PLAYER INTERACTION
+                waitingForPlayerInteraction = true;
+                playerInteractionButton.SetActive(true);
+                messageText.text = "Player chooses where to attack";
+                yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerInteractionButton.SetActive(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
