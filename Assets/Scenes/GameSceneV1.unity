@@ -2479,6 +2479,11 @@ PrefabInstance:
       propertyPath: y
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
@@ -2815,6 +2820,11 @@ PrefabInstance:
       propertyPath: y
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
@@ -2932,10 +2942,15 @@ PrefabInstance:
       propertyPath: y
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn (5)
+      value: Pawn (M1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -4581,7 +4596,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Set Left Side
+  m_Text: Set P1
 --- !u!222 &402294605
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7129,7 +7144,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Set Right Side
+  m_Text: Set RS
 --- !u!222 &613482256
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7378,6 +7393,11 @@ PrefabInstance:
       propertyPath: y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
@@ -7494,6 +7514,11 @@ PrefabInstance:
         type: 3}
       propertyPath: y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
@@ -10148,10 +10173,15 @@ PrefabInstance:
       propertyPath: y
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn (4)
+      value: Pawn (P2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -11404,10 +11434,15 @@ PrefabInstance:
       propertyPath: y
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn (2)
+      value: Pawn (M2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -13908,7 +13943,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Set Middle
+  m_Text: Set M1
 --- !u!222 &1209062996
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15713,10 +15748,15 @@ PrefabInstance:
       propertyPath: y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn (3)
+      value: Pawn (RS)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -16674,7 +16714,7 @@ PrefabInstance:
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn (1)
+      value: Pawn (P1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -16783,7 +16823,7 @@ GameObject:
   - component: {fileID: 1503181433}
   - component: {fileID: 1503181432}
   m_Layer: 5
-  m_Name: SetLeftSideButton
+  m_Name: SetP1Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19319,6 +19359,11 @@ PrefabInstance:
       propertyPath: y
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
@@ -19357,7 +19402,7 @@ GameObject:
   - component: {fileID: 1801074587}
   - component: {fileID: 1801074586}
   m_Layer: 5
-  m_Name: SetMiddleButton
+  m_Name: SetM1Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22874,10 +22919,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7928400405925161666, guid: 95f094f987ab14a45adeca6757da9a0b,
+        type: 3}
+      propertyPath: _pawnRole
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7928400405925161667, guid: 95f094f987ab14a45adeca6757da9a0b,
         type: 3}
       propertyPath: m_Name
-      value: Pawn
+      value: Pawn (Setter)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f094f987ab14a45adeca6757da9a0b, type: 3}
@@ -23120,7 +23170,7 @@ GameObject:
   - component: {fileID: 2083774640}
   - component: {fileID: 2083774639}
   m_Layer: 5
-  m_Name: SetRightSideButton
+  m_Name: SetRSButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

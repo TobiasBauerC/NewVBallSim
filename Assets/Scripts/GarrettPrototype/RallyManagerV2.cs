@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -106,16 +107,22 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetLeftSide()
     {
-        Debug.Log("Setting left side");
-        ballScript.SetPosition(playerGridManager, 8, 8);
+        Debug.Log("Setting power 1");
+        UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Power1);
+        int x = Mathf.RoundToInt(playerLocation.x);
+        int y = Mathf.RoundToInt(playerLocation.y);
+        ballScript.SetPosition(playerGridManager, x, y);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerP1;
     }
 
     public void PlayerSetMiddle()
     {
-        Debug.Log("Setting middle");
-        ballScript.SetPosition(playerGridManager, 8, 4);
+        Debug.Log("Setting middle 1");
+        UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Middle1);
+        int x = Mathf.RoundToInt(playerLocation.x);
+        int y = Mathf.RoundToInt(playerLocation.y);
+        ballScript.SetPosition(playerGridManager, x, y);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerM1;
     }
@@ -123,7 +130,10 @@ public class RallyManagerV2 : MonoBehaviour
     public void PlayerSetRightSide()
     {
         Debug.Log("Setting right side");
-        ballScript.SetPosition(playerGridManager, 8, 0);
+        UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.RightSide);
+        int x = Mathf.RoundToInt(playerLocation.x);
+        int y = Mathf.RoundToInt(playerLocation.y);
+        ballScript.SetPosition(playerGridManager, x, y);
         playerSetDecision = true;
         setChoiceSkills = skillManager.PlayerRS;
     }
@@ -682,8 +692,9 @@ public class RallyManagerV2 : MonoBehaviour
         if (digNumber == 1)
         {
             // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
-            Debug.Log("AI forced to set left side");
-            ballScript.SetPosition(aiGridManager, 0, 0);
+            Debug.Log("AI forced to set Power 1");
+            UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.Power1);
+            ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
             return skillManager.AIP1;
         }
         else if (digNumber == 2)
@@ -692,14 +703,16 @@ public class RallyManagerV2 : MonoBehaviour
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 2));
             if (setChoice == 1)
             {
-                Debug.Log("AI sets left side");
-                ballScript.SetPosition(aiGridManager, 0, 0);
+                Debug.Log("AI sets power 1");
+                UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.Power1);
+                ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
                 return skillManager.AIP1;
             }
             else
             {
                 Debug.Log("AI sets right side");
-                ballScript.SetPosition(aiGridManager, 0, 8);
+                UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.RightSide);
+                ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
                 return skillManager.AIRS;
             }
         }
@@ -710,20 +723,23 @@ public class RallyManagerV2 : MonoBehaviour
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 3));
             if (setChoice == 1)
             {
-                Debug.Log("AI sets left side");
-                ballScript.SetPosition(aiGridManager, 0, 0);
+                Debug.Log("AI sets power 1");
+                UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.Power1);
+                ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
                 return skillManager.AIP1;
             }
             else if (setChoice == 2)
             {
                 Debug.Log("AI sets right side");
-                ballScript.SetPosition(aiGridManager, 0, 8);
+                UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.RightSide);
+                ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
                 return skillManager.AIRS;
             }
             else
             {
-                Debug.Log("AI sets middle");
-                ballScript.SetPosition(aiGridManager, 0, 4);
+                Debug.Log("AI sets middle 2");
+                UnityEngine.Vector2 playerLocation = AIPawnManager.GetPawnGridPositon(PawnRole.Middle2);
+                ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y));
                 return skillManager.AIM1;
             }
         }
