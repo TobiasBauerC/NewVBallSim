@@ -842,6 +842,7 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to serve";
+        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[0].positions);
         // yield return new WaitUntil(() => !waitingForPlayerInteraction);
         while (waitingForPlayerInteraction)
         {
@@ -864,6 +865,7 @@ public class RallyManagerV2 : MonoBehaviour
         BpassNumber = BservePass.GetPassNumber(AserveNumber);
 
         messageText.text = "Player serves";
+        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
         yield return new WaitForSeconds(1);
 
         // check for aces or misses
@@ -1079,6 +1081,7 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 playerPawnManager.EnablePawnMove(true);
+                playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
                 messageText.text = "Player has a chance to transition to defensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -1167,6 +1170,7 @@ public class RallyManagerV2 : MonoBehaviour
         playerInteractionButton.SetActive(true);
         playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to set up their reception positions";
+        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[2].positions);
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
         playerPawnManager.EnablePawnMove(false);
@@ -1316,6 +1320,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerInteractionButton.SetActive(true);
                 playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have transition to defensive positions";
+                playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
                 playerPawnManager.EnablePawnMove(false);

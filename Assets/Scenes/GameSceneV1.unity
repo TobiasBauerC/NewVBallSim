@@ -2568,7 +2568,28 @@ MonoBehaviour:
   - {fileID: 239713225}
   _snapToGrid: 1
   _pickupDist: 0.4
-  _allPositionSets: []
+  _allPositionSets:
+  - positions:
+    - {x: 0, y: 0}
+    - {x: 8, y: 7}
+    - {x: 8, y: 4}
+    - {x: 8, y: 2}
+    - {x: 2, y: 4}
+    - {x: 4, y: 7}
+  - positions:
+    - {x: 4, y: 2}
+    - {x: 8, y: 7}
+    - {x: 8, y: 4}
+    - {x: 8, y: 2}
+    - {x: 2, y: 4}
+    - {x: 4, y: 7}
+  - positions:
+    - {x: 4, y: 0}
+    - {x: 4, y: 7}
+    - {x: 7, y: 4}
+    - {x: 5, y: 0}
+    - {x: 2, y: 4}
+    - {x: 2, y: 2}
 --- !u!1 &200074695
 GameObject:
   m_ObjectHideFlags: 0
