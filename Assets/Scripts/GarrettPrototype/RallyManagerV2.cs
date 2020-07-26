@@ -662,19 +662,33 @@ public class RallyManagerV2 : MonoBehaviour
 
 
 
-
+    private void SetAIPositionsBasedOffPass(int passNumber)
+    {
+        if(passNumber == 1)
+        {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
+        }
+        else if(passNumber == 2)
+        {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[3].positions);
+        }
+        else if(passNumber == 3)
+        {
+            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+        }
+    }
     private SkillManager.PlayerSkills AISetSelection(int digNumber)
     {
         if (digNumber == 1)
         {
-            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
+            // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
             Debug.Log("AI forced to set left side");
             ballScript.SetPosition(aiGridManager, 0, 0);
             return skillManager.AIP1;
         }
         else if (digNumber == 2)
         {
-            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[3].positions);
+            // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[3].positions);
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 2));
             if (setChoice == 1)
             {
@@ -692,7 +706,7 @@ public class RallyManagerV2 : MonoBehaviour
         else if (digNumber == 3)
         {
             ballScript.SetPosition(aiGridManager, 1, 6);
-            AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+            // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 3));
             if (setChoice == 1)
             {
@@ -732,6 +746,26 @@ public class RallyManagerV2 : MonoBehaviour
         }
         Debug.Log("Activated the buttons fine");
         
+    }
+
+    private void SetBallPositionOffDigPlayer(int digNumber)
+    {
+        if(digNumber == 1)
+            ballScript.SetPosition(playerGridManager, 4, 4);
+        else if(digNumber == 2)
+            ballScript.SetPosition(playerGridManager, 6, 3);
+        else if(digNumber == 3)
+            ballScript.SetPosition(playerGridManager, 8, 3);
+    }
+
+    private void SetBallPositionOffDigAI(int digNumber)
+    {
+        if (digNumber == 1)
+            ballScript.SetPosition(aiGridManager, 4, 4);
+        else if (digNumber == 2)
+            ballScript.SetPosition(aiGridManager, 2, 6);
+        else if (digNumber == 3)
+            ballScript.SetPosition(aiGridManager, 0, 6);
     }
 
 
@@ -836,6 +870,12 @@ public class RallyManagerV2 : MonoBehaviour
             yield break;
         }
 
+        Debug.Log("B Passed " + BpassNumber);
+        messageText.text = "AI passes it up";
+        SetBallPositionOffDigAI(BpassNumber);
+        SetAIPositionsBasedOffPass(BpassNumber);
+        yield return new WaitForSeconds(1);
+
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
@@ -844,10 +884,6 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
         playerPawnManager.EnablePawnMove(false);
-
-        Debug.Log("B Passed " + BpassNumber);
-        messageText.text = "AI passes it up";
-        yield return new WaitForSeconds(1);
 
         // PASS SET
         // SET CHOICE
@@ -923,6 +959,7 @@ public class RallyManagerV2 : MonoBehaviour
                 ballScript.SetPosition(playerGridManager, 4, 4);
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
+                SetBallPositionOffDigPlayer(digNumber);
                 yield return new WaitForSeconds(1);
                 AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 
@@ -1016,9 +1053,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
+                SetBallPositionOffDigAI(digNumber);
+                SetAIPositionsBasedOffPass(digNumber);
                 yield return new WaitForSeconds(1);
-                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
-                ballScript.SetPosition(aiGridManager, 4, 4);
+                // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+                // ballScript.SetPosition(aiGridManager, 4, 4);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1152,8 +1191,9 @@ public class RallyManagerV2 : MonoBehaviour
         }
         Debug.Log("A Passed " + ApassNumber);
         messageText.text = "Player passes it up";
+        SetBallPositionOffDigPlayer(ApassNumber);
         yield return new WaitForSeconds(1);
-        ballScript.SetPosition(playerGridManager, 4, 4);
+        
 
 
         // PASS SET
@@ -1249,9 +1289,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // A SIDE WITH A DIG
                 Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
+                SetBallPositionOffDigAI(digNumber);
+                SetAIPositionsBasedOffPass(BpassNumber);
                 yield return new WaitForSeconds(1);
-                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
-                ballScript.SetPosition(aiGridManager, 4, 4);
+                // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
+                
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1333,7 +1375,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
-                ballScript.SetPosition(playerGridManager, 4, 4);
+                SetBallPositionOffDigPlayer(digNumber);
                 yield return new WaitForSeconds(1);
 
                 // PLAYER INTERACTION
