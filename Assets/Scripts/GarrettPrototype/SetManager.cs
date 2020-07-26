@@ -60,6 +60,16 @@ public class SetManager : MonoBehaviour
         StartCoroutine(SimulateSet());
     }
 
+    public void SimulateOneRallyPlayerServing()
+    {
+        StartCoroutine(rallyManagerV2.SimulateRallyAServing(ReturnTrue, ReturnFalse));
+    }
+
+    public void SimulateOneRallyAIServing()
+    {
+        StartCoroutine(rallyManagerV2.SimulateRallyBServing(ReturnTrue, ReturnFalse));
+    }
+
     private IEnumerator SimulateSet()
     {
         setOver = false;

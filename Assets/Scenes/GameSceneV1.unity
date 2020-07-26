@@ -15385,8 +15385,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 57551695}
-        m_MethodName: SimulateOneRallyPlayerServe
+      - m_Target: {fileID: 985921230}
+        m_MethodName: SimulateOneRallyPlayerServing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21916,8 +21916,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 57551695}
-        m_MethodName: SimulateOneRallyAIServe
+      - m_Target: {fileID: 985921230}
+        m_MethodName: SimulateOneRallyAIServing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

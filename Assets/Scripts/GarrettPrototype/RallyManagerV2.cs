@@ -1128,6 +1128,9 @@ public class RallyManagerV2 : MonoBehaviour
         AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 
         messageText.text = "AI serves";
+        int x = Mathf.CeilToInt((UnityEngine.Random.Range(-1, 6)));
+        int y = Mathf.CeilToInt((UnityEngine.Random.Range(-1, 8)));
+        ballScript.SetPosition(playerGridManager, x, y);
         yield return new WaitForSeconds(1);
 
         // check for aces or misses
