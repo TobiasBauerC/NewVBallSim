@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -142,6 +142,25 @@ public class RallyManagerV2 : MonoBehaviour
     {
         waitingForPlayerInteraction = false;
         Debug.Log("Player interacted");
+    }
+
+    private Vector2Int UpdateServeLocationWithQuality(int serveNumber, Vector2Int serveLocation)
+    {
+        Vector2Int returnVector = Vector2Int.zero;
+        int mod = 0;
+        if (serveNumber > 60)
+            mod = 0;
+        else if (serveNumber > 30)
+            mod = 1;
+        else mod = 2;
+
+        int xChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
+        int yChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
+        Vector2Int changeVector = new Vector2Int(xChange, yChange);
+
+        returnVector = serveLocation + changeVector;
+
+        return returnVector;
     }
 
     public IEnumerator SimulateRallyAServing()
@@ -844,31 +863,51 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "Player chooses where to serve";
         playerPawnManager.SetPositions(playerPawnManager.allPositionSets[0].positions);
         // yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        Vector2Int serveLocation = Vector2Int.zero;
         while (waitingForPlayerInteraction)
         {
             if (Input.GetMouseButtonUp(0))
             {
                 ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                serveLocation = Vector2Int.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position));
             }
             yield return null;
         }
         playerInteractionButton.SetActive(false);
+
+        messageText.text = "Serve location selected";
+        yield return new WaitForSeconds(1);
 
         // SERVE PASS
         Debug.Log("A serves");
         AservePass.SetServeAbility(skillManager.AIM2.serve);
         Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
         AserveNumber = AservePass.GetServeNumber();
+        // serve location may change based on serve quality
+        serveLocation = UpdateServeLocationWithQuality(AserveNumber, serveLocation);
+        ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y);
+        messageText.text = "Player serves";
+        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+        yield return new WaitForSeconds(2);
 
+        // need to determine the closest passer and use their ability
+        // also need to impact the pass value based on distance from the ball
         BservePass.SetPassAbility(skillManager.AIP2.pass);
         Debug.Log("Passers skill is: " + skillManager.AIP2.pass);
         BpassNumber = BservePass.GetPassNumber(AserveNumber);
 
-        messageText.text = "Player serves";
-        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
-        yield return new WaitForSeconds(1);
+
 
         // check for aces or misses
+        if(serveLocation.x >  8 || serveLocation.x < 0 || serveLocation.y > 8 || serveLocation.y < 0)
+        {
+            messageText.text = "Player crushed it just out of bounds";
+            ballScript.SetPosition(playerGridManager, VBallTools.GetCursorPosition());
+            Debug.Log("A Miss Serve");
+            falseCallback();
+            yield return false;
+            yield break;
+        }
         if (BpassNumber == 4)
         {
             messageText.text = "Player crushed it into the net";
@@ -1156,6 +1195,17 @@ public class RallyManagerV2 : MonoBehaviour
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
     public IEnumerator SimulateRallyBServing(Action trueCallback, Action falseCallback)
     {
         // set the players team skills to whats on the sliders
@@ -1176,25 +1226,44 @@ public class RallyManagerV2 : MonoBehaviour
         playerPawnManager.EnablePawnMove(false);
 
         // SERVE PASS
+        messageText.text = "AI up to serve";
+        int x = Mathf.CeilToInt((UnityEngine.Random.Range(0, 6)));
+        int y = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        Vector2Int serveLocation = new Vector2Int(x, y);
+        ballScript.SetPosition(playerGridManager, x, y);
+        yield return new WaitForSeconds(1);
+
         Debug.Log("B serves");
         BservePass.SetServeAbility(skillManager.AIM2.serve);
         Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
         BserveNumber = BservePass.GetServeNumber();
+        // serve location may change based on serve quality
+        serveLocation = UpdateServeLocationWithQuality(BserveNumber, serveLocation);
+        ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y);
+        messageText.text = "AI serve goes here";
+        yield return new WaitForSeconds(2);
+
+        // need to determine the closest passer and use their ability
+        // also need to impact the pass value based on distance from the ball
         AservePass.SetPassAbility(skillManager.PlayerP2.pass);
         Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
         ApassNumber = AservePass.GetPassNumber(BserveNumber);
 
         AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 
-        messageText.text = "AI serves";
-        int x = Mathf.CeilToInt((UnityEngine.Random.Range(-1, 6)));
-        int y = Mathf.CeilToInt((UnityEngine.Random.Range(-1, 8)));
-        ballScript.SetPosition(playerGridManager, x, y);
-        yield return new WaitForSeconds(1);
+
 
         // check for aces or misses
-        if (ApassNumber == 4)
+        if (serveLocation.x > 8 || serveLocation.x < 0 || serveLocation.y > 8 || serveLocation.y < 0)
         {
+            messageText.text = "AI crushed it just out of bounds";
+            Debug.Log("B Miss Serve");
+            falseCallback();
+            yield return false;
+            yield break;
+        }
+        if (ApassNumber == 4)
+        { 
             messageText.text = "AI crushed it into the net";
             Debug.Log("B Miss Serve");
             falseCallback();

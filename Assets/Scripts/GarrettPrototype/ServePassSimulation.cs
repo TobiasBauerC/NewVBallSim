@@ -113,7 +113,7 @@ public class ServePassSimulation : MonoBehaviour
         int serve = serveNumber;
         int pass = CalculatePass(_basePassAbility);
 
-        if (serve < 9)
+        if (serve < 5)
         {
             // missed serve
 
@@ -133,7 +133,7 @@ public class ServePassSimulation : MonoBehaviour
             passQuality = 1;
             return passQuality;
         }
-        else if ((serve - pass) > 5)
+        else if ((serve - pass) >= 5)
         {
             // two pass
             passQuality = 2;
