@@ -163,6 +163,25 @@ public class RallyManagerV2 : MonoBehaviour
         return returnVector;
     }
 
+    private Vector2Int UpdateAttackLocationWithQuality(int attackQuality, Vector2Int attackLocation)
+    {
+        Vector2Int returnVector = Vector2Int.zero;
+        int mod = 0;
+        if (attackQuality == 5 || attackQuality == 4)
+            mod = 0;
+        else if (attackQuality == 3)
+            mod = 1;
+        else mod = 2;
+
+        int xChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
+        int yChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
+        Vector2Int changeVector = new Vector2Int(xChange, yChange);
+
+        returnVector = attackLocation + changeVector;
+
+        return returnVector;
+    }
+
     public IEnumerator SimulateRallyAServing()
     {
         // set the players team skills to whats on the sliders
@@ -971,6 +990,14 @@ public class RallyManagerV2 : MonoBehaviour
         BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
         BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
         Debug.Log("B Hit " + BattackQuality);
+        // AI chooses where to attack
+        messageText.text = "AI swinging to attack here";
+        int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
+        ballScript.SetPosition(playerGridManager, aix, aiy);
+        yield return new WaitForSeconds(1);
+
         if (BattackQuality == 1)
         {
             messageText.text = "AI pummels it into the net";
@@ -979,6 +1006,14 @@ public class RallyManagerV2 : MonoBehaviour
             yield return true;
             yield break;
         }
+
+        // AI attack changes location based on attack quality
+        aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
+        ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
+        messageText.text = "AI attack going towards here";
+        yield return new WaitForSeconds(2);
+
+        
 
         // ATTACK DEFENCE
         // get the block and defence values
@@ -996,6 +1031,14 @@ public class RallyManagerV2 : MonoBehaviour
 
         // compare the attack values to the defence values
         resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+        if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber== 3)  && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
+        {
+            messageText.text = "AI attacks it just out of bounds";
+            Debug.Log("B Hitting Error");
+            trueCallback();
+            yield return true;
+            yield break;
+        }
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
         {
             bool result = CompareResultsB(resultNumber);
@@ -1054,15 +1097,21 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 messageText.text = "Player chooses where to attack";
+                Vector2Int playerAttackLocation = Vector2Int.zero;
                 while (waitingForPlayerInteraction)
                 {
                     if (Input.GetMouseButtonUp(0))
                     {
                         ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                        playerAttackLocation = Vector2Int.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position));
                     }
                     yield return null;
                 }
                 playerInteractionButton.SetActive(false);
+
+                messageText.text = "Attack location selected";
+                yield return new WaitForSeconds(1);
+
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1074,11 +1123,18 @@ public class RallyManagerV2 : MonoBehaviour
                 if (AattackQuality == 1)
                 {
                     Debug.Log("A Hitting Error");
-                    messageText.text = "Player hits it 10 bricks up the wall";
+                    messageText.text = "Player hits it into the bottom of the net";
                     falseCallback();
                     yield return false;
                     yield break;
                 }
+
+                // player attack changes location based on attack quality
+                playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
+                ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
+                messageText.text = "Player attack going towards here";
+                yield return new WaitForSeconds(2);
+
                 // ATTACK DEFENCE
                 // get the block and defence values
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
@@ -1094,6 +1150,14 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // compare the attack values to the defence values
                 resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+                if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
+                {
+                    Debug.Log("A Hitting Error");
+                    messageText.text = "Player hits out of bounds";
+                    falseCallback();
+                    yield return false;
+                    yield break;
+                }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
                     bool result3 = CompareResultsA(resultNumber);
@@ -1104,8 +1168,6 @@ public class RallyManagerV2 : MonoBehaviour
                     yield break;
                 }
                 digNumber = resultNumber;
-
-
 
                 // B SIDE WITH A DIG
                 Debug.Log("B Dug " + digNumber);
@@ -1154,6 +1216,14 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
                 Debug.Log("B Hit " + BattackQuality);
+                // AI chooses where to attack
+                messageText.text = "AI swinging to attack here";
+                aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                aiAttackLocation = new Vector2Int(aix, aiy);
+                ballScript.SetPosition(playerGridManager, aix, aiy);
+                yield return new WaitForSeconds(1);
+
                 if (BattackQuality == 1)
                 {
                     Debug.Log("B Hitting Error");
@@ -1162,6 +1232,13 @@ public class RallyManagerV2 : MonoBehaviour
                     yield return true;
                     yield break;
                 }
+
+                // AI attack changes location based on attack quality
+                aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
+                ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
+                messageText.text = "AI attack going towards here";
+                yield return new WaitForSeconds(2);
+
                 // ATTACK DEFENCE
                 // get the block and defence values
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
@@ -1177,6 +1254,14 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // compare the attack values to the defence values
                 resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+                if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
+                {
+                    messageText.text = "AI attacks it just out of bounds";
+                    Debug.Log("B Hitting Error");
+                    trueCallback();
+                    yield return true;
+                    yield break;
+                }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
                     bool result4 = CompareResultsB(resultNumber);
@@ -1319,15 +1404,19 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to attack";
+        Vector2Int playerAttackLocation = Vector2Int.zero;
         while (waitingForPlayerInteraction)
         {
             if (Input.GetMouseButtonUp(0))
             {
                 ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                playerAttackLocation = Vector2Int.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position));
             }
             yield return null;
         }
         playerInteractionButton.SetActive(false);
+        messageText.text = "Attack location selected";
+        yield return new WaitForSeconds(1);
 
         // get the attack quality based on the set
         AsetAttack.SetAttackAbility(setChoiceSkills.attack);
@@ -1337,12 +1426,17 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("A Hit " + AattackQuality);
         if (AattackQuality == 1)
         {
-            messageText.text = "Player pounds it out of bounds";
+            messageText.text = "Player hits it into the bottom of the net";
             Debug.Log("A Hitting Error");
             trueCallback();
             yield return true;
             yield break;
         }
+        // player attack changes location based on attack quality
+        playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
+        ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
+        messageText.text = "Player attack going towards here";
+        yield return new WaitForSeconds(2);
 
         // ATTACK DEFENCE
         // get the block and defence values
@@ -1359,6 +1453,14 @@ public class RallyManagerV2 : MonoBehaviour
 
         // compare the attack values to the defence values
         resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+        if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
+        {
+            messageText.text = "Player hits it out of bounds";
+            Debug.Log("A Hitting Error");
+            trueCallback();
+            yield return true;
+            yield break;
+        }
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
         {
             bool result = CompareResultsA(resultNumber);
@@ -1382,7 +1484,7 @@ public class RallyManagerV2 : MonoBehaviour
                 SetAIPositionsBasedOffPass(BpassNumber);
                 yield return new WaitForSeconds(1);
                 // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
-                
+
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1424,8 +1526,13 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
                 Debug.Log("B Hit " + BattackQuality);
-
-
+                // AI chooses where to attack
+                messageText.text = "AI swinging to attack here";
+                int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
+                ballScript.SetPosition(playerGridManager, aix, aiy);
+                yield return new WaitForSeconds(1);
 
                 if (BattackQuality == 1)
                 {
@@ -1435,6 +1542,13 @@ public class RallyManagerV2 : MonoBehaviour
                     yield return false;
                     yield break;
                 }
+
+                // AI attack changes location based on attack quality
+                aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
+                ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
+                messageText.text = "AI attack going towards here";
+                yield return new WaitForSeconds(2);
+
                 // ATTACK DEFENCE
                 // get the block and defence values
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
@@ -1450,6 +1564,14 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // compare the attack values to the defence values
                 resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+                if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
+                {
+                    Debug.Log("B Hitting Error");
+                    messageText.text = "AI hits it out of bounds";
+                    falseCallback();
+                    yield return false;
+                    yield break;
+                }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
                     bool result3 = CompareResultsB(resultNumber);
@@ -1500,16 +1622,19 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 messageText.text = "Player chooses where to attack";
-                // yield return new WaitUntil(() => !waitingForPlayerInteraction);
+                playerAttackLocation = Vector2Int.zero;
                 while (waitingForPlayerInteraction)
                 {
                     if (Input.GetMouseButtonUp(0))
                     {
                         ballScript.SetPosition(aiGridManager, VBallTools.GetCursorPosition());
+                        playerAttackLocation = Vector2Int.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position));
                     }
                     yield return null;
                 }
                 playerInteractionButton.SetActive(false);
+                messageText.text = "Attack location selected";
+                yield return new WaitForSeconds(1);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1521,11 +1646,17 @@ public class RallyManagerV2 : MonoBehaviour
                 if (AattackQuality == 1)
                 {
                     Debug.Log("A Hitting Error");
-                    messageText.text = "Player hits it 10 bricks up the wall";
+                    messageText.text = "Player hits it into the bottom of the net";
                     trueCallback();
                     yield return true;
                     yield break;
                 }
+                // player attack changes location based on attack quality
+                playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
+                ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
+                messageText.text = "Player attack going towards here";
+                yield return new WaitForSeconds(2);
+
                 // ATTACK DEFENCE
                 // get the block and defence values
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
@@ -1541,6 +1672,14 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // compare the attack values to the defence values
                 resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+                if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
+                {
+                    messageText.text = "Player hits it out of bounds";
+                    Debug.Log("A Hitting Error");
+                    trueCallback();
+                    yield return true;
+                    yield break;
+                }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
                     bool result4 = CompareResultsA(resultNumber);
