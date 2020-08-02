@@ -98,18 +98,43 @@ public class PawnManager : MonoBehaviour
     /// <summary>
     /// Returns the closest pawn to the given grid location
     /// </summary>
-    public Pawn GetClosestPawn(Vector2 ballWorldPosition)
+    public Pawn GetClosestPawn(Vector2 ballWorldPosition, bool isDigging, int blockingRow)
     {
-        Pawn closestPawn = pawns[0];
+        Pawn closestPawn = null;
         foreach(Pawn p in pawns)
         {
-            if((Vector2.Distance(p.transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition)) && p.pawnRole != PawnRole.Setter)
+            if(closestPawn == null)
             {
-                closestPawn = p;
+                if ((isDigging || p.pawnRole != PawnRole.Setter) && GetPawnGridPositon(p).x != blockingRow)
+                {
+                    closestPawn = p;
+                    continue;
+                }
+            }
+            else if (closestPawn != null)
+            {
+                if (Vector2.Distance(p.transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition))
+                {
+                    if ((isDigging || p.pawnRole != PawnRole.Setter) && GetPawnGridPositon(p).x != blockingRow)
+                        closestPawn = p;
+                }
             }
         }
+        if (closestPawn == null)
+            closestPawn = pawns[5];
         Debug.Log("Closest pawn calculated at " + closestPawn.name);
         return closestPawn;
+    }
+
+    public void MoveSetter(int x, int y)
+    {
+        foreach (Pawn p in pawns)
+        {
+            if(p.pawnRole == PawnRole.Setter)
+            {
+                p.transform.position = gridManager.GetGridPosition(x, y);
+            }
+        }
     }
 }
 

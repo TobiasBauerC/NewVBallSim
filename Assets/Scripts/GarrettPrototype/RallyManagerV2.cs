@@ -71,6 +71,8 @@ public class RallyManagerV2 : MonoBehaviour
 
     private PawnRole setChoiceRole;
 
+    private const int playerBlockingRow = 8;
+    private const int aiBlockingRow = 0;
 
 
     // Start is called before the first frame update
@@ -804,12 +806,18 @@ public class RallyManagerV2 : MonoBehaviour
 
     private void SetBallPositionOffDigPlayer(int digNumber)
     {
-        if(digNumber == 1)
+        if (digNumber == 1) {
             ballScript.SetPosition(playerGridManager, 4, 4);
-        else if(digNumber == 2)
+            playerPawnManager.MoveSetter(4, 4);
+        }
+        else if (digNumber == 2) {
             ballScript.SetPosition(playerGridManager, 6, 3);
-        else if(digNumber == 3)
+            playerPawnManager.MoveSetter(6, 3);
+        }
+        else if (digNumber == 3) {
             ballScript.SetPosition(playerGridManager, 8, 3);
+            playerPawnManager.MoveSetter(8, 3);
+        }
     }
 
     private void SetBallPositionOffDigAI(int digNumber)
@@ -827,7 +835,6 @@ public class RallyManagerV2 : MonoBehaviour
         switch (pawn.pawnRole)
         {
             case PawnRole.Setter:
-                Debug.LogWarning("Should not get here");
                 return skillManager.AIS;
                 break;
             case PawnRole.Middle1:
@@ -855,7 +862,6 @@ public class RallyManagerV2 : MonoBehaviour
         switch (pawn.pawnRole)
         {
             case PawnRole.Setter:
-                Debug.LogWarning("Should not get here");
                 return skillManager.PlayerS;
                 break;
             case PawnRole.Middle1:
@@ -967,8 +973,10 @@ public class RallyManagerV2 : MonoBehaviour
 
         // need to determine the closest passer and use their ability
         // also need to impact the pass value based on distance from the ball
-        BservePass.SetPassAbility(skillManager.AIP2.pass);
-        Debug.Log("Passers skill is: " + skillManager.AIP2.pass);
+        Pawn passingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, false, aiBlockingRow);
+        SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromAIPawn(passingPawn);
+        BservePass.SetPassAbility(passerSkills.pass);
+        Debug.Log("Passers skill is: " + passerSkills.pass);
         BpassNumber = BservePass.GetPassNumber(AserveNumber);
 
 
@@ -1077,9 +1085,11 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
         AblockNumber = AattackDefence.GetBlockNumber();
         AblockQuality = AattackDefence.GetBlockQuality();
-        
-        AattackDefence.SetDefenceAbility(skillManager.PlayerP2.defence);
-        Debug.Log("Defenders skill is: " + skillManager.PlayerP2.defence);
+
+        Pawn diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
+        SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
+        AattackDefence.SetDefenceAbility(diggerSkills.defence);
+        Debug.Log("Defenders skill is: " + diggerSkills.defence);
         AdefenceNumber = AattackDefence.GetDefenceNumber();
 
         messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -1197,7 +1207,10 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
                 BblockQuality = BattackDefence.GetBlockQuality();
-                BattackDefence.SetDefenceAbility(skillManager.AIP2.defence);
+
+                diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
+                diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
+                BattackDefence.SetDefenceAbility(diggerSkills.defence);
                 Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
@@ -1301,8 +1314,11 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
                 AblockQuality = AattackDefence.GetBlockQuality();
-                AattackDefence.SetDefenceAbility(skillManager.P2Sliders.transform.Find("DefenceSlider").GetComponent<Slider>().value);
-                Debug.Log("Defenders skill is: " + skillManager.P2Sliders.transform.Find("DefenceSlider").GetComponent<Slider>().value);
+
+                diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
+                diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
+                AattackDefence.SetDefenceAbility(diggerSkills.defence);
+                Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -1384,9 +1400,11 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "AI serve goes here";
         yield return new WaitForSeconds(2);
 
-        // need to determine the closest passer and use their ability
+
         // also need to impact the pass value based on distance from the ball
-        AservePass.SetPassAbility(skillManager.PlayerP2.pass);
+        Pawn passingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, false, playerBlockingRow);
+        SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromPlayerPawn(passingPawn);
+        AservePass.SetPassAbility(passerSkills.pass);
         Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
         ApassNumber = AservePass.GetPassNumber(BserveNumber);
 
@@ -1500,7 +1518,10 @@ public class RallyManagerV2 : MonoBehaviour
         Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
         BblockNumber = BattackDefence.GetBlockNumber();
         BblockQuality = BattackDefence.GetBlockQuality();
-        BattackDefence.SetDefenceAbility(skillManager.AIP2.defence);
+
+        Pawn diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true,aiBlockingRow);
+        SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
+        BattackDefence.SetDefenceAbility(diggerSkills.defence);
         Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
         BdefenceNumber = BattackDefence.GetDefenceNumber();
 
@@ -1611,8 +1632,11 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
                 AblockQuality = AattackDefence.GetBlockQuality();
-                AattackDefence.SetDefenceAbility(skillManager.P2Sliders.transform.Find("DefenceSlider").GetComponent<Slider>().value);
-                Debug.Log("Defenders skill is: " + skillManager.P2Sliders.transform.Find("DefenceSlider").GetComponent<Slider>().value);
+
+                diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
+                diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
+                AattackDefence.SetDefenceAbility(diggerSkills.defence);
+                Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -1719,8 +1743,11 @@ public class RallyManagerV2 : MonoBehaviour
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
                 BblockQuality = BattackDefence.GetBlockQuality();
-                BattackDefence.SetDefenceAbility(skillManager.AIP2.defence);
-                Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
+
+                diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
+                diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
+                BattackDefence.SetDefenceAbility(diggerSkills.defence);
+                Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
