@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+// using System.Numerics;
 using UnityEngine;
 
 public class PawnManager : MonoBehaviour
@@ -92,7 +94,26 @@ public class PawnManager : MonoBehaviour
     {
         return gridManager.GetGridXYPosition(pawn.transform.position);
     }
+
+    /// <summary>
+    /// Returns the closest pawn to the given grid location
+    /// </summary>
+    public Pawn GetClosestPawn(Vector2 ballWorldPosition)
+    {
+        Pawn closestPawn = pawns[0];
+        foreach(Pawn p in pawns)
+        {
+            if((Vector2.Distance(p.transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition)) && p.pawnRole != PawnRole.Setter)
+            {
+                closestPawn = p;
+            }
+        }
+        Debug.Log("Closest pawn calculated at " + closestPawn.name);
+        return closestPawn;
+    }
 }
+
+
 
 /// <summary>
 /// A class for holding several Vector2 positions

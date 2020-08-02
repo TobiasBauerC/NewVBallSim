@@ -822,6 +822,62 @@ public class RallyManagerV2 : MonoBehaviour
             ballScript.SetPosition(aiGridManager, 0, 6);
     }
 
+    private SkillManager.PlayerSkills GetPlayerSkillFromAIPawn(Pawn pawn)
+    {
+        switch (pawn.pawnRole)
+        {
+            case PawnRole.Setter:
+                Debug.LogWarning("Should not get here");
+                return skillManager.AIS;
+                break;
+            case PawnRole.Middle1:
+                return skillManager.AIM1;
+                break;
+            case PawnRole.Middle2:
+                return skillManager.AIM2;
+                break;
+            case PawnRole.Power1:
+                return skillManager.AIP1;
+                break;
+            case PawnRole.Power2:
+                return skillManager.AIP2;
+                break;
+            case PawnRole.RightSide:
+                return skillManager.AIRS;
+                break;
+        }
+        Debug.LogWarning("Should not get here");
+        return skillManager.AIP1;
+    }
+
+    private SkillManager.PlayerSkills GetPlayerSkillFromPlayerPawn(Pawn pawn)
+    {
+        switch (pawn.pawnRole)
+        {
+            case PawnRole.Setter:
+                Debug.LogWarning("Should not get here");
+                return skillManager.PlayerS;
+                break;
+            case PawnRole.Middle1:
+                return skillManager.PlayerM1;
+                break;
+            case PawnRole.Middle2:
+                return skillManager.PlayerM2;
+                break;
+            case PawnRole.Power1:
+                return skillManager.PlayerP1;
+                break;
+            case PawnRole.Power2:
+                return skillManager.PlayerP2;
+                break;
+            case PawnRole.RightSide:
+                return skillManager.PlayerRS;
+                break;
+        }
+        Debug.LogWarning("Should not get here");
+        return skillManager.AIP1;
+    }
+
 
 
 
