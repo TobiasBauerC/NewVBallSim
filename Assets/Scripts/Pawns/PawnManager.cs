@@ -49,7 +49,9 @@ public class PawnManager : MonoBehaviour
     {
         for(int i = 0; i < pawns.Length; i++)
         {
+            gridManager.SetCellOccupied(pawns[i].transform.position, false);
             pawns[i].transform.position = gridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
+            gridManager.SetCellOccupied(pawns[i].transform.position, true);
         }
     }
 
@@ -132,7 +134,9 @@ public class PawnManager : MonoBehaviour
         {
             if(p.pawnRole == PawnRole.Setter)
             {
+                gridManager.SetCellOccupied(p.transform.position, false);
                 p.transform.position = gridManager.GetGridPosition(x, y);
+                gridManager.SetCellOccupied(p.transform.position, true);
             }
         }
     }
