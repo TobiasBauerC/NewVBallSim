@@ -884,6 +884,25 @@ public class RallyManagerV2 : MonoBehaviour
         return skillManager.AIP1;
     }
 
+    private int GetXDistanceFromBall(Pawn passingPlayer, Ball ball, GridManager gridManager)
+    {
+        int xDistance = 0;
+        int playerX = Vector2Int.RoundToInt(gridManager.GetGridXYPosition(passingPlayer.transform.position)).x;
+        int ballX = Vector2Int.RoundToInt(gridManager.GetGridXYPosition(ballScript.transform.position)).x;
+        
+        xDistance = Mathf.Abs(playerX - ballX);
+        return xDistance;
+    }
+
+    private int GetYDistanceFromBall(Pawn passingPlayer, Ball ball, GridManager gridManager)
+    {
+        int yDistance = 0;
+        int playerY = Vector2Int.RoundToInt(gridManager.GetGridXYPosition(passingPlayer.transform.position)).y;
+        int ballY = Vector2Int.RoundToInt(gridManager.GetGridXYPosition(ballScript.transform.position)).y;
+        yDistance = Mathf.Abs(playerY - ballY);
+        return yDistance;
+    }
+
 
 
 
@@ -977,7 +996,10 @@ public class RallyManagerV2 : MonoBehaviour
         SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromAIPawn(passingPawn);
         BservePass.SetPassAbility(passerSkills.pass);
         Debug.Log("Passers skill is: " + passerSkills.pass);
-        BpassNumber = BservePass.GetPassNumber(AserveNumber);
+        // get player's distance from ball
+        int passersXDistance = GetXDistanceFromBall(passingPawn, ballScript, aiGridManager);
+        int passersYDistance = GetYDistanceFromBall(passingPawn, ballScript, aiGridManager);
+        BpassNumber = BservePass.GetPassNumber(AserveNumber,passersXDistance, passersYDistance);
 
 
 
@@ -1406,7 +1428,10 @@ public class RallyManagerV2 : MonoBehaviour
         SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromPlayerPawn(passingPawn);
         AservePass.SetPassAbility(passerSkills.pass);
         Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
-        ApassNumber = AservePass.GetPassNumber(BserveNumber);
+        // account for passers distance from the ball
+        int passersXDistance = GetXDistanceFromBall(passingPawn, ballScript, playerGridManager);
+        int passersYDistance = GetYDistanceFromBall(passingPawn, ballScript, playerGridManager);
+        ApassNumber = AservePass.GetPassNumber(BserveNumber, passersXDistance, passersYDistance);
 
         AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
 

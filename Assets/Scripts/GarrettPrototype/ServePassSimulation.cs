@@ -144,6 +144,57 @@ public class ServePassSimulation : MonoBehaviour
         return passQuality;
     }
 
+    public int GetPassNumber(int serveNumber, int xDistance, int yDistance)
+    {
+        int passQuality = 3;
+        int serve = serveNumber;
+        int pass = CalculatePass(_basePassAbility);
+        int distanceMod = 8;
+
+        // account for passers distance from ball
+        if(xDistance > 4 || yDistance > 3)
+        {
+            // ball is too far from the player, lands for an ace
+            Debug.Log("Ball is too far from the player, lands for an ace");
+            return 4;
+        }
+        // if its not an ace, alter the pass number based on the distance
+        int newPass = pass - ((xDistance - 1) * Mathf.RoundToInt(distanceMod / 2)) - ((yDistance - 1) * distanceMod);
+        Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
+        Debug.LogWarning("Passers number modified from " + pass + " to " + newPass);
+        pass = newPass;
+
+        if (serve < 5)
+        {
+            // missed serve
+
+            return 4;
+        }
+
+        // look for an ace
+        if ((serve - pass) > 55)
+        {
+            // ace
+            passQuality = 0;
+            return passQuality;
+        }
+        else if ((serve - pass) > 30)
+        {
+            // one pass
+            passQuality = 1;
+            return passQuality;
+        }
+        else if ((serve - pass) >= 0)
+        {
+            // two pass
+            passQuality = 2;
+            return passQuality;
+        }
+
+        passQuality = 3;
+        return passQuality;
+    }
+
     private int GetPassQuality(float serveAbility, float passAbility)
     {
         int passQuality = 3;
