@@ -1068,11 +1068,11 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
-        playerPawnManager.EnablePawnMove(true);
+        playerPawnManager.EnableLimitedMove(true);
         messageText.text = "Player has a chance to have their blockers react";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
-        playerPawnManager.EnablePawnMove(false);
+        playerPawnManager.EnableLimitedMove(false);
 
         // SET ATTACK
         // get the attack quality based on the set
@@ -1309,11 +1309,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMove(true);
+                playerPawnManager.EnableLimitedMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
-                playerPawnManager.EnablePawnMove(false);
+                playerPawnManager.EnableLimitedMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1639,11 +1639,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMove(true);
+                playerPawnManager.EnableLimitedMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
-                playerPawnManager.EnablePawnMove(false);
+                playerPawnManager.EnableLimitedMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set

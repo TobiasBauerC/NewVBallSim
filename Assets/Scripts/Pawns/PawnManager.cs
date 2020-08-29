@@ -70,6 +70,26 @@ public class PawnManager : MonoBehaviour
             p.enabled = enabled;
     }
 
+    public void EnableLimitedMove(bool enabled, Pawn[] pawns = null)
+    {
+        if (pawns == null || pawns.Length == 0)
+            pawns = this.pawns;
+        foreach (Pawn p in pawns)
+        {
+            if (p.enabled)
+            {
+                p.startingPosition = p.transform.position;
+                p.limitedMovement = enabled;
+            }
+            p.enabled = enabled;
+            if (p.enabled)
+            {
+                p.startingPosition = p.transform.position;
+                p.limitedMovement = enabled;
+            }
+        }
+    }
+
     /// <summary>
     /// Returns the X and Y grid position in Vector2 format
     /// </summary>

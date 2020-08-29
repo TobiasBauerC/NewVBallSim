@@ -14,6 +14,10 @@ public class Pawn : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
 
+    public bool limitedMovement = false;
+    public Vector3 startingPosition;
+    private float limitedMoveDistance = 1.5f;
+
     [Space]
     // Stats
     [Header("Player Stats")]
@@ -42,12 +46,30 @@ public class Pawn : MonoBehaviour
         // if selected, have it follow mouse
         else if (selected)
         {
-            transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition()) : pawnManager.GetCursorPosition();
+            if(!limitedMovement)
+            {
+                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition()) : pawnManager.GetCursorPosition();
+            }
+            else if (limitedMovement)
+            {
+                Vector3 limitedPosition = Vector3.zero;
+                if (Vector3.Distance(pawnManager.GetCursorPosition(), startingPosition) > limitedMoveDistance)
+                    limitedPosition = startingPosition + (Vector3.Normalize(pawnManager.GetCursorPosition() - startingPosition) * limitedMoveDistance);
+                else limitedPosition = pawnManager.GetCursorPosition();
+                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(limitedPosition) : limitedPosition;
+
+            }
             // If left mouse is released, stop following mouse, got to cell position, set cell to occupied
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
-                transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition());
+                Vector3 limitedPosition = Vector3.zero;
+                if (Vector3.Distance(pawnManager.GetCursorPosition(), startingPosition) > limitedMoveDistance)
+                    limitedPosition = startingPosition + (Vector3.Normalize(pawnManager.GetCursorPosition() - startingPosition) * limitedMoveDistance);
+                else limitedPosition = pawnManager.GetCursorPosition();
+                if (!limitedMovement)
+                    transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition());
+                else transform.position = pawnManager.gridManager.GetGridPosition(limitedPosition);
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
                 //worldGrid.grid.PrintGridOccupied(transform.position);
             }
