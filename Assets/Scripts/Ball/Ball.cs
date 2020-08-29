@@ -58,4 +58,10 @@ public class Ball : MonoBehaviour
         currentGrid = gridManager;
         SetPosition(x, y);
     }
+
+    public Vector2Int GetGridPosition()
+    {
+        Vector2 position = currentGrid.GetGridXYPosition(transform.position);
+        return Vector2Int.RoundToInt(position);
+    }
 }

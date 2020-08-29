@@ -128,6 +128,27 @@ public class PawnManager : MonoBehaviour
         return closestPawn;
     }
 
+    public int GetNumberOfBlockersHandsNearby(int attackersRow, bool isPlayersBlockers)
+    {
+        int numberOfBlockersHands = 0;
+        int blockersColumn = 0;
+        if (isPlayersBlockers)
+            blockersColumn = 8;
+        else blockersColumn = 0;
+
+        foreach(Pawn p in pawns)
+        {
+            if (GetPawnGridPositon(p).x == blockersColumn && Mathf.Abs(GetPawnGridPositon(p).y - attackersRow) <= 1)
+                numberOfBlockersHands += 2;
+            if (GetPawnGridPositon(p).x == blockersColumn && Mathf.Abs(GetPawnGridPositon(p).y - attackersRow) == 2)
+                numberOfBlockersHands += 1;
+        }
+        Debug.LogWarning(" There are " + numberOfBlockersHands + " blockers hands nearby");
+
+
+        return numberOfBlockersHands;
+    }
+
     public void MoveSetter(int x, int y)
     {
         foreach (Pawn p in pawns)

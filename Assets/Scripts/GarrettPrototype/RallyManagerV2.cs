@@ -74,6 +74,8 @@ public class RallyManagerV2 : MonoBehaviour
     private const int playerBlockingRow = 8;
     private const int aiBlockingRow = 0;
 
+    private int attackersRow = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -1051,6 +1053,7 @@ public class RallyManagerV2 : MonoBehaviour
         // SET CHOICE
         AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position, and the ball position
         messageText.text = "AI making a set choice";
+        attackersRow = ballScript.GetGridPosition().y;
         yield return new WaitForSeconds(1);
 
 
@@ -1106,7 +1109,7 @@ public class RallyManagerV2 : MonoBehaviour
         AattackDefence.SetBlockAbility(skillManager.PlayerM1.block);
         Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
         AblockNumber = AattackDefence.GetBlockNumber();
-        AblockQuality = AattackDefence.GetBlockQuality();
+        AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
 
         Pawn diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1117,8 +1120,11 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
         yield return new WaitForSeconds(1);
 
+        int diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+        int diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+
         // compare the attack values to the defence values
-        resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+        resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
         if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber== 3)  && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
         {
             messageText.text = "AI attacks it just out of bounds";
@@ -1171,6 +1177,7 @@ public class RallyManagerV2 : MonoBehaviour
                 setLeftSideButton.SetActive(false);
                 setMiddleButton.SetActive(false);
                 setRightSideButton.SetActive(false);
+                attackersRow = ballScript.GetGridPosition().y;
 
                 // get the set quality based on the pass
                 ApassSet.SetSettingAbility(skillManager.PlayerS.set);
@@ -1228,7 +1235,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
-                BblockQuality = BattackDefence.GetBlockQuality();
+                BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
@@ -1239,8 +1246,11 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
                 yield return new WaitForSeconds(1);
 
+                diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+                diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+                resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
                 {
                     Debug.Log("A Hitting Error");
@@ -1283,6 +1293,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET CHOICE
                 AIsetChoiceSkills = AISetSelection(digNumber);
                 messageText.text = "AI making a set choice";
+                attackersRow = ballScript.GetGridPosition().y;
                 yield return new WaitForSeconds(1);
 
                 // get the set quality based on the pass
@@ -1335,7 +1346,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
-                AblockQuality = AattackDefence.GetBlockQuality();
+                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1346,8 +1357,11 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
                 yield return new WaitForSeconds(1);
 
+                diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+                diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
                     messageText.text = "AI attacks it just out of bounds";
@@ -1485,6 +1499,7 @@ public class RallyManagerV2 : MonoBehaviour
         PlayerSetChoiceButtonsActivate(ApassNumber);
         messageText.text = "Player choose who to set";
         yield return new WaitUntil(() => playerSetDecision);
+        attackersRow = ballScript.GetGridPosition().y;
         setLeftSideButton.SetActive(false);
         setMiddleButton.SetActive(false);
         setRightSideButton.SetActive(false);
@@ -1542,7 +1557,7 @@ public class RallyManagerV2 : MonoBehaviour
         BattackDefence.SetBlockAbility(skillManager.AIM1.block);
         Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
         BblockNumber = BattackDefence.GetBlockNumber();
-        BblockQuality = BattackDefence.GetBlockQuality();
+        BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
 
         Pawn diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true,aiBlockingRow);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
@@ -1553,8 +1568,11 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
         yield return new WaitForSeconds(1);
 
+        int diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+        int diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+
         // compare the attack values to the defence values
-        resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+        resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
         if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
         {
             messageText.text = "Player hits it out of bounds";
@@ -1601,7 +1619,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // PASS SET
                 // SET CHOICE
                 AIsetChoiceSkills = AISetSelection(digNumber);
-
+                attackersRow = ballScript.GetGridPosition().y;
                 messageText.text = "AI making a set choice";
                 yield return new WaitForSeconds(1);
 
@@ -1656,7 +1674,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
-                AblockQuality = AattackDefence.GetBlockQuality();
+                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1667,8 +1685,11 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
                 yield return new WaitForSeconds(1);
 
+                diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+                diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, playerGridManager);
+
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
+                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
                     Debug.Log("B Hitting Error");
@@ -1710,6 +1731,7 @@ public class RallyManagerV2 : MonoBehaviour
                 PlayerSetChoiceButtonsActivate(ApassNumber);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
+                attackersRow = ballScript.GetGridPosition().y;
                 setLeftSideButton.SetActive(false);
                 setMiddleButton.SetActive(false);
                 setRightSideButton.SetActive(false);
@@ -1767,7 +1789,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
-                BblockQuality = BattackDefence.GetBlockQuality();
+                BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
@@ -1778,8 +1800,11 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
                 yield return new WaitForSeconds(1);
 
+                diggersXDistance = GetXDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+                diggersYDistance = GetYDistanceFromBall(diggingPawn, ballScript, aiGridManager);
+
                 // compare the attack values to the defence values
-                resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
+                resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
                 {
                     messageText.text = "Player hits it out of bounds";

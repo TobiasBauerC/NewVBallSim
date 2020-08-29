@@ -250,6 +250,82 @@ public class AttackDefenceSimulation : MonoBehaviour
         // return -2;
     }
 
+    public int GetResultNumber(int attackValue, int attackQuality, int blockValue, float blockQuality, int defenceValue, int xDistance, int yDistance)
+    {
+        float q = attackQuality * 1.0f;
+        float v = attackValue * 1.0f;
+        float attackStrength = v / (3.0f / q);
+        int trueAttackStrength = Mathf.CeilToInt(attackStrength);
+
+        // compare attack and block to find result
+        // does it hit the block
+        int blockChance = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
+        bool contactBlock = false;
+        float threshold = blockQuality * 15;
+        if (blockChance < threshold)
+            contactBlock = true;
+        if (contactBlock)
+        {
+            // Debug.Log("Ball contacts the block");
+            // ball hit the block, solve for tool or block
+            if (trueAttackStrength + 20 >= blockValue)
+            {
+                // Debug.Log("Attack tools the block");
+                return -1;
+            }
+            else if (trueAttackStrength + 20 < blockValue)
+            {
+                // Debug.Log("Block stops the attack");
+                return 100;
+            }
+
+        }
+        // Debug.Log("Ball makes it past the block");
+
+        int distanceMod = 12;
+        // account for passers distance from ball
+        if (xDistance > 4 || yDistance > 3)
+        {
+            // ball is too far from the player, lands for an ace
+            Debug.Log("Ball is too far from the player, lands for kill");
+            return 0;
+        }
+        // if its not a straight kill, alter the pass number based on the distance
+        int newDig = defenceValue - ((xDistance - 1) * Mathf.RoundToInt(distanceMod / 2)) - ((yDistance - 1) * distanceMod);
+        Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
+        Debug.LogWarning("Passers number modified from " + defenceValue + " to " + newDig);
+        defenceValue = newDig;
+
+        // if attack beats block, continue to check defense
+        // compare attack and defence value
+        int defenceMod = 35;
+        if (defenceValue + defenceMod > trueAttackStrength)
+        {
+            // calculate the quality of dig
+            if (defenceValue + defenceMod > trueAttackStrength + 60)
+            {
+                Debug.Log("Dig quality was a 3");
+                return 3;
+            }
+            else if (defenceValue + defenceMod > trueAttackStrength + 30)
+            {
+                Debug.Log("Dig quality was a 2");
+                return 2;
+            }
+            else
+            {
+                Debug.Log("Dig quality was a 1");
+                return 1;
+            }
+        }
+        else /*if (trueAttackStrength >= defenceValue)*/
+        {
+            // Debug.Log("Attacker beats the defender, Kill");
+            return 0;
+        }
+        // return -2;
+    }
+
     private int GetAttackValue(float attackAbility)
     {
         int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, attackAbility));
@@ -377,9 +453,17 @@ public class AttackDefenceSimulation : MonoBehaviour
         return blockValue;
     }
 
+    public float GetBlockQuality(PawnManager pawnManager, int attackersRow, bool isPlayersBlockers)
+    {
+        //int blockQuality = (Mathf.CeilToInt(UnityEngine.Random.Range(0.00000000001f, 4)) - 1) * 2; // block should be 0, 2, 4 or 6 for no, single, double or triple block
+        int blockQuality = pawnManager.GetNumberOfBlockersHandsNearby(attackersRow, isPlayersBlockers);
+        return blockQuality;
+    }
+
     public float GetBlockQuality()
     {
         int blockQuality = (Mathf.CeilToInt(UnityEngine.Random.Range(0.00000000001f, 4)) - 1) * 2; // block should be 0, 2, 4 or 6 for no, single, double or triple block
+
         return blockQuality;
     }
 
