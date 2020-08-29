@@ -21,6 +21,8 @@ public class PawnManager : MonoBehaviour
     [SerializeField] private PositionSets[] _allPositionSets;
     public PositionSets[] allPositionSets { get { return _allPositionSets; } }
 
+    [SerializeField] private LayerMask blockingLayerMask;
+
     /// <summary>
     /// Gets the cursor's position in world space
     /// </summary>
@@ -145,6 +147,43 @@ public class PawnManager : MonoBehaviour
         }
         Debug.LogWarning(" There are " + numberOfBlockersHands + " blockers hands nearby");
 
+
+        return numberOfBlockersHands;
+    }
+
+    public int GetNumberOfBlockersHandsNearby(Vector3 attackerPosition, Vector3 attackDirection, bool isPlayersBlockers)
+    {
+        int numberOfBlockersHands = 0;
+        int blockersColumn = 0;
+        if (isPlayersBlockers)
+            blockersColumn = 8;
+        else blockersColumn = 0;
+
+        LayerMask blockerLayer = 8;
+        RaycastHit2D[] hits;
+        hits = Physics2D.RaycastAll(attackerPosition, new Vector2(attackDirection.x - attackerPosition.x, attackDirection.y - attackerPosition.y), Vector2.Distance(attackerPosition, attackDirection), blockingLayerMask);
+        // Debug.LogWarning("Raycast hit this many things: " + hits.Length);
+        Debug.DrawRay(attackerPosition, new Vector2(attackDirection.x - attackerPosition.x, attackDirection.y - attackerPosition.y), Color.red, Vector2.Distance(attackerPosition, attackDirection));
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.transform.parent.gameObject.GetComponent<Pawn>())
+            {
+                foreach (Pawn p in pawns) // check all the pawns on this pawn manager
+                {
+                    if (hit.transform.parent.gameObject.GetComponent<Pawn>() == p) // if the hit pawn is part of this grid
+                    {
+                        // then check if its in the right column
+                        if (GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x == blockersColumn)
+                        {
+                            numberOfBlockersHands += 1;
+                            // Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
+                        }
+                    }
+                }  
+            }
+        }
+
+        Debug.Log(" There are " + numberOfBlockersHands + " blockers hands nearby");
 
         return numberOfBlockersHands;
     }

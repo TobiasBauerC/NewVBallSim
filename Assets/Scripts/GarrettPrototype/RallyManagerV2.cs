@@ -75,6 +75,7 @@ public class RallyManagerV2 : MonoBehaviour
     private const int aiBlockingRow = 0;
 
     private int attackersRow = 0;
+    private Vector2 attackerPosition = Vector2.zero;
 
 
     // Start is called before the first frame update
@@ -86,7 +87,7 @@ public class RallyManagerV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       //  Debug.DrawRay(attackerPosition, new Vector2(ballScript.transform.position.x - attackerPosition.x, ballScript.transform.position.y - attackerPosition.y), Color.red, Vector2.Distance(attackerPosition, ballScript.transform.position));
     }
 
     public void SimulateOneRallyPlayerServe()
@@ -1054,6 +1055,7 @@ public class RallyManagerV2 : MonoBehaviour
         AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position, and the ball position
         messageText.text = "AI making a set choice";
         attackersRow = ballScript.GetGridPosition().y;
+        attackerPosition = ballScript.transform.position;
         yield return new WaitForSeconds(1);
 
 
@@ -1109,7 +1111,7 @@ public class RallyManagerV2 : MonoBehaviour
         AattackDefence.SetBlockAbility(skillManager.PlayerM1.block);
         Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
         AblockNumber = AattackDefence.GetBlockNumber();
-        AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
+        AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, ballScript.transform.position, true);
 
         Pawn diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1178,6 +1180,7 @@ public class RallyManagerV2 : MonoBehaviour
                 setMiddleButton.SetActive(false);
                 setRightSideButton.SetActive(false);
                 attackersRow = ballScript.GetGridPosition().y;
+                attackerPosition = ballScript.transform.position;
 
                 // get the set quality based on the pass
                 ApassSet.SetSettingAbility(skillManager.PlayerS.set);
@@ -1235,7 +1238,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
-                BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
+                BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, ballScript.transform.position, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
@@ -1294,6 +1297,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AIsetChoiceSkills = AISetSelection(digNumber);
                 messageText.text = "AI making a set choice";
                 attackersRow = ballScript.GetGridPosition().y;
+                attackerPosition = ballScript.transform.position;
                 yield return new WaitForSeconds(1);
 
                 // get the set quality based on the pass
@@ -1346,7 +1350,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
-                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
+                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, ballScript.transform.position, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1500,6 +1504,7 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "Player choose who to set";
         yield return new WaitUntil(() => playerSetDecision);
         attackersRow = ballScript.GetGridPosition().y;
+        attackerPosition = ballScript.transform.position;
         setLeftSideButton.SetActive(false);
         setMiddleButton.SetActive(false);
         setRightSideButton.SetActive(false);
@@ -1557,7 +1562,7 @@ public class RallyManagerV2 : MonoBehaviour
         BattackDefence.SetBlockAbility(skillManager.AIM1.block);
         Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
         BblockNumber = BattackDefence.GetBlockNumber();
-        BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
+        BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, ballScript.transform.position, false);
 
         Pawn diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true,aiBlockingRow);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
@@ -1620,6 +1625,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET CHOICE
                 AIsetChoiceSkills = AISetSelection(digNumber);
                 attackersRow = ballScript.GetGridPosition().y;
+                attackerPosition = ballScript.transform.position;
                 messageText.text = "AI making a set choice";
                 yield return new WaitForSeconds(1);
 
@@ -1674,7 +1680,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
-                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackersRow, true);
+                AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, ballScript.transform.position, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(ballScript.transform.position, true, playerBlockingRow);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
@@ -1732,6 +1738,7 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
                 attackersRow = ballScript.GetGridPosition().y;
+                attackerPosition = ballScript.transform.position;
                 setLeftSideButton.SetActive(false);
                 setMiddleButton.SetActive(false);
                 setRightSideButton.SetActive(false);
@@ -1789,7 +1796,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
                 Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
-                BblockQuality = BattackDefence.GetBlockQuality(playerPawnManager, attackersRow, false);
+                BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, ballScript.transform.position, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(ballScript.transform.position, true, aiBlockingRow);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);

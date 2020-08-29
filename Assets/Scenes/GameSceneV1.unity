@@ -2590,6 +2590,9 @@ MonoBehaviour:
     - {x: 5, y: 0}
     - {x: 2, y: 4}
     - {x: 2, y: 2}
+  blockingLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &200074695
 GameObject:
   m_ObjectHideFlags: 0
@@ -19286,6 +19289,9 @@ MonoBehaviour:
     - {x: 2, y: 8}
     - {x: 5, y: 4}
     - {x: 6, y: 7}
+  blockingLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1001 &1799822318
 PrefabInstance:
   m_ObjectHideFlags: 0

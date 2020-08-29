@@ -261,19 +261,19 @@ public class AttackDefenceSimulation : MonoBehaviour
         // does it hit the block
         int blockChance = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
         bool contactBlock = false;
-        float threshold = blockQuality * 15;
+        float threshold = blockQuality * 30;    // before I added the boxcollider system, the mod value was 15, changing to 30 -> if I attack right at one blocker it'll give me a block quality of 2 giving a 60% chance it hits the block, maybe even a bit low
         if (blockChance < threshold)
             contactBlock = true;
         if (contactBlock)
         {
-            // Debug.Log("Ball contacts the block");
+            // lowering the benefit to attackers from 20 to 10 given that they can now try to hit around the block, making it easier to get a block
             // ball hit the block, solve for tool or block
-            if (trueAttackStrength + 20 >= blockValue)
+            if (trueAttackStrength + 10 >= blockValue)
             {
                 // Debug.Log("Attack tools the block");
                 return -1;
             }
-            else if (trueAttackStrength + 20 < blockValue)
+            else if (trueAttackStrength + 10 < blockValue)
             {
                 // Debug.Log("Block stops the attack");
                 return 100;
@@ -464,6 +464,12 @@ public class AttackDefenceSimulation : MonoBehaviour
     {
         int blockQuality = (Mathf.CeilToInt(UnityEngine.Random.Range(0.00000000001f, 4)) - 1) * 2; // block should be 0, 2, 4 or 6 for no, single, double or triple block
 
+        return blockQuality;
+    }
+
+    public float GetBlockQuality(PawnManager pawnManager, Vector3 attackerPosition, Vector3 attackDirection, bool isPlayersBlockers)
+    {
+        int blockQuality = pawnManager.GetNumberOfBlockersHandsNearby(attackerPosition, attackDirection, isPlayersBlockers);
         return blockQuality;
     }
 
