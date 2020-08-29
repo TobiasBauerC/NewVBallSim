@@ -18,6 +18,21 @@ public class Pawn : MonoBehaviour
     public Vector3 startingPosition;
     private float limitedMoveDistance = 1.5f;
 
+    public enum Sprites
+    {
+        neutral,
+        spike,
+        dig,
+        block
+    }
+    public Sprite[] sprites;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    public void SetSprite(Sprites sprite)
+    {
+        spriteRenderer.sprite = sprites[(int)sprite];
+    }
+
     [Space]
     // Stats
     [Header("Player Stats")]

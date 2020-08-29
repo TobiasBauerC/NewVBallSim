@@ -220,7 +220,29 @@ public class PawnManager : MonoBehaviour
             }
         }
     }
+
+    public void SetAllPawnSprites(Pawn.Sprites sprite)
+    {
+        foreach(Pawn p in pawns)
+        {
+            p.SetSprite(sprite);
+        }
+    }
+
+    public void SetBlockersAndDefendersSprites(int blockersColumn)
+    {
+        foreach(Pawn p in pawns)
+        {
+            if (GetPawnGridPositon(p).x == blockersColumn)
+                p.SetSprite(Pawn.Sprites.block);
+            else p.SetSprite(Pawn.Sprites.neutral);
+        }
+    }
 }
+
+
+
+
 
 
 
