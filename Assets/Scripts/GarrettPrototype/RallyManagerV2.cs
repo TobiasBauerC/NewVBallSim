@@ -77,6 +77,8 @@ public class RallyManagerV2 : MonoBehaviour
     private int attackersRow = 0;
     private Vector2 attackerPosition = Vector2.zero;
 
+    [SerializeField] private RotationManager rotationManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -959,7 +961,8 @@ public class RallyManagerV2 : MonoBehaviour
         skillManager.SetPlayersTeamSkills();
         isAteamServing = true;
         playerPawnManager.EnablePawnMove(false);
-        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[5].positions);
+        //AIPawnManager.SetPositions(AIPawnManager.allPositionSets[5].positions);
+        rotationManager.SetAIRecievePositions();
         // set all the sprites to neutral
         AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
         playerPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
@@ -968,7 +971,8 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to serve";
-        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[0].positions);
+        //playerPawnManager.SetPositions(playerPawnManager.allPositionSets[0].positions);
+        rotationManager.SetPlayerServicePositions();
         // yield return new WaitUntil(() => !waitingForPlayerInteraction);
         Vector2Int serveLocation = Vector2Int.zero;
         while (waitingForPlayerInteraction)
@@ -994,7 +998,8 @@ public class RallyManagerV2 : MonoBehaviour
         serveLocation = UpdateServeLocationWithQuality(AserveNumber, serveLocation);
         ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y);
         messageText.text = "Player serves";
-        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+        //playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+        rotationManager.SetPlayerDefensivePositions();
         yield return new WaitForSeconds(2);
 
         // need to determine the closest passer and use their ability
@@ -1167,7 +1172,8 @@ public class RallyManagerV2 : MonoBehaviour
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 SetBallPositionOffDigPlayer(digNumber);
                 yield return new WaitForSeconds(1);
-                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+                // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+                rotationManager.SetAIDefensivePositions();
                 AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn);
                 playerPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
 
@@ -1300,7 +1306,8 @@ public class RallyManagerV2 : MonoBehaviour
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
                 playerPawnManager.EnablePawnMove(true);
-                playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+                // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+                rotationManager.SetPlayerDefensivePositions();
                 messageText.text = "Player has a chance to transition to defensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -1426,7 +1433,8 @@ public class RallyManagerV2 : MonoBehaviour
         skillManager.SetPlayersTeamSkills();
         isAteamServing = false;
         playerPawnManager.EnablePawnMove(false);
-        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
+        //AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
+        rotationManager.SetAIServicePositions();
         ballScript.SetPosition(aiGridManager, 8, 8);
 
         // set all the sprites to neutral
@@ -1438,7 +1446,8 @@ public class RallyManagerV2 : MonoBehaviour
         playerInteractionButton.SetActive(true);
         playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to set up their reception positions";
-        playerPawnManager.SetPositions(playerPawnManager.allPositionSets[2].positions);
+        // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[2].positions);
+        rotationManager.SetPlayerRecievePositions();
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
         playerPawnManager.EnablePawnMove(false);
@@ -1472,7 +1481,8 @@ public class RallyManagerV2 : MonoBehaviour
         int passersYDistance = GetYDistanceFromBall(passingPawn, ballScript, playerGridManager);
         ApassNumber = AservePass.GetPassNumber(BserveNumber, passersXDistance, passersYDistance);
 
-        AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+        // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+        rotationManager.SetAIDefensivePositions();
 
 
 
@@ -1642,7 +1652,8 @@ public class RallyManagerV2 : MonoBehaviour
                 playerInteractionButton.SetActive(true);
                 playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have transition to defensive positions";
-                playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+                // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
+                rotationManager.SetPlayerDefensivePositions();
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
                 playerPawnManager.EnablePawnMove(false);
@@ -1751,7 +1762,8 @@ public class RallyManagerV2 : MonoBehaviour
                 SetBallPositionOffDigPlayer(digNumber);
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 yield return new WaitForSeconds(1);
-                AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+                // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
+                rotationManager.SetAIDefensivePositions();
                 AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn);
                 playerPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
 

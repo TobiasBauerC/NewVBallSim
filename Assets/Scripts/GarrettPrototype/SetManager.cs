@@ -28,6 +28,9 @@ public class SetManager : MonoBehaviour
     private int coroutineResult = 3;
 
 
+    [SerializeField] private RotationManager rotationManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +81,7 @@ public class SetManager : MonoBehaviour
         AteamScore = 0;
         BteamScore = 0;
         coroutineResult = 3;
+        rotationManager.ResetRotations();
 
         while(setOver == false)
         {
@@ -133,6 +137,7 @@ public class SetManager : MonoBehaviour
                 Debug.Log("B wins the point, takes over the serve");
                 BteamScore++;
                 AteamServing = !AteamServing;
+                rotationManager.RotateAI();
             }
 
             // serving team lost the rally, B serving
@@ -141,6 +146,7 @@ public class SetManager : MonoBehaviour
                 Debug.Log("A wins the point, takes over the serve");
                 AteamScore++;
                 AteamServing = !AteamServing;
+                rotationManager.RotatePlayer();
             }
 
             Debug.Log("Score: " + AteamScore + " - " + BteamScore);

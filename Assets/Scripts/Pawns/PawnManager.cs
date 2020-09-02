@@ -183,7 +183,7 @@ public class PawnManager : MonoBehaviour
         RaycastHit2D[] hits;
         hits = Physics2D.RaycastAll(attackerPosition, new Vector2(attackDirection.x - attackerPosition.x, attackDirection.y - attackerPosition.y), Vector2.Distance(attackerPosition, attackDirection), blockingLayerMask);
         // Debug.LogWarning("Raycast hit this many things: " + hits.Length);
-        Debug.DrawRay(attackerPosition, new Vector2(attackDirection.x - attackerPosition.x, attackDirection.y - attackerPosition.y), Color.red, Vector2.Distance(attackerPosition, attackDirection));
+        // Debug.DrawRay(attackerPosition, new Vector2(attackDirection.x - attackerPosition.x, attackDirection.y - attackerPosition.y), Color.red, Vector2.Distance(attackerPosition, attackDirection));
         foreach (RaycastHit2D hit in hits)
         {
             if (hit.transform.parent.gameObject.GetComponent<Pawn>())
