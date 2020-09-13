@@ -12559,6 +12559,7 @@ MonoBehaviour:
   medText: {fileID: 0}
   badText: {fileID: 0}
   terribleText: {fileID: 0}
+  rotationManager: {fileID: 531197301}
 --- !u!4 &1027271620
 Transform:
   m_ObjectHideFlags: 0
@@ -15399,6 +15400,7 @@ MonoBehaviour:
   medText: {fileID: 0}
   badText: {fileID: 0}
   terribleText: {fileID: 0}
+  rotationManager: {fileID: 531197301}
 --- !u!4 &1303322273
 Transform:
   m_ObjectHideFlags: 0

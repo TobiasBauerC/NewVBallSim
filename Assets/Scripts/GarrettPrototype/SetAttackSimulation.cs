@@ -28,6 +28,8 @@ public class SetAttackSimulation : MonoBehaviour
     public int GetLastHitValue() { return lastHitValue; }
     public int GetLastHitQuality() { return lastHitQuality; }
 
+    [SerializeField] private RotationManager rotationManager;
+
 
 
     // Start is called before the first frame update
@@ -312,6 +314,16 @@ public class SetAttackSimulation : MonoBehaviour
     public int GetAttackNumber(int setNumber)
     {
         int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _attackingAbility));
+        Debug.Log("Attack value was " + attackValue);
+        return attackValue;
+    }
+
+    public int GetAttackNumber(int setNumber, Pawn attackingPlayer)
+    {
+        float attackMax = _attackingAbility;
+        if (rotationManager.IsPlayerPawnLocatedInBackRow(attackingPlayer))
+            attackMax -= 20;
+        int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, attackMax));
         Debug.Log("Attack value was " + attackValue);
         return attackValue;
     }

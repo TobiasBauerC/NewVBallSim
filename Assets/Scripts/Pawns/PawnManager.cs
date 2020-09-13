@@ -150,6 +150,30 @@ public class PawnManager : MonoBehaviour
         return closestPawn;
     }
 
+    public Pawn GetClosestPawn(Vector2 ballWorldPosition)
+    {
+        Pawn closestPawn = null;
+        foreach (Pawn p in pawns)
+        {
+            if (closestPawn == null)
+            {
+                closestPawn = p;
+                continue;
+            }
+            else if (closestPawn != null)
+            {
+                if (Vector2.Distance(p.transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition))
+                {
+                    closestPawn = p;
+                }
+            }
+        }
+        if (closestPawn == null)
+            closestPawn = pawns[5];
+        Debug.Log("Closest pawn calculated at " + closestPawn.name);
+        return closestPawn;
+    }
+
     public int GetNumberOfBlockersHandsNearby(int attackersRow, bool isPlayersBlockers)
     {
         int numberOfBlockersHands = 0;

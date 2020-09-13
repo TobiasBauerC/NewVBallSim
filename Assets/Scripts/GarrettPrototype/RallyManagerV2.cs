@@ -1176,7 +1176,7 @@ public class RallyManagerV2 : MonoBehaviour
         // get the attack quality based on the set
         BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
         Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
-        BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
+        BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
         BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
         Debug.Log("B Hit " + BattackQuality);
         // AI chooses where to attack
@@ -1319,7 +1319,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // get the attack quality based on the set
                 AsetAttack.SetAttackAbility(setChoiceSkills.attack);
                 Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
-                AattackNumber = AsetAttack.GetAttackNumber(AsetNumber);
+                AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(ballScript.transform.position));
                 AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
                 Debug.Log("A Hit " + AattackQuality);
                 if (AattackQuality == 1)
@@ -1428,7 +1428,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // get the attack quality based on the set
                 BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
                 Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
-                BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
+                BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
                 Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
@@ -1660,7 +1660,7 @@ public class RallyManagerV2 : MonoBehaviour
         // get the attack quality based on the set
         AsetAttack.SetAttackAbility(setChoiceSkills.attack);
         Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
-        AattackNumber = AsetAttack.GetAttackNumber(AsetNumber);
+        AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(ballScript.transform.position));
         AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
         Debug.Log("A Hit " + AattackQuality);
         if (AattackQuality == 1)
@@ -1775,7 +1775,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // get the attack quality based on the set
                 BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
                 Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
-                BattackNumber = BsetAttack.GetAttackNumber(BsetNumber);
+                BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
                 Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
@@ -1907,7 +1907,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // get the attack quality based on the set
                 AsetAttack.SetAttackAbility(setChoiceSkills.attack);
                 Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
-                AattackNumber = AsetAttack.GetAttackNumber(AsetNumber);
+                AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(ballScript.transform.position));
                 AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
                 Debug.Log("A Hit " + AattackQuality);
                 if (AattackQuality == 1)

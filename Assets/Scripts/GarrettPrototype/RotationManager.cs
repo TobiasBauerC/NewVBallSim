@@ -301,7 +301,7 @@ public class RotationManager : MonoBehaviour
             // left side and C ball are available on a 1 pass
             if (playerPositionsArray[4].pawnRole != PawnRole.Setter)
                 playerPositionsArray[4].setButton.transform.gameObject.SetActive(true);
-            if (playerPositionsArray[1].pawnRole != PawnRole.Setter)
+            if (playerPositionsArray[1].pawnRole != PawnRole.Setter && IsPlayerPawnLocatedInBackRow(playerPositionsArray[1]))
                 playerPositionsArray[1].setButton.transform.gameObject.SetActive(true);
         }
         if (passDigNumber > 1)
@@ -309,9 +309,9 @@ public class RotationManager : MonoBehaviour
             // right side, Pipe and A ball are available on a 2 pass
             if (playerPositionsArray[2].pawnRole != PawnRole.Setter)
                 playerPositionsArray[2].setButton.transform.gameObject.SetActive(true);
-            if (playerPositionsArray[5].pawnRole != PawnRole.Setter)
+            if (playerPositionsArray[5].pawnRole != PawnRole.Setter && IsPlayerPawnLocatedInBackRow(playerPositionsArray[5]))
                 playerPositionsArray[5].setButton.transform.gameObject.SetActive(true);
-            if (playerPositionsArray[0].pawnRole != PawnRole.Setter)
+            if (playerPositionsArray[0].pawnRole != PawnRole.Setter && IsPlayerPawnLocatedInBackRow(playerPositionsArray[0]))
                 playerPositionsArray[0].setButton.transform.gameObject.SetActive(true);
         }
         if (passDigNumber > 2)
