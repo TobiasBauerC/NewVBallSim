@@ -8,7 +8,7 @@ public class RotationManager : MonoBehaviour
     [SerializeField] private GridManager playerGridManager;
     [SerializeField] private GridManager aiGridManager;
 
-    [SerializeField] private Pawn[] playerPositionsArray;
+    public Pawn[] playerPositionsArray;
     public Pawn playerSetter;
     public Pawn playerRightSide;
     public Pawn playerMiddle1;
@@ -16,7 +16,7 @@ public class RotationManager : MonoBehaviour
     public Pawn playerLeftSide1;
     public Pawn playerLeftSide2;
 
-    [SerializeField] private Pawn[] aiPositionsArray;
+    public Pawn[] aiPositionsArray;
     public Pawn aiSetter;
     public Pawn aiRightSide;
     public Pawn aiMiddle1;
@@ -32,6 +32,14 @@ public class RotationManager : MonoBehaviour
     private static Vector2 playerPosition2ReceiveLocation = new Vector2(6, 0);
     private static Vector2[] playerRecievePositions = new Vector2[] { playerPosition6ReceiveLocation, playerPosition1ReceiveLocation, playerPosition2ReceiveLocation, playerPosition3ReceiveLocation, playerPosition4ReceiveLocation, playerPosition5ReceiveLocation };
 
+    private static Vector2 playerPosition1OffenseLocation = new Vector2(5, 0);
+    private static Vector2 playerPosition6OffenseLocation = new Vector2(5, 4);
+    private static Vector2 playerPosition5OffenseLocation = new Vector2(5, 7);
+    private static Vector2 playerPosition4OffenseLocation = new Vector2(8, 8);
+    private static Vector2 playerPosition3OffenseLocation = new Vector2(8, 4);
+    private static Vector2 playerPosition2OffenseLocation = new Vector2(8, 0);
+    private static Vector2[] playerOffensePositions = new Vector2[] { playerPosition6OffenseLocation, playerPosition1OffenseLocation, playerPosition2OffenseLocation, playerPosition3OffenseLocation, playerPosition4OffenseLocation, playerPosition5OffenseLocation };
+
     private static Vector2 playerSetterPosition1ReceiveLocation = new Vector2(4, 0);
     private static Vector2 playerSetterPosition2ReceiveLocation = new Vector2(8, 2);
     private static Vector2 playerSetterPosition3ReceiveLocation = new Vector2(8, 3);
@@ -39,6 +47,9 @@ public class RotationManager : MonoBehaviour
     private static Vector2 playerSetterPosition5ReceiveLocation = new Vector2(5, 8);
     private static Vector2 playerSetterPosition6ReceiveLocation = new Vector2(7, 4);
     private static Vector2[] playerSetterRecievePositions = new Vector2[] { playerSetterPosition6ReceiveLocation, playerSetterPosition1ReceiveLocation, playerSetterPosition2ReceiveLocation, playerSetterPosition3ReceiveLocation, playerSetterPosition4ReceiveLocation, playerSetterPosition5ReceiveLocation };
+    private static Vector2 playerSetterPosition1Pass = new Vector2(4, 4);
+    private static Vector2 playerSetterPosition2Pass = new Vector2(6, 3);
+    private static Vector2 playerSetterPosition3Pass = new Vector2(8, 3);
 
     private static Vector2 playerDefensivePosition1Location = new Vector2(4, 1);
     private static Vector2 playerDefensivePosition2Location = new Vector2(8, 2);
@@ -58,6 +69,14 @@ public class RotationManager : MonoBehaviour
     private static Vector2 aiPosition2ReceiveLocation = new Vector2(3, 8);
     private static Vector2[] aiRecievePositions = new Vector2[] { aiPosition6ReceiveLocation, aiPosition1ReceiveLocation, aiPosition2ReceiveLocation, aiPosition3ReceiveLocation, aiPosition4ReceiveLocation, aiPosition5ReceiveLocation };
 
+    private static Vector2 aiPosition1OffenseLocation = new Vector2(3, 8);
+    private static Vector2 aiPosition6OffenseLocation = new Vector2(3, 4);
+    private static Vector2 aiPosition5OffenseLocation = new Vector2(3, 0);
+    private static Vector2 aiPosition4OffenseLocation = new Vector2(0, 1);
+    private static Vector2 aiPosition3OffenseLocation = new Vector2(0, 4);
+    private static Vector2 aiPosition2OffenseLocation = new Vector2(0, 7);
+    private static Vector2[] aiOffensePositions = new Vector2[] { aiPosition6OffenseLocation, aiPosition1OffenseLocation, aiPosition2OffenseLocation, aiPosition3OffenseLocation, aiPosition4OffenseLocation, aiPosition5OffenseLocation };
+
     private static Vector2 aiSetterPosition1ReceiveLocation = new Vector2(4, 8);
     private static Vector2 aiSetterPosition2ReceiveLocation = new Vector2(0, 6);
     private static Vector2 aiSetterPosition3ReceiveLocation = new Vector2(0, 5);
@@ -65,6 +84,9 @@ public class RotationManager : MonoBehaviour
     private static Vector2 aiSetterPosition5ReceiveLocation = new Vector2(3, 0);
     private static Vector2 aiSetterPosition6ReceiveLocation = new Vector2(1, 4);
     private static Vector2[] aiSetterRecievePositions = new Vector2[] { aiSetterPosition6ReceiveLocation, aiSetterPosition1ReceiveLocation, aiSetterPosition2ReceiveLocation, aiSetterPosition3ReceiveLocation, aiSetterPosition4ReceiveLocation, aiSetterPosition5ReceiveLocation };
+    private static Vector2 aiSetterPosition1Pass = new Vector2(4, 4);
+    private static Vector2 aiSetterPosition2Pass = new Vector2(2, 6);
+    private static Vector2 aiSetterPosition3Pass = new Vector2(0, 6);
 
     private static Vector2 aiDefensivePosition1Location = new Vector2(4, 7);
     private static Vector2 aiDefensivePosition2Location = new Vector2(0, 6);
@@ -179,6 +201,26 @@ public class RotationManager : MonoBehaviour
         SetPlayerPawnPositions(positions);
     }
 
+    public void SetPlayerOffensePositions(int passValue)
+    {
+        Vector2[] positions = new Vector2[] { playerPosition6OffenseLocation, playerPosition1OffenseLocation, playerPosition2OffenseLocation, playerPosition3OffenseLocation, playerPosition4OffenseLocation, playerPosition5OffenseLocation };
+
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            if (playerPositionsArray[i].pawnRole == PawnRole.Setter)
+            {
+                if (passValue == 1)
+                    positions[i] = playerSetterPosition1Pass;
+                else if (passValue == 2)
+                    positions[i] = playerSetterPosition2Pass;
+                else if (passValue == 3)
+                    positions[i] = playerSetterPosition3Pass;
+            }
+        }
+
+        SetPlayerPawnPositions(positions);
+    }
+
     public void SetPlayerDefensivePositions()
     {
         SetPlayerPawnPositions(playerDefensivePositions);
@@ -198,6 +240,26 @@ public class RotationManager : MonoBehaviour
             if (aiPositionsArray[i].pawnRole == PawnRole.Setter)
             {
                 positions[i] = aiSetterRecievePositions[i];
+            }
+        }
+
+        SetAIPawnPositions(positions);
+    }
+
+    public void SetAIOffensePositions(int passValue)
+    {
+        Vector2[] positions = new Vector2[] { aiPosition6OffenseLocation, aiPosition1OffenseLocation, aiPosition2OffenseLocation, aiPosition3OffenseLocation, aiPosition4OffenseLocation, aiPosition5OffenseLocation };
+
+        for (int i = 0; i < aiPositionsArray.Length; i++)
+        {
+            if (aiPositionsArray[i].pawnRole == PawnRole.Setter)
+            {
+                if (passValue == 1)
+                    positions[i] = aiSetterPosition1Pass;
+                else if (passValue == 2)
+                    positions[i] = aiSetterPosition2Pass;
+                else if (passValue == 3)
+                    positions[i] = aiSetterPosition3Pass;
             }
         }
 
@@ -230,5 +292,52 @@ public class RotationManager : MonoBehaviour
             return false;
         }
         else return true;
+    }
+
+    public void ActivateSetButtonsBasedOnPassDigNumber(int passDigNumber)
+    {
+        if (passDigNumber > 0)
+        {
+            // left side and C ball are available on a 1 pass
+            if (playerPositionsArray[4].pawnRole != PawnRole.Setter)
+                playerPositionsArray[4].setButton.transform.gameObject.SetActive(true);
+            if (playerPositionsArray[1].pawnRole != PawnRole.Setter)
+                playerPositionsArray[1].setButton.transform.gameObject.SetActive(true);
+        }
+        if (passDigNumber > 1)
+        {
+            // right side, Pipe and A ball are available on a 2 pass
+            if (playerPositionsArray[2].pawnRole != PawnRole.Setter)
+                playerPositionsArray[2].setButton.transform.gameObject.SetActive(true);
+            if (playerPositionsArray[5].pawnRole != PawnRole.Setter)
+                playerPositionsArray[5].setButton.transform.gameObject.SetActive(true);
+            if (playerPositionsArray[0].pawnRole != PawnRole.Setter)
+                playerPositionsArray[0].setButton.transform.gameObject.SetActive(true);
+        }
+        if (passDigNumber > 2)
+        {
+            // middle and dump are available on a 3 pass
+            if (playerPositionsArray[3].pawnRole != PawnRole.Setter)
+                playerPositionsArray[3].setButton.transform.gameObject.SetActive(true);
+            for (int i = 0; i < playerPositionsArray.Length; i++)
+            {
+                if (playerPositionsArray[i].pawnRole == PawnRole.Setter)
+                {
+                    if (IsPawnRotationFrontRow(playerPositionsArray[i]))
+                    {
+                        playerPositionsArray[i].setButton.transform.gameObject.SetActive(true);
+                    }
+                }
+            }
+        }
+        Debug.Log("Activated the buttons fine");
+    }
+
+    public void TurnOffAllSetButtons()
+    {
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            playerPositionsArray[i].setButton.transform.gameObject.SetActive(false);
+        }
     }
 }

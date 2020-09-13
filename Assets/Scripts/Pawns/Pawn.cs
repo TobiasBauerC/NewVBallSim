@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pawn : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class Pawn : MonoBehaviour
     public bool limitedMovement = false;
     public Vector3 startingPosition;
     private float limitedMoveDistance = 1.5f;
+
+    public Button setButton;
 
     public enum Sprites
     {
