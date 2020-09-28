@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -83,6 +88,43 @@ public class Grid
         }
     }
 
+    void GetAvailableXY(Vector3 worldPosition, out int x, out int y, Vector2 startCell, int limitX, int limitY)
+    {
+        // Modify world pos by origin point
+        worldPosition -= origin;
+        x = Mathf.FloorToInt(worldPosition.x / cellSize);
+        y = Mathf.FloorToInt(worldPosition.y / cellSize);
+
+        GetAvailableXY(x, y, out x, out y, startCell, limitX, limitY);
+    }
+
+    void GetAvailableXY(int xPos, int yPos, out int x, out int y, Vector2 startCell, int limitX, int limitY)
+    {
+        // Modify world pos by origin point and clamp return values to the grid
+        x = Mathf.Clamp(Mathf.Clamp(xPos, (int)startCell.x - limitX, (int)startCell.x + limitX), 0, width - 1);
+        y = Mathf.Clamp(Mathf.Clamp(yPos, (int)startCell.y - limitY, (int)startCell.y + limitY), 0, height - 1);
+
+        // Find closest available cell
+        if (gridArray[x, y])
+        {
+            // Array where every two elements are an x, y location. So neighbors[0] = x, and neighbors[1] = y
+            int[] neighbors = GetNeighbors(x, y);
+
+            // Check to see if [i, i+1] is within grid, then check to see if its available
+            for (int i = 0; i < neighbors.Length; i += 2)
+            {
+                if (neighbors[i] < 0 || neighbors[i] >= width || neighbors[i + 1] < 0 || neighbors[i + 1] >= height)
+                    continue;
+                if (!gridArray[neighbors[i], neighbors[i + 1]])
+                {
+                    x = neighbors[i];
+                    y = neighbors[i + 1];
+                    break;
+                }
+            }
+        }
+    }
+
     // This function has been written with 6 pawns in mind. Any more and this will need to be expanded
     int[] GetNeighbors(int x, int y)
     {
@@ -111,10 +153,10 @@ public class Grid
     }
 
     // Returns world position for center of Cell
-    public Vector3 GetGridPosition(Vector3 worldPosition)
+    public Vector3 GetGridPosition(Vector3 worldPosition, Vector2 startCell, int limitX, int limitY)
     {
         int x, y;
-        GetAvailableXY(worldPosition, out x, out y);
+        GetAvailableXY(worldPosition, out x, out y, startCell, limitX, limitY);
         return GetCellCenter(x, y);
     }
 
@@ -161,5 +203,15 @@ public class Grid
     public bool GetGridOccupied(int x, int y)
     {
         return gridArray[x, y];
+    }
+
+    public int GetGridWidth()
+    {
+        return width;
+    }
+
+    public int GetGridHeight()
+    {
+        return height;
     }
 }

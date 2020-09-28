@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +20,12 @@ public class Pawn : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
 
-    public bool limitedMovement = false;
-    public Vector3 startingPosition;
-    private float limitedMoveDistance = 1.5f;
+    //public bool limitedMovement = false;
+    //private float limitedMoveDistance = 1.5f;
+
+    Vector2 pickupOrigin;
+    int limitX = -1;
+    int limitY = -1;
 
     public Button setButton;
 
@@ -58,39 +66,50 @@ public class Pawn : MonoBehaviour
         // If left mosue is clicked on pawn, set it to selected and set cell to unoccupied
         if (Input.GetMouseButtonDown(0) && Vector3.Distance(transform.position, pawnManager.GetCursorPosition()) < pawnManager.pickupDist)
         {
+            pickupOrigin = pawnManager.gridManager.GetGridXYPosition(transform.position);
             selected = true;
             pawnManager.gridManager.SetCellOccupied(transform.position, false);
         }
         // if selected, have it follow mouse
         else if (selected)
         {
-            if(!limitedMovement)
-            {
-                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition()) : pawnManager.GetCursorPosition();
-            }
-            else if (limitedMovement)
-            {
-                Vector3 limitedPosition = Vector3.zero;
-                if (Vector3.Distance(pawnManager.GetCursorPosition(), startingPosition) > limitedMoveDistance)
-                    limitedPosition = startingPosition + (Vector3.Normalize(pawnManager.GetCursorPosition() - startingPosition) * limitedMoveDistance);
-                else limitedPosition = pawnManager.GetCursorPosition();
-                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(limitedPosition) : limitedPosition;
-
-            }
-            // If left mouse is released, stop following mouse, got to cell position, set cell to occupied
+            transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+         
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
-                Vector3 limitedPosition = Vector3.zero;
-                if (Vector3.Distance(pawnManager.GetCursorPosition(), startingPosition) > limitedMoveDistance)
-                    limitedPosition = startingPosition + (Vector3.Normalize(pawnManager.GetCursorPosition() - startingPosition) * limitedMoveDistance);
-                else limitedPosition = pawnManager.GetCursorPosition();
-                if (!limitedMovement)
-                    transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition());
-                else transform.position = pawnManager.gridManager.GetGridPosition(limitedPosition);
+                transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
-                //worldGrid.grid.PrintGridOccupied(transform.position);
             }
         }
+    }
+
+    /// <summary>
+    /// Sets the limit to how many tiles pawn can move on x and y axis
+    /// </summary>
+    /// <param name="limitX"></param>
+    /// <param name="limitY"></param>
+    public void SetMoveLimits(int limitX = -1, int limitY = -1)
+    {
+        this.limitX = limitX;
+        this.limitY = limitY;
+    }
+
+    /// <summary>
+    /// Resets pawn movement limits to default (No limit) 
+    /// </summary>
+    public void ResetMoveLimits()
+    {
+        SetMoveLimits();
+    }
+
+    int GetXLimitForGrid()
+    {
+        return limitX < 0 ? pawnManager.gridManager.GetGridWidth() : limitX;
+    }
+
+    int GetYLimitForGrid()
+    {
+        return limitX < 0 ? pawnManager.gridManager.GetGridHeight() : limitY;
     }
 }

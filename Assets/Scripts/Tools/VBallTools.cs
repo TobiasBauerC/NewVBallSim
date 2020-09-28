@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+using UnityEngine;
 
 public static class VBallTools
 {

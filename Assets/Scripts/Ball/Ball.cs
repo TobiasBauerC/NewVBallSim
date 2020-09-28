@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -70,23 +74,23 @@ public class PawnManager : MonoBehaviour
             p.enabled = enabled;
     }
 
-    public void EnableLimitedMove(bool enabled, Pawn[] pawns = null)
+    public void EnableLimitedMove(int limitX, int limitY, Pawn[] pawns = null)
     {
         if (pawns == null || pawns.Length == 0)
             pawns = this.pawns;
-        foreach (Pawn p in pawns)
+        foreach (Pawn pawn in pawns)
         {
-            if (p.enabled)
-            {
-                p.startingPosition = p.transform.position;
-                p.limitedMovement = enabled;
-            }
-            p.enabled = enabled;
-            if (p.enabled)
-            {
-                p.startingPosition = p.transform.position;
-                p.limitedMovement = enabled;
-            }
+            pawn.SetMoveLimits(limitX, limitY);
+        }
+    }
+
+    public void DisableLimitedMove(Pawn[] pawns = null)
+    {
+        if (pawns == null || pawns.Length == 0)
+            pawns = this.pawns;
+        foreach (Pawn pawn in pawns)
+        {
+            pawn.ResetMoveLimits();
         }
     }
 

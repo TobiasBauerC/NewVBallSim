@@ -1165,12 +1165,14 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
-        playerPawnManager.EnableLimitedMove(true);
+        playerPawnManager.EnableLimitedMove(1, 1);
+        playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to have their blockers react";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
         playerInteractionButton.SetActive(false);
-        playerPawnManager.EnableLimitedMove(false);
+        playerPawnManager.DisableLimitedMove();
+        playerPawnManager.EnablePawnMove(false);
 
         // SET ATTACK
         // get the attack quality based on the set
@@ -1417,12 +1419,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnableLimitedMove(true);
+                playerPawnManager.EnableLimitedMove(1, 1);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
                 playerInteractionButton.SetActive(false);
-                playerPawnManager.EnableLimitedMove(false);
+                playerPawnManager.DisableLimitedMove();
+                playerPawnManager.EnablePawnMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1764,12 +1768,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnableLimitedMove(true);
+                playerPawnManager.EnableLimitedMove(1, 1);
+                playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
                 playerInteractionButton.SetActive(false);
-                playerPawnManager.EnableLimitedMove(false);
+                playerPawnManager.DisableLimitedMove();
+                playerPawnManager.EnablePawnMove(false);
 
                 // SET ATTACK
                 // get the attack quality based on the set

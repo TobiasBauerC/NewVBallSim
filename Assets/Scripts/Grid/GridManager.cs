@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿// ******************************************************** ///
+/// ** This script is owned and monitored by Tobias Bauer ** /// 
+/// ******************************************************** ///
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,9 +27,9 @@ public class GridManager : MonoBehaviour
     }
 
     // Returns world position for center of Cell
-    public Vector3 GetGridPosition(Vector3 worldPosition)
+    public Vector3 GetGridPosition(Vector3 worldPosition, Vector2 startCell, int limitX, int limitY)
     {
-        return grid.GetGridPosition(worldPosition);
+        return grid.GetGridPosition(worldPosition, startCell, limitX, limitY);
     }
 
     public Vector3 GetGridPosition(int x, int y)
@@ -62,5 +67,15 @@ public class GridManager : MonoBehaviour
         }
 
         return Mathf.Clamp(result, 0f, 6f);
+    }
+
+    public int GetGridWidth()
+    {
+        return grid.GetGridWidth();
+    }
+
+    public int GetGridHeight()
+    {
+        return grid.GetGridHeight();
     }
 }
