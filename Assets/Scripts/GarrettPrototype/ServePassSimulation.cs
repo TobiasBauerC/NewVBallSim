@@ -156,7 +156,7 @@ public class ServePassSimulation : MonoBehaviour
         {
             // ball is too far from the player, lands for an ace
             Debug.Log("Ball is too far from the player, lands for an ace");
-            return 4;
+            return 0;
         }
         // if its not an ace, alter the pass number based on the distance
         int newPass = pass - ((xDistance - 1) * Mathf.RoundToInt(distanceMod / 2)) - ((yDistance - 1) * distanceMod);

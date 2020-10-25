@@ -133,6 +133,7 @@ public class RotationManager : MonoBehaviour
         yield return new WaitForSeconds(travelTime);
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
+            playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             playerPositionsArray[i].transform.position = playerGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
         }
@@ -151,6 +152,7 @@ public class RotationManager : MonoBehaviour
 
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
+            aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
             aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
         }
