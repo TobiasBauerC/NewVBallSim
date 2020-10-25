@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditorInternal;
 
 public class RotationManager : MonoBehaviour
 {
@@ -122,31 +123,46 @@ public class RotationManager : MonoBehaviour
         return playerPositionsArray;
     }
 
-    private void SetPlayerPawnPositions(Vector2[] positions)
+    private IEnumerator SetPlayerPawnPositions(Vector2[] positions, float travelTime)
     {
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
+            StartCoroutine(Movement.MoveFromAtoB(playerPositionsArray[i].transform, playerPositionsArray[i].transform.position, playerGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
+        }
+        yield return new WaitForSeconds(travelTime);
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
             playerPositionsArray[i].transform.position = playerGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
         }
+        yield break;
     }
 
-    private void SetAIPawnPositions(Vector2[] positions)
+    private IEnumerator SetAIPawnPositions(Vector2[] positions, float travelTime)
     {
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
+            StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
+        }
+
+        yield return new WaitForSeconds(travelTime);
+
+        for (int i = 0; i < aiPositionsArray.Length; i++)
+        {
             aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
         }
+
+        yield break;
     }
 
     public void ResetRotations()
     {
         playerPositionsArray = playerStartingRotation;
         aiPositionsArray = aiStartingRotation;
-        Debug.LogWarning("resetting rotations");
+        // Debug.LogWarning("resetting rotations");
     }
 
     public void RotatePlayer()
@@ -186,7 +202,7 @@ public class RotationManager : MonoBehaviour
         Debug.LogWarning("Rotating AI's");
     }
 
-    public void SetPlayerRecievePositions()
+    public void SetPlayerRecievePositions(float travelTime)
     {
         Vector2[] positions = new Vector2[] { playerPosition6ReceiveLocation, playerPosition1ReceiveLocation, playerPosition2ReceiveLocation, playerPosition3ReceiveLocation, playerPosition4ReceiveLocation, playerPosition5ReceiveLocation };
 
@@ -198,10 +214,10 @@ public class RotationManager : MonoBehaviour
             }
         }
 
-        SetPlayerPawnPositions(positions);
+        StartCoroutine(SetPlayerPawnPositions(positions, travelTime));
     }
 
-    public void SetPlayerOffensePositions(int passValue)
+    public void SetPlayerOffensePositions(int passValue, float travelTime)
     {
         Vector2[] positions = new Vector2[] { playerPosition6OffenseLocation, playerPosition1OffenseLocation, playerPosition2OffenseLocation, playerPosition3OffenseLocation, playerPosition4OffenseLocation, playerPosition5OffenseLocation };
 
@@ -218,20 +234,20 @@ public class RotationManager : MonoBehaviour
             }
         }
 
-        SetPlayerPawnPositions(positions);
+        StartCoroutine(SetPlayerPawnPositions(positions, travelTime));
     }
 
-    public void SetPlayerDefensivePositions()
+    public void SetPlayerDefensivePositions(float travelTime)
     {
-        SetPlayerPawnPositions(playerDefensivePositions);
+        StartCoroutine(SetPlayerPawnPositions(playerDefensivePositions, travelTime));
     }
 
-    public void SetPlayerServicePositions()
+    public void SetPlayerServicePositions(float travelTime)
     {
-        SetPlayerPawnPositions(playerDefensivePositionsServing);
+        StartCoroutine(SetPlayerPawnPositions(playerDefensivePositionsServing, travelTime));
     }
 
-    public void SetAIRecievePositions()
+    public void SetAIRecievePositions(float travelTime)
     {
         Vector2[] positions = new Vector2[] { aiPosition6ReceiveLocation, aiPosition1ReceiveLocation, aiPosition2ReceiveLocation, aiPosition3ReceiveLocation, aiPosition4ReceiveLocation, aiPosition5ReceiveLocation };
 
@@ -243,10 +259,10 @@ public class RotationManager : MonoBehaviour
             }
         }
 
-        SetAIPawnPositions(positions);
+        StartCoroutine(SetAIPawnPositions(positions, travelTime));
     }
 
-    public void SetAIOffensePositions(int passValue)
+    public void SetAIOffensePositions(int passValue, float travelTime)
     {
         Vector2[] positions = new Vector2[] { aiPosition6OffenseLocation, aiPosition1OffenseLocation, aiPosition2OffenseLocation, aiPosition3OffenseLocation, aiPosition4OffenseLocation, aiPosition5OffenseLocation };
 
@@ -263,17 +279,17 @@ public class RotationManager : MonoBehaviour
             }
         }
 
-        SetAIPawnPositions(positions);
+        StartCoroutine(SetAIPawnPositions(positions, travelTime));
     }
 
-    public void SetAIDefensivePositions()
+    public void SetAIDefensivePositions(float travelTime)
     {
-        SetAIPawnPositions(aiDefensivePositions);
+        StartCoroutine(SetAIPawnPositions(aiDefensivePositions, travelTime));
     }
 
-    public void SetAIServicePositions()
+    public void SetAIServicePositions(float travelTime)
     {
-        SetAIPawnPositions(aiDefensivePositionsServing);
+        StartCoroutine(SetAIPawnPositions(aiDefensivePositionsServing, travelTime));
     }
 
     public bool IsPawnRotationFrontRow(Pawn pawn)

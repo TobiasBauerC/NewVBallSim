@@ -63,6 +63,14 @@ public class Ball : MonoBehaviour
         SetPosition(x, y);
     }
 
+    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time)
+    {
+        currentGrid = gridManager;
+        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.GetGridPosition(x, y), time));
+        yield return new WaitForSeconds(time);
+        SetPosition(x, y);
+    }
+
     public Vector2Int GetGridPosition()
     {
         Vector2 position = currentGrid.GetGridXYPosition(transform.position);
