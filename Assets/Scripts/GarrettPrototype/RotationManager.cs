@@ -6,8 +6,8 @@ using UnityEditorInternal;
 
 public class RotationManager : MonoBehaviour
 {
-    [SerializeField] private GridManager playerGridManager;
-    [SerializeField] private GridManager aiGridManager;
+    [SerializeField] private GridManager playerGridManager = null;
+    [SerializeField] private GridManager aiGridManager = null;
 
     public Pawn[] playerPositionsArray;
     public Pawn playerSetter;

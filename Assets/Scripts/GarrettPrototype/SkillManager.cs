@@ -5,31 +5,31 @@ using UnityEngine.UI;
 
 public class SkillManager : MonoBehaviour
 {
-    [SerializeField] private ServePassSimulation AservePass;
-    [SerializeField] private PassSetSimulation ApassSet;
-    [SerializeField] private SetAttackSimulation AsetAttack;
-    [SerializeField] private AttackDefenceSimulation AattackDefence;
-    [SerializeField] private Slider aSlider;
+    [SerializeField] private ServePassSimulation AservePass = null;
+    [SerializeField] private PassSetSimulation ApassSet = null;
+    [SerializeField] private SetAttackSimulation AsetAttack = null;
+    [SerializeField] private AttackDefenceSimulation AattackDefence = null;
+    [SerializeField] private Slider aSlider = null;
 
-    [SerializeField] private ServePassSimulation BservePass;
-    [SerializeField] private PassSetSimulation BpassSet;
-    [SerializeField] private SetAttackSimulation BsetAttack;
-    [SerializeField] private AttackDefenceSimulation BattackDefence;
-    [SerializeField] private Slider bSlider;
+    [SerializeField] private ServePassSimulation BservePass = null;
+    [SerializeField] private PassSetSimulation BpassSet = null;
+    [SerializeField] private SetAttackSimulation BsetAttack = null;
+    [SerializeField] private AttackDefenceSimulation BattackDefence = null;
+    [SerializeField] private Slider bSlider = null;
 
-    [SerializeField] [Range(75, 125)] private int aServe;
-    [SerializeField] [Range(75, 125)] private int aPass;
-    [SerializeField] [Range(75, 125)] private int aSet;
-    [SerializeField] [Range(75, 125)] private int aAttack;
-    [SerializeField] [Range(75, 125)] private int aBlock;
-    [SerializeField] [Range(75, 125)] private int aDefence;
+    [SerializeField] [Range(75, 125)] private int aServe = 100;
+    [SerializeField] [Range(75, 125)] private int aPass = 100;
+    [SerializeField] [Range(75, 125)] private int aSet = 100;
+    [SerializeField] [Range(75, 125)] private int aAttack = 100;
+    [SerializeField] [Range(75, 125)] private int aBlock = 100;
+    [SerializeField] [Range(75, 125)] private int aDefence = 100;
 
-    [SerializeField] [Range(75, 125)] private int bServe;
-    [SerializeField] [Range(75, 125)] private int bPass;
-    [SerializeField] [Range(75, 125)] private int bSet;
-    [SerializeField] [Range(75, 125)] private int bAttack;
-    [SerializeField] [Range(75, 125)] private int bBlock;
-    [SerializeField] [Range(75, 125)] private int bDefence;
+    [SerializeField] [Range(75, 125)] private int bServe = 100;
+    [SerializeField] [Range(75, 125)] private int bPass = 100;
+    [SerializeField] [Range(75, 125)] private int bSet = 100;
+    [SerializeField] [Range(75, 125)] private int bAttack = 100;
+    [SerializeField] [Range(75, 125)] private int bBlock = 100;
+    [SerializeField] [Range(75, 125)] private int bDefence = 100;
 
     public GameObject M1Sliders;
     public GameObject P2Sliders;

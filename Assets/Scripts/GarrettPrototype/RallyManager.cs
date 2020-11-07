@@ -14,12 +14,12 @@ public class RallyManager : MonoBehaviour
     private int AblockNumber = 0;
     private float AblockQuality = 0;
     private int AdefenceNumber = 0;
-    private int AresultNumber = 0;
+    // private int AresultNumber = 0;
 
-    [SerializeField] private ServePassSimulation AservePass;
-    [SerializeField] private PassSetSimulation ApassSet;
-    [SerializeField] private SetAttackSimulation AsetAttack;
-    [SerializeField] private AttackDefenceSimulation AattackDefence;
+    [SerializeField] private ServePassSimulation AservePass = null;
+    [SerializeField] private PassSetSimulation ApassSet = null;
+    [SerializeField] private SetAttackSimulation AsetAttack = null;
+    [SerializeField] private AttackDefenceSimulation AattackDefence = null;
 
     private int BserveNumber = 0;
     private int BpassNumber = 0;
@@ -29,12 +29,12 @@ public class RallyManager : MonoBehaviour
     private int BblockNumber = 0;
     private float BblockQuality = 0;
     private int BdefenceNumber = 0;
-    private int BresultNumber = 0;
+    // private int BresultNumber = 0;
 
-    [SerializeField] private ServePassSimulation BservePass;
-    [SerializeField] private PassSetSimulation BpassSet;
-    [SerializeField] private SetAttackSimulation BsetAttack;
-    [SerializeField] private AttackDefenceSimulation BattackDefence;
+    [SerializeField] private ServePassSimulation BservePass = null;
+    [SerializeField] private PassSetSimulation BpassSet = null;
+    [SerializeField] private SetAttackSimulation BsetAttack = null;
+    [SerializeField] private AttackDefenceSimulation BattackDefence = null;
 
 
 
@@ -47,7 +47,7 @@ public class RallyManager : MonoBehaviour
     [SerializeField] private Text _acesText = null;
     [SerializeField] private Text _serrorsText = null;
 
-    private int index = 0;
+    //private int index = 0;
     private int killCount = 0;
     private int toolCount = 0;
     private int blockCount = 0;
@@ -106,7 +106,7 @@ public class RallyManager : MonoBehaviour
 
     private void ResetCounters()
     {
-        index = 0;
+        //index = 0;
         killCount = 0;
         toolCount = 0;
         blockCount = 0;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PassSetSimulation : MonoBehaviour
 {
-    [SerializeField] private Text messageText;
+    [SerializeField] private Text messageText = null;
 
     private float _settingAbility = 100;
     public void SetSettingAbility(float value) { _settingAbility = value; }
@@ -15,9 +15,9 @@ public class PassSetSimulation : MonoBehaviour
     private int medCounter = 0;
     private int badCounter = 0;
 
-    [SerializeField] private Text goodText;
-    [SerializeField] private Text medText;
-    [SerializeField] private Text badText;
+    [SerializeField] private Text goodText = null;
+    [SerializeField] private Text medText = null;
+    [SerializeField] private Text badText = null;
 
 
 

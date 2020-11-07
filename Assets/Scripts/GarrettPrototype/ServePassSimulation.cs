@@ -11,13 +11,13 @@ public class ServePassSimulation : MonoBehaviour
     private float _basePassAbility = 100;
     public void SetPassAbility(float value) { _basePassAbility = value; }
 
-    [SerializeField] private Text messageText;
+    [SerializeField] private Text messageText = null;
 
-    [SerializeField] private Text aceText;
-    [SerializeField] private Text missText;
-    [SerializeField] private Text oneText;
-    [SerializeField] private Text twoText;
-    [SerializeField] private Text threeText;
+    [SerializeField] private Text aceText = null;
+    [SerializeField] private Text missText = null;
+    [SerializeField] private Text oneText = null;
+    [SerializeField] private Text twoText = null;
+    [SerializeField] private Text threeText = null;
 
     private int aceCounter = 0;
     private int missCounter = 0;

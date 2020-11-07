@@ -11,24 +11,26 @@ public class SetManager : MonoBehaviour
     private bool AteamServing;
     private bool setOver = false;
 
-    private bool rallyStarted = false;
+    // private bool rallyStarted = false;
 
-    [SerializeField] private RallyManager rallyManager;
-    [SerializeField] private RallyManagerV2 rallyManagerV2;
+    // [SerializeField] private RallyManager rallyManager = null;
+    [SerializeField] private RallyManagerV2 rallyManagerV2 = null;
 
-    [SerializeField] private Text aWinsText;
-    [SerializeField] private Text bWinsText;
+    [SerializeField] private Text aWinsText = null;
+    [SerializeField] private Text bWinsText = null;
     private int aWins;
     private int bWins;
 
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text messageText;
+    [SerializeField] private Text scoreText = null;
+    [SerializeField] private Text messageText = null;
 
 
     private int coroutineResult = 3;
 
 
-    [SerializeField] private RotationManager rotationManager;
+    [SerializeField] private RotationManager rotationManager = null;
+
+    [SerializeField] private GameObject playSetButton = null;
 
 
     // Start is called before the first frame update
@@ -61,6 +63,8 @@ public class SetManager : MonoBehaviour
     public void PlaySet()
     {
         StartCoroutine(SimulateSet());
+        SoundManager.Instance.PlayGameMusic();
+        playSetButton.SetActive(false);
     }
 
     public void SimulateOneRallyPlayerServing()
@@ -161,6 +165,7 @@ public class SetManager : MonoBehaviour
         Debug.Log("Set Finished");
         // messageText.text = "Set over";
         yield return new WaitForSeconds(1);
+        playSetButton.SetActive(true);
         yield break;
     }
 

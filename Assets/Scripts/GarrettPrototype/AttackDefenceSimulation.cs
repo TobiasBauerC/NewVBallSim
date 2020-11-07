@@ -23,7 +23,7 @@ public class AttackDefenceSimulation : MonoBehaviour
     [SerializeField] private Text _errorsText = null;
     [SerializeField] private Text _digsText = null;
 
-    private int index = 0;
+    // private int index = 0;
     private int killCount = 0;
     private int toolCount = 0;
     private int blockCount = 0;

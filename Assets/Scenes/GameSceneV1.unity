@@ -12045,6 +12045,7 @@ MonoBehaviour:
   scoreText: {fileID: 1930310348}
   messageText: {fileID: 1439844376}
   rotationManager: {fileID: 531197301}
+  playSetButton: {fileID: 51309990}
 --- !u!4 &985921231
 Transform:
   m_ObjectHideFlags: 0
@@ -25090,11 +25091,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1208682376322595256, guid: dd50ca4997f48d34891d8e6e1ddb5338,
-        type: 3}
-      propertyPath: ballBounceSounds.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1208682376322595257, guid: dd50ca4997f48d34891d8e6e1ddb5338,
         type: 3}
       propertyPath: m_Name

@@ -53,13 +53,44 @@ MonoBehaviour:
   sfx2Source: {fileID: 1208682377485651750}
   sfx3Source: {fileID: 1208682377567618380}
   announcerSource: {fileID: 1208682377276494526}
-  volleyballContactSounds: []
-  spikeContactSounds: []
-  ballBounceSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  gameMusicTrack: {fileID: 0}
+  volleyballPassSounds:
+  - {fileID: 8300000, guid: 46512d19acb9e1e49809452a0caf7c5c, type: 3}
+  - {fileID: 8300000, guid: 95add6298dfb01e43a3abdad780037cb, type: 3}
+  - {fileID: 8300000, guid: c0c88a935e0aa36458e9226a886909bb, type: 3}
+  - {fileID: 8300000, guid: d1f5e6ce4c0063640aa369a6fb759be0, type: 3}
+  - {fileID: 8300000, guid: 5e8e6185883e95c458e6d0075996b31f, type: 3}
+  - {fileID: 8300000, guid: dc15728465cbe8049b6415b2bb0efead, type: 3}
+  - {fileID: 8300000, guid: 080470b8f0f017345803152a5ce156fd, type: 3}
+  - {fileID: 8300000, guid: dc93970a0d326254d98312c332019ed3, type: 3}
+  - {fileID: 8300000, guid: 1b67050bc8fb72d4290764f3565e6a84, type: 3}
+  - {fileID: 8300000, guid: ec0418abcfd108548b0c5e4873add272, type: 3}
+  - {fileID: 8300000, guid: ec8eb67ab34ebb84e81574f62a56b260, type: 3}
+  - {fileID: 8300000, guid: 0224e4a7fa701c54580fd4ce105a2d04, type: 3}
+  - {fileID: 8300000, guid: b8b62fcf2386057419c6418f8a2ede86, type: 3}
+  - {fileID: 8300000, guid: e376e9920e23a4540a112b5b0cc21d4c, type: 3}
+  - {fileID: 8300000, guid: baf3051c3e2c8ae4fafac8472ebd63eb, type: 3}
+  volleyballSpikeSounds:
+  - {fileID: 8300000, guid: ca0cf53c6949384458cfece7f3858429, type: 3}
+  - {fileID: 8300000, guid: d95e6a8774303124699a07babfc61169, type: 3}
+  - {fileID: 8300000, guid: e9ad587de288949489e4477c93526591, type: 3}
+  - {fileID: 8300000, guid: a14c2e07d6830684e8ef71ff14b033ef, type: 3}
+  - {fileID: 8300000, guid: c4fb3e56d637aa148bdd1acd4e20e4c1, type: 3}
+  - {fileID: 8300000, guid: a43f91895e00e0e4aae5e2c3e0b843bb, type: 3}
+  - {fileID: 8300000, guid: 435b40857b6b64448896d905de3cd0e5, type: 3}
+  volleyballSetSounds:
+  - {fileID: 8300000, guid: 5d4aab14fc580034288b8c987f1465b4, type: 3}
+  - {fileID: 8300000, guid: 904eb73b203e1e14e83a32b9006a72ef, type: 3}
+  - {fileID: 8300000, guid: ad9d29952658ecc4b993d9619f847b0d, type: 3}
+  - {fileID: 8300000, guid: 1395defa8a2900a44bfd33945ca4b370, type: 3}
+  - {fileID: 8300000, guid: a4aa232ab8a3b9f4fb65f8798ec54415, type: 3}
+  - {fileID: 8300000, guid: d2c6154c27853e14fb42ab20cce65816, type: 3}
+  - {fileID: 8300000, guid: ddec33e9abeb72047930e134d6ff1e87, type: 3}
+  - {fileID: 8300000, guid: d92ebbcc5c942124e81ee28b0ae81b69, type: 3}
+  volleyballBounceSounds:
+  - {fileID: 8300000, guid: 2ab6f66975e6a644fb283e56792c2ba2, type: 3}
+  volleyballToolSounds:
+  - {fileID: 8300000, guid: 38c10458d28ed664f8312cfac4a40dbe, type: 3}
+  gameMusicTrack: {fileID: 8300000, guid: 7e0f5d5175af9864196dbff2e081692b, type: 3}
   announcerGameStartLines: []
 --- !u!1 &1208682376603933407
 GameObject:

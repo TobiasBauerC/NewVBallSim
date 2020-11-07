@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SetAttackSimulation : MonoBehaviour
 {
-    [SerializeField] private Text messageText;
+    [SerializeField] private Text messageText = null;
 
     private float _attackingAbility = 100;
     public void SetAttackAbility(float value) { _attackingAbility = value; }
@@ -17,18 +17,18 @@ public class SetAttackSimulation : MonoBehaviour
     private int badCounter = 0;
     private int terribleCounter = 0;
 
-    [SerializeField] private Text greatText;
-    [SerializeField] private Text goodText;
-    [SerializeField] private Text medText;
-    [SerializeField] private Text badText;
-    [SerializeField] private Text terribleText;
+    [SerializeField] private Text greatText = null;
+    [SerializeField] private Text goodText = null;
+    [SerializeField] private Text medText = null;
+    [SerializeField] private Text badText = null;
+    [SerializeField] private Text terribleText = null;
 
     private int lastHitValue = 0;
     private int lastHitQuality = 0;
     public int GetLastHitValue() { return lastHitValue; }
     public int GetLastHitQuality() { return lastHitQuality; }
 
-    [SerializeField] private RotationManager rotationManager;
+    [SerializeField] private RotationManager rotationManager = null;
 
 
 

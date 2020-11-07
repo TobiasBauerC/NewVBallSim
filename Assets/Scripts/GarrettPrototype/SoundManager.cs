@@ -24,22 +24,24 @@ public class SoundManager : MonoBehaviour
 
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
-    [SerializeField] private AudioSource sfx2Source;
-    [SerializeField] private AudioSource sfx3Source;
-    [SerializeField] private AudioSource announcerSource;
+    [SerializeField] private AudioSource musicSource = null;
+    [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioSource sfx2Source = null;
+    [SerializeField] private AudioSource sfx3Source = null;
+    // [SerializeField] private AudioSource announcerSource = null;
 
     [Header("SFX Clips")]
-    public AudioClip[] volleyballContactSounds;
-    public AudioClip[] spikeContactSounds;
-    public AudioClip[] ballBounceSounds;
+    public AudioClip[] volleyballPassSounds;
+    public AudioClip[] volleyballSpikeSounds;
+    public AudioClip[] volleyballSetSounds;
+    public AudioClip[] volleyballBounceSounds;
+    public AudioClip[] volleyballToolSounds;
     
     [Header("Music Tracks")]
-    [SerializeField] private AudioClip gameMusicTrack;
+    [SerializeField] private AudioClip gameMusicTrack = null;
 
-    [Header("Announcer Lines")]
-    [SerializeField] private AudioClip[] announcerGameStartLines;
+    //[Header("Announcer Lines")]
+    //[SerializeField] private AudioClip[] announcerGameStartLines = null;
 
 
     public void PlayGameMusic()
@@ -53,11 +55,14 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource source = GetAvailableSFXSource();
         if (source == null)
+        {
+            Debug.LogError("Tried to play a sound when all sfx channels were full");
             return;
+        }
         else
         {
             // random clip from the array
-            int clipNumber = Random.Range(0, clips.Length + 1);
+            int clipNumber = Random.Range(0, clips.Length);
             source.clip = clips[clipNumber];
             source.Play();
         }

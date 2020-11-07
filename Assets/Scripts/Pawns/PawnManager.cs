@@ -11,21 +11,21 @@ using UnityEngine;
 
 public class PawnManager : MonoBehaviour
 {
-    [SerializeField] private GridManager _gridManager;
+    [SerializeField] private GridManager _gridManager = null;
     public GridManager gridManager { get { return _gridManager; } }
 
-    [SerializeField] private Pawn[] pawns;
+    [SerializeField] private Pawn[] pawns = null;
 
-    [SerializeField] private bool _snapToGrid;
+    [SerializeField] private bool _snapToGrid = true;
     public bool snapToGrid { get { return _snapToGrid; } }
 
     [SerializeField] private float _pickupDist = 0.4f;
     public float pickupDist { get { return _pickupDist; } }
 
-    [SerializeField] private PositionSets[] _allPositionSets;
+    [SerializeField] private PositionSets[] _allPositionSets = null;
     public PositionSets[] allPositionSets { get { return _allPositionSets; } }
 
-    [SerializeField] private LayerMask blockingLayerMask;
+    [SerializeField] private LayerMask blockingLayerMask = 0;
 
     /// <summary>
     /// Gets the cursor's position in world space

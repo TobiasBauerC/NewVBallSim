@@ -13,12 +13,12 @@ public class Pawn : MonoBehaviour
     private PawnManager pawnManager;
     private bool selected = false;
     [Header("Role")]
-    [SerializeField] private PawnRole _pawnRole;
+    [SerializeField] private PawnRole _pawnRole = 0;
     public PawnRole pawnRole { get { return _pawnRole; } }
 
     [Header("Starting Pos")]
-    [SerializeField] private int x;
-    [SerializeField] private int y;
+    [SerializeField] private int x = 0;
+    [SerializeField] private int y = 0;
 
     //public bool limitedMovement = false;
     //private float limitedMoveDistance = 1.5f;
@@ -37,22 +37,22 @@ public class Pawn : MonoBehaviour
         block
     }
     public Sprite[] sprites;
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer = null;
 
     public void SetSprite(Sprites sprite)
     {
         spriteRenderer.sprite = sprites[(int)sprite];
     }
 
-    [Space]
+    // [Space]
     // Stats
-    [Header("Player Stats")]
-    [Range(-75, 125)] [SerializeField] private float serveMod; 
-    [Range(-75, 125)] [SerializeField] private float passMod; 
-    [Range(-75, 125)] [SerializeField] private float setMod; 
-    [Range(-75, 125)] [SerializeField] private float attackMod; 
-    [Range(-75, 125)] [SerializeField] private float blockMod; 
-    [Range(-75, 125)] [SerializeField] private float defenceMod; 
+    //[Header("Player Stats")]
+    //[Range(-75, 125)] [SerializeField] private float serveMod = 100; 
+    //[Range(-75, 125)] [SerializeField] private float passMod = 100; 
+    //[Range(-75, 125)] [SerializeField] private float setMod = 100; 
+    //[Range(-75, 125)] [SerializeField] private float attackMod = 100; 
+    //[Range(-75, 125)] [SerializeField] private float blockMod = 100; 
+    //[Range(-75, 125)] [SerializeField] private float defenceMod = 100; 
 
     public void Init(PawnManager pawnManager)
     {
