@@ -609,6 +609,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public IEnumerator SimulateRallyAServing(Action trueCallback, Action falseCallback)
     {
+        ballScript.SetPosition(playerGridManager, 0, 0);
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
         isAteamServing = true;
@@ -622,7 +623,7 @@ public class RallyManagerV2 : MonoBehaviour
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
         messageText.text = "Player chooses where to serve";
-        ballScript.SetPosition(playerGridManager, 0, 0);
+        
         playerBallIndicator.SetPosition(aiGridManager, 4, 4);
 
         rotationManager.SetPlayerServicePositions(0);
@@ -643,7 +644,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         messageText.text = "Serve location selected";
         playerBallIndicator.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         // SERVE PASS
         // Debug.Log("A serves");
@@ -705,8 +706,8 @@ public class RallyManagerV2 : MonoBehaviour
             yield break;
         }
 
-        float serveTravelTime = 2;
-        StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y), serveTravelTime));
+        float serveTravelTime = 1.5f;
+        StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, aiGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), serveTravelTime));
         StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, serveTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         messageText.text = "Player serves";
         rotationManager.SetPlayerDefensivePositions(serveTravelTime);
@@ -775,7 +776,7 @@ public class RallyManagerV2 : MonoBehaviour
         int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
         Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
         aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         if (BattackQuality == 1)
         {
@@ -793,7 +794,7 @@ public class RallyManagerV2 : MonoBehaviour
         aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
         aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
         messageText.text = "AI attack going towards here";
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.2f);
 
         
 
@@ -811,7 +812,7 @@ public class RallyManagerV2 : MonoBehaviour
         AdefenceNumber = AattackDefence.GetDefenceNumber();
 
         messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         int diggersXDistance = GetXDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
         int diggersYDistance = GetYDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
@@ -851,7 +852,7 @@ public class RallyManagerV2 : MonoBehaviour
             // return result2;
             while (resultNumber == 2 || resultNumber == 1 || resultNumber == 3)
             {
-                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
+                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, aiBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y, 1, null));
                 yield return new WaitForSeconds(1 + .001f);
@@ -927,7 +928,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerBallIndicator.gameObject.SetActive(false);
 
                 messageText.text = "Attack location selected";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
 
                 // SET ATTACK
@@ -953,7 +954,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
                 playerBallIndicator.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
                 messageText.text = "Player attack going towards here";
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(0.2f);
 
                 // ATTACK DEFENCE
                 // get the block and defence values
@@ -969,7 +970,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 diggersXDistance = GetXDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);
                 diggersYDistance = GetYDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);
@@ -1003,7 +1004,7 @@ public class RallyManagerV2 : MonoBehaviour
                     yield return result3;
                     yield break;
                 }
-                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
+                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y, 1, null));
                 yield return new WaitForSeconds(1 + .001f);
@@ -1017,6 +1018,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
                 AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
                 SetAIPositionsBasedOffPass(digNumber, AIPassDigTime);
+                rotationManager.SetPlayerDefensivePositions(AIPassDigTime);
                 yield return new WaitForSeconds(AIPassDigTime);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
                 
@@ -1026,9 +1028,8 @@ public class RallyManagerV2 : MonoBehaviour
                 playerInteractionButton.SetActive(true);
                 playerPawnManager.EnablePawnMove(true);
                 // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
-                float playerDefenceMoveTime = 0.5f;
-                rotationManager.SetPlayerDefensivePositions(playerDefenceMoveTime);
-                yield return new WaitForSeconds(playerDefenceMoveTime);
+                
+                // yield return new WaitForSeconds(playerDefenceMoveTime);
                 messageText.text = "Player has a chance to transition to defensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -1076,7 +1077,7 @@ public class RallyManagerV2 : MonoBehaviour
                 aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
                 aiAttackLocation = new Vector2Int(aix, aiy);
                 aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 if (BattackQuality == 1)
                 {
@@ -1094,7 +1095,7 @@ public class RallyManagerV2 : MonoBehaviour
                 aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
                 aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
                 messageText.text = "AI attack going towards here";
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(0.2f);
 
                 // ATTACK DEFENCE
                 // get the block and defence values
@@ -1110,7 +1111,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 diggersXDistance = GetXDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
                 diggersYDistance = GetYDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
@@ -1166,6 +1167,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public IEnumerator SimulateRallyBServing(Action trueCallback, Action falseCallback)
     {
+        ballScript.SetPosition(aiGridManager, 8, 8);
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
         isAteamServing = false;
@@ -1173,7 +1175,7 @@ public class RallyManagerV2 : MonoBehaviour
         //AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
         rotationManager.SetAIServicePositions(0);
         
-        ballScript.SetPosition(aiGridManager, 8, 8);
+        
         // Debug.Log("Ball currently at " + ballScript.GetGridPosition());
 
         // set all the sprites to neutral
@@ -1197,7 +1199,7 @@ public class RallyManagerV2 : MonoBehaviour
         int y = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
         Vector2Int serveLocation = new Vector2Int(x, y);
         aiBallIndicator.SetPosition(playerGridManager, x, y);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         // Debug.Log("B serves");
         BservePass.SetServeAbility(skillManager.AIM2.serve);
@@ -1207,7 +1209,7 @@ public class RallyManagerV2 : MonoBehaviour
         serveLocation = UpdateServeLocationWithQuality(BserveNumber, serveLocation);
         aiBallIndicator.SetPosition(playerGridManager, serveLocation.x, serveLocation.y);
         messageText.text = "AI serve goes here";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
 
         // also need to impact the pass value based on distance from the ball
@@ -1254,7 +1256,7 @@ public class RallyManagerV2 : MonoBehaviour
         {
             messageText.text = "AI rips an ace";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
-            StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
+            StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
             // Debug.Log("B Ace");
             yield return new WaitForSeconds(1.001f);
             trueCallback();
@@ -1263,7 +1265,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         float AIServeTravelTime = 1;
         rotationManager.SetAIDefensivePositions(AIServeTravelTime);
-        StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime));
+        StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, playerGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime));
         // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         yield return new WaitForSeconds(AIServeTravelTime + .001f);
@@ -1274,7 +1276,7 @@ public class RallyManagerV2 : MonoBehaviour
         passingPawn.SetSprite(Pawn.Sprites.dig);
         yield return new WaitForSeconds(0.2f);
         passingPawn.SetSprite(Pawn.Sprites.neutral);
-        rotationManager.SetPlayerOffensePositions(ApassNumber, playerPassDigTravelTime);
+        // rotationManager.SetPlayerOffensePositions(ApassNumber, playerPassDigTravelTime);
         yield return new WaitForSeconds(playerPassDigTravelTime);
         
 
@@ -1335,7 +1337,7 @@ public class RallyManagerV2 : MonoBehaviour
         playerInteractionButton.SetActive(false);
         playerBallIndicator.gameObject.SetActive(false);
         messageText.text = "Attack location selected";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         // get the attack quality based on the set
         AsetAttack.SetAttackAbility(setChoiceSkills.attack);
@@ -1358,7 +1360,7 @@ public class RallyManagerV2 : MonoBehaviour
         playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
         playerBallIndicator.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
         messageText.text = "Player attack going towards here";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         // ATTACK DEFENCE
         // get the block and defence values
@@ -1374,7 +1376,7 @@ public class RallyManagerV2 : MonoBehaviour
         BdefenceNumber = BattackDefence.GetDefenceNumber();
 
         messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         int diggersXDistance = GetXDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);
         int diggersYDistance = GetYDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);
@@ -1414,7 +1416,7 @@ public class RallyManagerV2 : MonoBehaviour
 
             while (resultNumber == 2 || resultNumber == 1 || resultNumber == 3)
             {
-                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
+                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y, 1, null));
                 yield return new WaitForSeconds(1 + .001f);
@@ -1429,6 +1431,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
                 AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
                 SetAIPositionsBasedOffPass(digNumber, AIPassDigTime);
+                rotationManager.SetPlayerDefensivePositions(AIPassDigTime);
                 yield return new WaitForSeconds(AIPassDigTime);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
                 
@@ -1440,9 +1443,8 @@ public class RallyManagerV2 : MonoBehaviour
                 playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have transition to defensive positions";
                 // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[1].positions);
-                float playerDefenceMoveTime = 0.5f;
-                rotationManager.SetPlayerDefensivePositions(playerDefenceMoveTime);
-                yield return new WaitForSeconds(playerDefenceMoveTime);
+
+                // yield return new WaitForSeconds(playerDefenceMoveTime);
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
                 playerPawnManager.EnablePawnMove(false);
@@ -1490,7 +1492,7 @@ public class RallyManagerV2 : MonoBehaviour
                 int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
                 Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
                 aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 if (BattackQuality == 1)
                 {
@@ -1508,7 +1510,7 @@ public class RallyManagerV2 : MonoBehaviour
                 aiAttackLocation = UpdateAttackLocationWithQuality(BattackQuality, aiAttackLocation);
                 aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
                 messageText.text = "AI attack going towards here";
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(0.2f);
 
                 // ATTACK DEFENCE
                 // get the block and defence values
@@ -1524,7 +1526,7 @@ public class RallyManagerV2 : MonoBehaviour
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 diggersXDistance = GetXDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
                 diggersYDistance = GetYDistanceFromBall(diggingPawn, aiBallIndicator, playerGridManager);
@@ -1558,7 +1560,7 @@ public class RallyManagerV2 : MonoBehaviour
                     yield break;
                 }
 
-                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
+                StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, aiBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y, 1, null));
                 yield return new WaitForSeconds(1 + .001f);
@@ -1629,7 +1631,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerInteractionButton.SetActive(false);
                 playerBallIndicator.gameObject.SetActive(false);
                 messageText.text = "Attack location selected";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 // SET ATTACK
                 // get the attack quality based on the set
@@ -1653,7 +1655,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerAttackLocation = UpdateAttackLocationWithQuality(AattackQuality, playerAttackLocation);
                 playerBallIndicator.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y);
                 messageText.text = "Player attack going towards here";
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(0.2f);
 
                 // ATTACK DEFENCE
                 // get the block and defence values
@@ -1669,7 +1671,7 @@ public class RallyManagerV2 : MonoBehaviour
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
                 diggersXDistance = GetXDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);
                 diggersYDistance = GetYDistanceFromBall(diggingPawn, playerBallIndicator, aiGridManager);

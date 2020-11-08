@@ -128,13 +128,13 @@ public class RotationManager : MonoBehaviour
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
-            StartCoroutine(Movement.MoveFromAtoB(playerPositionsArray[i].transform, playerPositionsArray[i].transform.position, playerGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
+            StartCoroutine(Movement.MoveFromAtoB(playerPositionsArray[i].transform, playerPositionsArray[i].transform.position, playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
         }
         yield return new WaitForSeconds(travelTime);
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
-            playerPositionsArray[i].transform.position = playerGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
+            playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
         }
         yield break;
@@ -145,7 +145,7 @@ public class RotationManager : MonoBehaviour
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
-            StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
+            StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
         }
 
         yield return new WaitForSeconds(travelTime);
