@@ -63,12 +63,25 @@ public class Ball : MonoBehaviour
         SetPosition(x, y);
     }
 
-    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] ballSounds)
+    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds)
     {
         currentGrid = gridManager;
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.GetGridPosition(x, y), time));
-        SoundManager.Instance.PlaySFX(ballSounds);
-        yield return new WaitForSeconds(time);
+        if(startSounds != null)
+            SoundManager.Instance.PlaySFX(startSounds);
+        yield return new WaitForSeconds(time + .001f);
+        SetPosition(x, y);
+    }
+
+    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds)
+    {
+        currentGrid = gridManager;
+        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.GetGridPosition(x, y), time));
+        if (startSounds != null)
+            SoundManager.Instance.PlaySFX(startSounds);
+        yield return new WaitForSeconds(time + .001f);
+        if (endSounds != null)
+            SoundManager.Instance.PlaySFX(endSounds);
         SetPosition(x, y);
     }
 

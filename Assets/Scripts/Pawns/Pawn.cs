@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class Pawn : MonoBehaviour
 {
+    public PawnManager GetMyManager() { return pawnManager; }
     private PawnManager pawnManager;
     private bool selected = false;
     [Header("Role")]
