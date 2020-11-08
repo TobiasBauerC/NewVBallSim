@@ -38,6 +38,7 @@ public class Ball : MonoBehaviour
     public void SetPosition(int x, int y)
     {
         transform.position = currentGrid.ForceGetGridPosition(x, y);
+        Debug.Log("Setting " + gameObject.name +" position at " + x + " " + y);
     }
 
     /// <summary>
@@ -49,6 +50,7 @@ public class Ball : MonoBehaviour
     {
         currentGrid = gridManager;
         SetPosition(position);
+        Debug.Log("Setting " + gameObject.name + " position at " + gridManager.GetGridXYPosition(position));
     }
 
     /// <summary>
@@ -65,8 +67,9 @@ public class Ball : MonoBehaviour
 
     public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds)
     {
+        Debug.Log("starting to move ball towards " + x + " " + y);
         currentGrid = gridManager;
-        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.GetGridPosition(x, y), time));
+        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.ForceGetGridPosition(x, y), time));
         if(startSounds != null)
             SoundManager.Instance.PlaySFX(startSounds);
         yield return new WaitForSeconds(time + .001f);
@@ -75,8 +78,9 @@ public class Ball : MonoBehaviour
 
     public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds)
     {
+        Debug.Log("starting to move ball towards " + x + " " + y);
         currentGrid = gridManager;
-        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.GetGridPosition(x, y), time));
+        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.ForceGetGridPosition(x, y), time));
         if (startSounds != null)
             SoundManager.Instance.PlaySFX(startSounds);
         yield return new WaitForSeconds(time + .001f);

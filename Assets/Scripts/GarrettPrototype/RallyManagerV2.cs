@@ -111,7 +111,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetLeftSide1()
     {
-        Debug.Log("Setting Left Side 1");
+        //Debug.Log("Setting Left Side 1");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Power1);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -122,7 +122,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetLeftSide2()
     {
-        Debug.Log("Setting Left Side 2");
+        //Debug.Log("Setting Left Side 2");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Power2);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -133,7 +133,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetMiddle1()
     {
-        Debug.Log("Setting middle 1");
+        //Debug.Log("Setting middle 1");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Middle1);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -144,7 +144,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetMiddle2()
     {
-        Debug.Log("Setting middle 2");
+        //Debug.Log("Setting middle 2");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Middle2);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -155,7 +155,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetRightSide()
     {
-        Debug.Log("Setting right side");
+        //Debug.Log("Setting right side");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.RightSide);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -166,7 +166,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     public void PlayerSetSetterDump()
     {
-        Debug.Log("Setting setter dump");
+        //Debug.Log("Setting setter dump");
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Setter);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
@@ -203,7 +203,7 @@ public class RallyManagerV2 : MonoBehaviour
     public void PlayerInteractionDone()
     {
         waitingForPlayerInteraction = false;
-        Debug.Log("Player interacted");
+        // Debug.Log("Player interacted");
     }
 
     private Vector2Int UpdateServeLocationWithQuality(int serveNumber, Vector2Int serveLocation)
@@ -249,6 +249,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     private bool CompareResultsA(int result, Vector2Int attackLocation)
     {
+        Debug.Log("Comparing results");
         if (result == 100)
         {
             Debug.Log("B Block");
@@ -262,28 +263,30 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (result == -1)
         {
-            messageText.text = "Player tools the block hard";
-            Vector3Int toolModifier = new Vector3Int(0, 20, 0);
-            if (aiGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
-                toolModifier = toolModifier * -1;
-            // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 3 + toolModifier.y, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
             Debug.Log("A Tool");
+            messageText.text = "Player tools the block hard";
+            int toolModifier = 8;
+            if (aiGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
+                toolModifier = 0;
+            // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPosition(aiGridManager, 0, toolModifier, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
+            
             if (isAteamServing)
                 return true;
             else return false;
         }
         else if (result == 2 || result == 3 || result == 1)
         {
-            Debug.Log("Dig, rally continues");
+            //Debug.Log("Dig, rally continues");
             //return;
         }
         else if (result == 0)
         {
+            Debug.Log("A Attack Lands for a Kill");
             messageText.text = "Player pounds it past the defence for a point";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
-            Debug.Log("A Attack Lands for a Kill");
+            
             if (isAteamServing)
                 return true;
             else return false;
@@ -299,40 +302,44 @@ public class RallyManagerV2 : MonoBehaviour
 
     private bool CompareResultsB(int result, Vector2Int attackLocation)
     {
+        Debug.Log("Comparing results");
         if (result == 100)
         {
+            Debug.Log("A Block");
             messageText.text = "Player slams the AI";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3,3), 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 3, 3, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
-            Debug.Log("A Block");
+            
             if (isAteamServing)
                 return true;
             else return false;
         }
         else if (result == -1)
         {
-            messageText.text = "AI tools the player easily";
-            Vector3Int toolModifier = new Vector3Int(0, 20, 0);
-            if (playerGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
-                toolModifier = toolModifier * -1;
-            StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 3 + toolModifier.y, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
             Debug.Log("B Tool");
+            messageText.text = "AI tools the player easily";
+            int toolModifier = 8;
+            if (playerGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
+                toolModifier = 0;
+            // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPosition(playerGridManager, 8, toolModifier, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
+            
             if (isAteamServing)
                 return false;
             else return true;
         }
         else if (result == 2 || result == 3 || result == 1)
         {
-            Debug.Log("Dig, rally continues");
+            //Debug.Log("Dig, rally continues");
             //return;
         }
         else if (result == 0)
         {
+            Debug.Log("B Attack Lands for a Kill");
             messageText.text = "AI bounces it on the player";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
-            Debug.Log("B Attack Lands for a Kill");
+            
             if (isAteamServing)
                 return false;
             else return true;
@@ -371,8 +378,8 @@ public class RallyManagerV2 : MonoBehaviour
         {
             // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
 
-            if(rotationManager.aiPositionsArray[4].pawnRole == PawnRole.Setter)
-            Debug.Log("AI forced to set Power 1");
+            //if(rotationManager.aiPositionsArray[4].pawnRole == PawnRole.Setter)
+            // Debug.Log("AI forced to set Power 1");
             UnityEngine.Vector2 playerLocation;
             if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
                 playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
@@ -386,7 +393,7 @@ public class RallyManagerV2 : MonoBehaviour
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 2));
             if (setChoice == 1)
             {
-                Debug.Log("AI sets power 1");
+                // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
@@ -397,7 +404,7 @@ public class RallyManagerV2 : MonoBehaviour
             }
             else
             {
-                Debug.Log("AI sets right side");
+                // Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
@@ -413,7 +420,7 @@ public class RallyManagerV2 : MonoBehaviour
             int setChoice = Mathf.CeilToInt(UnityEngine.Random.Range(0, 3));
             if (setChoice == 1)
             {
-                Debug.Log("AI sets power 1");
+                // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
@@ -423,7 +430,7 @@ public class RallyManagerV2 : MonoBehaviour
             }
             else if (setChoice == 2)
             {
-                Debug.Log("AI sets right side");
+                //Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
@@ -433,7 +440,7 @@ public class RallyManagerV2 : MonoBehaviour
             }
             else
             {
-                Debug.Log("AI sets middle 2");
+                //Debug.Log("AI sets middle 2");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[3].pawnRole != PawnRole.Setter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[3]);
@@ -622,6 +629,7 @@ public class RallyManagerV2 : MonoBehaviour
         // yield return new WaitUntil(() => !waitingForPlayerInteraction);
         Vector2Int serveLocation = new Vector2Int(4,4);
         playerBallIndicator.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.001f);
         while (waitingForPlayerInteraction)
         {
             if (Input.GetMouseButtonUp(0))
@@ -638,9 +646,9 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         // SERVE PASS
-        Debug.Log("A serves");
+        // Debug.Log("A serves");
         AservePass.SetServeAbility(skillManager.AIM2.serve);
-        Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
+        // Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
         AserveNumber = AservePass.GetServeNumber();
         // serve location may change based on serve quality
         serveLocation = UpdateServeLocationWithQuality(AserveNumber, serveLocation);
@@ -651,12 +659,12 @@ public class RallyManagerV2 : MonoBehaviour
         Pawn passingPawn = AIPawnManager.GetClosestPawn(playerBallIndicator.transform.position, false, aiBlockingColumn);
         SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromAIPawn(passingPawn);
         BservePass.SetPassAbility(passerSkills.pass);
-        Debug.Log("Passers skill is: " + passerSkills.pass);
+        // Debug.Log("Passers skill is: " + passerSkills.pass);
         // get player's distance from ball
         int passersXDistance = GetXDistanceFromBall(passingPawn, playerBallIndicator, aiGridManager);
         int passersYDistance = GetYDistanceFromBall(passingPawn, playerBallIndicator, aiGridManager);
         BpassNumber = BservePass.GetPassNumber(AserveNumber, passersXDistance, passersYDistance);
-        Debug.Log("Serve location is " + serveLocation);
+        // Debug.Log("Serve location is " + serveLocation);
 
         // check for aces or misses
         if(serveLocation.x >  8 || serveLocation.x < 0 || serveLocation.y > 8 || serveLocation.y < 0)
@@ -668,7 +676,7 @@ public class RallyManagerV2 : MonoBehaviour
             else modVector = playerOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("A Miss Serve");
+            // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
             falseCallback();
             yield return false;
@@ -679,7 +687,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "Player crushed it into the net";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("A Miss Serve");
+            // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
             falseCallback();
             yield return false;
@@ -690,7 +698,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "Player rips an ace";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
-            Debug.Log("A Ace");
+            // Debug.Log("A Ace");
             yield return new WaitForSeconds(1.001f);
             trueCallback();
             yield return true;
@@ -704,7 +712,7 @@ public class RallyManagerV2 : MonoBehaviour
         rotationManager.SetPlayerDefensivePositions(serveTravelTime);
         yield return new WaitForSeconds(serveTravelTime + .001f);
 
-        Debug.Log("B Passed " + BpassNumber);
+        // Debug.Log("B Passed " + BpassNumber);
         messageText.text = "AI passes it up";
         float AIPassDigTime = 1;
         SetBallPositionOffDigAI(BpassNumber, AIPassDigTime);
@@ -738,9 +746,9 @@ public class RallyManagerV2 : MonoBehaviour
 
         // get the set quality based on the pass
         BpassSet.SetSettingAbility(skillManager.AIS.set);
-        Debug.Log("Setters Skill is: " + skillManager.AIS.set);
+        // Debug.Log("Setters Skill is: " + skillManager.AIS.set);
         BsetNumber = BpassSet.GetSetNumber(BpassNumber);
-        Debug.Log("B Set " + BsetNumber);
+        // Debug.Log("B Set " + BsetNumber);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
@@ -757,10 +765,10 @@ public class RallyManagerV2 : MonoBehaviour
         // SET ATTACK
         // get the attack quality based on the set
         BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
-        Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
+        // Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
         BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
         BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
-        Debug.Log("B Hit " + BattackQuality);
+        // Debug.Log("B Hit " + BattackQuality);
         // AI chooses where to attack
         messageText.text = "AI swinging to attack here";
         int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
@@ -772,7 +780,7 @@ public class RallyManagerV2 : MonoBehaviour
         if (BattackQuality == 1)
         {
             messageText.text = "AI pummels it into the net";
-            Debug.Log("B Hitting Error");
+            // Debug.Log("B Hitting Error");
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             yield return new WaitForSeconds(1 + .001f);
@@ -792,14 +800,14 @@ public class RallyManagerV2 : MonoBehaviour
         // ATTACK DEFENCE
         // get the block and defence values
         AattackDefence.SetBlockAbility(skillManager.PlayerM1.block);
-        Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
+        // Debug.Log("Blockers skill is: " + skillManager.PlayerM1.block);
         AblockNumber = AattackDefence.GetBlockNumber();
         AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, aiBallIndicator.transform.position, true);
 
         Pawn diggingPawn = playerPawnManager.GetClosestPawn(aiBallIndicator.transform.position, true, playerBlockingColumn);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
         AattackDefence.SetDefenceAbility(diggerSkills.defence);
-        Debug.Log("Defenders skill is: " + diggerSkills.defence);
+        // Debug.Log("Defenders skill is: " + diggerSkills.defence);
         AdefenceNumber = AattackDefence.GetDefenceNumber();
 
         messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -813,7 +821,7 @@ public class RallyManagerV2 : MonoBehaviour
         if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber== 3)  && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
         {
             messageText.text = "AI attacks it just out of bounds";
-            Debug.Log("B Hitting Error");
+            // Debug.Log("B Hitting Error");
             Vector3Int modVector = Vector3Int.zero;
             if (aiAttackLocation.y > 4)
                 modVector = aiOutOfBoundsVectorUp;
@@ -849,7 +857,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(1 + .001f);
                 int digNumber = resultNumber;
                 // A SIDE WITH A DIG
-                Debug.Log("A Dug " + digNumber);
+                // Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float playerPassDigTravelTime = 1;
@@ -879,20 +887,21 @@ public class RallyManagerV2 : MonoBehaviour
                 PlayerSetChoiceButtonsActivate(digNumber);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
+                rotationManager.TurnOffAllSetButtons();
                 yield return new WaitForSeconds(1); // waiting for ball to travel
                 //setLeftSideButton.SetActive(false);
                 //setMiddleButton.SetActive(false);
                 //setRightSideButton.SetActive(false);
-                rotationManager.TurnOffAllSetButtons();
+                
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
                 playerPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
 
                 // get the set quality based on the pass
                 ApassSet.SetSettingAbility(skillManager.PlayerS.set);
-                Debug.Log("Setters Skill is: " + skillManager.PlayerS.set);
+                // Debug.Log("Setters Skill is: " + skillManager.PlayerS.set);
                 AsetNumber = ApassSet.GetSetNumber(digNumber);
-                Debug.Log("A Set " + AsetNumber);
+                // Debug.Log("A Set " + AsetNumber);
 
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(0.001f);
@@ -924,13 +933,13 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET ATTACK
                 // get the attack quality based on the set
                 AsetAttack.SetAttackAbility(setChoiceSkills.attack);
-                Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
+                // Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
                 AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(ballScript.transform.position));
                 AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
-                Debug.Log("A Hit " + AattackQuality);
+                // Debug.Log("A Hit " + AattackQuality);
                 if (AattackQuality == 1)
                 {
-                    Debug.Log("A Hitting Error");
+                    // Debug.Log("A Hitting Error");
                     messageText.text = "Player hits it into the bottom of the net";
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
@@ -949,14 +958,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // ATTACK DEFENCE
                 // get the block and defence values
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
-                Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
+                // Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
                 BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, playerBallIndicator.transform.position, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(playerBallIndicator.transform.position, true, aiBlockingColumn);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
                 BattackDefence.SetDefenceAbility(diggerSkills.defence);
-                Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
+                // Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
@@ -969,7 +978,7 @@ public class RallyManagerV2 : MonoBehaviour
                 resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
                 {
-                    Debug.Log("A Hitting Error");
+                    // Debug.Log("A Hitting Error");
                     messageText.text = "Player hits it out of bounds";
                     Vector3Int modVector = Vector3Int.zero;
                     if (playerAttackLocation.y > 4)
@@ -1001,7 +1010,7 @@ public class RallyManagerV2 : MonoBehaviour
                 digNumber = resultNumber;
 
                 // B SIDE WITH A DIG
-                Debug.Log("B Dug " + digNumber);
+                // Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
@@ -1038,9 +1047,9 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // get the set quality based on the pass
                 BpassSet.SetSettingAbility(skillManager.AIS.set);
-                Debug.Log("Setters Skill is: " + skillManager.AIS.set);
+                // Debug.Log("Setters Skill is: " + skillManager.AIS.set);
                 BsetNumber = BpassSet.GetSetNumber(digNumber);
-                Debug.Log("B Set " + BsetNumber);
+                // Debug.Log("B Set " + BsetNumber);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1057,10 +1066,10 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET ATTACK
                 // get the attack quality based on the set
                 BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
-                Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
+                // Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
                 BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
-                Debug.Log("B Hit " + BattackQuality);
+                // Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
                 messageText.text = "AI swinging to attack here";
                 aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
@@ -1071,7 +1080,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 if (BattackQuality == 1)
                 {
-                    Debug.Log("B Hitting Error");
+                    // Debug.Log("B Hitting Error");
                     messageText.text = "AI pummels it into the net";
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
@@ -1090,14 +1099,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // ATTACK DEFENCE
                 // get the block and defence values
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
-                Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
+                // Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
                 AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, aiBallIndicator.transform.position, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(aiBallIndicator.transform.position, true, playerBlockingColumn);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
                 AattackDefence.SetDefenceAbility(diggerSkills.defence);
-                Debug.Log("Defenders skill is: " + diggerSkills.defence);
+                // Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -1117,7 +1126,7 @@ public class RallyManagerV2 : MonoBehaviour
                     else modVector = aiOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    Debug.Log("B Hitting Error");
+                    // Debug.Log("B Hitting Error");
                     yield return new WaitForSeconds(1.001f);
                     trueCallback();
                     yield return true;
@@ -1165,7 +1174,7 @@ public class RallyManagerV2 : MonoBehaviour
         rotationManager.SetAIServicePositions(0);
         
         ballScript.SetPosition(aiGridManager, 8, 8);
-        Debug.Log("Ball currently at " + ballScript.GetGridPosition());
+        // Debug.Log("Ball currently at " + ballScript.GetGridPosition());
 
         // set all the sprites to neutral
         AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
@@ -1190,9 +1199,9 @@ public class RallyManagerV2 : MonoBehaviour
         aiBallIndicator.SetPosition(playerGridManager, x, y);
         yield return new WaitForSeconds(1);
 
-        Debug.Log("B serves");
+        // Debug.Log("B serves");
         BservePass.SetServeAbility(skillManager.AIM2.serve);
-        Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
+        // Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
         BserveNumber = BservePass.GetServeNumber();
         // serve location may change based on serve quality
         serveLocation = UpdateServeLocationWithQuality(BserveNumber, serveLocation);
@@ -1205,7 +1214,7 @@ public class RallyManagerV2 : MonoBehaviour
         Pawn passingPawn = playerPawnManager.GetClosestPawn(aiBallIndicator.transform.position, false, playerBlockingColumn);
         SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromPlayerPawn(passingPawn);
         AservePass.SetPassAbility(passerSkills.pass);
-        Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
+        // Debug.Log("Passers skill is: " + skillManager.PlayerP2.pass);
         // account for passers distance from the ball
         int passersXDistance = GetXDistanceFromBall(passingPawn, aiBallIndicator, playerGridManager);
         int passersYDistance = GetYDistanceFromBall(passingPawn, aiBallIndicator, playerGridManager);
@@ -1224,7 +1233,7 @@ public class RallyManagerV2 : MonoBehaviour
             else modVector = aiOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("B Miss Serve");
+            // Debug.Log("B Miss Serve");
             yield return new WaitForSeconds(1.001f);
             falseCallback();
             yield return false;
@@ -1235,7 +1244,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "AI crushed it into the net";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("B Miss Serve");
+            // Debug.Log("B Miss Serve");
             yield return new WaitForSeconds(1.001f);
             falseCallback();
             yield return false;
@@ -1246,7 +1255,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "AI rips an ace";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
-            Debug.Log("B Ace");
+            // Debug.Log("B Ace");
             yield return new WaitForSeconds(1.001f);
             trueCallback();
             yield return true;
@@ -1258,7 +1267,7 @@ public class RallyManagerV2 : MonoBehaviour
         // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         yield return new WaitForSeconds(AIServeTravelTime + .001f);
-        Debug.Log("A Passed " + ApassNumber);
+        // Debug.Log("A Passed " + ApassNumber);
         messageText.text = "Player passes it up";
         float playerPassDigTravelTime = 1;
         SetBallPositionOffDigPlayer(ApassNumber, playerPassDigTravelTime);
@@ -1287,20 +1296,20 @@ public class RallyManagerV2 : MonoBehaviour
         PlayerSetChoiceButtonsActivate(ApassNumber);
         messageText.text = "Player choose who to set";
         yield return new WaitUntil(() => playerSetDecision);
+        rotationManager.TurnOffAllSetButtons();
         yield return new WaitForSeconds(1);
         attackersRow = ballScript.GetGridPosition().y;
         attackerPosition = ballScript.transform.position;
         //setLeftSideButton.SetActive(false);
         //setMiddleButton.SetActive(false);
         //setRightSideButton.SetActive(false);
-        rotationManager.TurnOffAllSetButtons();
         playerPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
 
         // get the set quality based on the pass
         ApassSet.SetSettingAbility(skillManager.PlayerS.set);
-        Debug.Log("Setters Skill is: " + skillManager.PlayerS.set);
+        // Debug.Log("Setters Skill is: " + skillManager.PlayerS.set);
         AsetNumber = ApassSet.GetSetNumber(ApassNumber);
-        Debug.Log("A Set " + AsetNumber);
+        //  Debug.Log("A Set " + AsetNumber);
 
         // SET ATTACK
         messageText.text = "Player sets it up";
@@ -1330,16 +1339,16 @@ public class RallyManagerV2 : MonoBehaviour
 
         // get the attack quality based on the set
         AsetAttack.SetAttackAbility(setChoiceSkills.attack);
-        Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
+        //Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
         AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(playerBallIndicator.transform.position));
         AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
-        Debug.Log("A Hit " + AattackQuality);
+        //Debug.Log("A Hit " + AattackQuality);
         if (AattackQuality == 1)
         {
             messageText.text = "Player hits it into the bottom of the net";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("A Hitting Error");
+            //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
             trueCallback();
             yield return true;
@@ -1354,14 +1363,14 @@ public class RallyManagerV2 : MonoBehaviour
         // ATTACK DEFENCE
         // get the block and defence values
         BattackDefence.SetBlockAbility(skillManager.AIM1.block);
-        Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
+        //Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
         BblockNumber = BattackDefence.GetBlockNumber();
         BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, playerBallIndicator.transform.position, false);
 
         Pawn diggingPawn = AIPawnManager.GetClosestPawn(playerBallIndicator.transform.position, true,aiBlockingColumn);
         SkillManager.PlayerSkills diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
         BattackDefence.SetDefenceAbility(diggerSkills.defence);
-        Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
+        //Debug.Log("Defenders skill is: " + skillManager.AIP2.defence);
         BdefenceNumber = BattackDefence.GetDefenceNumber();
 
         messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
@@ -1381,7 +1390,7 @@ public class RallyManagerV2 : MonoBehaviour
             else modVector = playerOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            Debug.Log("A Hitting Error");
+            //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
             trueCallback();
             yield return true;
@@ -1412,7 +1421,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 int digNumber = resultNumber;
                 // A SIDE WITH A DIG
-                Debug.Log("B Dug " + digNumber);
+                //Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float AIPassDigTime = 1;
@@ -1452,9 +1461,9 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // get the set quality based on the pass
                 BpassSet.SetSettingAbility(skillManager.AIS.set);
-                Debug.Log("Setters Skill is: " + skillManager.AIS.set);
+                //Debug.Log("Setters Skill is: " + skillManager.AIS.set);
                 BsetNumber = BpassSet.GetSetNumber(digNumber);
-                Debug.Log("B Set " + AsetNumber);
+                //Debug.Log("B Set " + AsetNumber);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
@@ -1471,10 +1480,10 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET ATTACK
                 // get the attack quality based on the set
                 BsetAttack.SetAttackAbility(AIsetChoiceSkills.attack);
-                Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
+                //Debug.Log("Attackers skill is: " + AIsetChoiceSkills.attack);
                 BattackNumber = BsetAttack.GetAttackNumber(BsetNumber, AIPawnManager.GetClosestPawn(ballScript.transform.position));
                 BattackQuality = BsetAttack.GetAttackQuality(BsetNumber, BattackNumber);
-                Debug.Log("B Hit " + BattackQuality);
+                //Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
                 messageText.text = "AI swinging to attack here";
                 int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
@@ -1485,7 +1494,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 if (BattackQuality == 1)
                 {
-                    Debug.Log("B Hitting Error");
+                    //Debug.Log("B Hitting Error");
                     messageText.text = "AI pummels it into the net";
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
@@ -1504,14 +1513,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // ATTACK DEFENCE
                 // get the block and defence values
                 AattackDefence.SetBlockAbility(skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
-                Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
+                //Debug.Log("Blockers skill is: " + skillManager.M1Sliders.transform.Find("BlockSlider").GetComponent<Slider>().value);
                 AblockNumber = AattackDefence.GetBlockNumber();
                 AblockQuality = AattackDefence.GetBlockQuality(playerPawnManager, attackerPosition, aiBallIndicator.transform.position, true);
 
                 diggingPawn = playerPawnManager.GetClosestPawn(aiBallIndicator.transform.position, true, playerBlockingColumn);
                 diggerSkills = GetPlayerSkillFromPlayerPawn(diggingPawn);
                 AattackDefence.SetDefenceAbility(diggerSkills.defence);
-                Debug.Log("Defenders skill is: " + diggerSkills.defence);
+                //Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 AdefenceNumber = AattackDefence.GetDefenceNumber();
 
                 messageText.text = "AI attacking against a " + AblockQuality / 2 + " person block";
@@ -1524,7 +1533,7 @@ public class RallyManagerV2 : MonoBehaviour
                 resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
-                    Debug.Log("B Hitting Error");
+                    //Debug.Log("B Hitting Error");
                     messageText.text = "AI hits it out of bounds";
                     Vector3Int modVector = Vector3Int.zero;
                     if (aiAttackLocation.y > 4)
@@ -1556,7 +1565,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 digNumber = resultNumber;
                 // B SIDE WITH A DIG
-                Debug.Log("A Dug " + digNumber);
+                //Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
                 SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime);
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
@@ -1582,20 +1591,20 @@ public class RallyManagerV2 : MonoBehaviour
                 PlayerSetChoiceButtonsActivate(ApassNumber);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
+                rotationManager.TurnOffAllSetButtons();
                 yield return new WaitForSeconds(1);
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
                 //setLeftSideButton.SetActive(false);
                 //setMiddleButton.SetActive(false);
                 //setRightSideButton.SetActive(false);
-                rotationManager.TurnOffAllSetButtons();
                 playerPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
 
                 // get the set quality based on the pass
                 ApassSet.SetSettingAbility(skillManager.SetterSliders.transform.Find("SetSlider").GetComponent<Slider>().value);
-                Debug.Log("Setters Skill is: " + skillManager.SetterSliders.transform.Find("SetSlider").GetComponent<Slider>().value);
+                //Debug.Log("Setters Skill is: " + skillManager.SetterSliders.transform.Find("SetSlider").GetComponent<Slider>().value);
                 AsetNumber = ApassSet.GetSetNumber(digNumber);
-                Debug.Log("A Set " + AsetNumber);
+                //Debug.Log("A Set " + AsetNumber);
 
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(0.001f);
@@ -1625,13 +1634,13 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET ATTACK
                 // get the attack quality based on the set
                 AsetAttack.SetAttackAbility(setChoiceSkills.attack);
-                Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
+                //Debug.Log("Attacker skill is: " + setChoiceSkills.attack);
                 AattackNumber = AsetAttack.GetAttackNumber(AsetNumber, playerPawnManager.GetClosestPawn(ballScript.transform.position));
                 AattackQuality = AsetAttack.GetAttackQuality(AsetNumber, AattackNumber);
-                Debug.Log("A Hit " + AattackQuality);
+                //Debug.Log("A Hit " + AattackQuality);
                 if (AattackQuality == 1)
                 {
-                    Debug.Log("A Hitting Error");
+                    //Debug.Log("A Hitting Error");
                     messageText.text = "Player hits it into the bottom of the net";
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
@@ -1649,14 +1658,14 @@ public class RallyManagerV2 : MonoBehaviour
                 // ATTACK DEFENCE
                 // get the block and defence values
                 BattackDefence.SetBlockAbility(skillManager.AIM1.block);
-                Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
+                //Debug.Log("Blockers skill is: " + skillManager.AIM1.block);
                 BblockNumber = BattackDefence.GetBlockNumber();
                 BblockQuality = BattackDefence.GetBlockQuality(AIPawnManager, attackerPosition, playerBallIndicator.transform.position, false);
 
                 diggingPawn = AIPawnManager.GetClosestPawn(playerBallIndicator.transform.position, true, aiBlockingColumn);
                 diggerSkills = GetPlayerSkillFromAIPawn(diggingPawn);
                 BattackDefence.SetDefenceAbility(diggerSkills.defence);
-                Debug.Log("Defenders skill is: " + diggerSkills.defence);
+                //Debug.Log("Defenders skill is: " + diggerSkills.defence);
                 BdefenceNumber = BattackDefence.GetDefenceNumber();
 
                 messageText.text = "Player attacking against a " + BblockQuality / 2 + " person block";
@@ -1676,7 +1685,7 @@ public class RallyManagerV2 : MonoBehaviour
                     else modVector = playerOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    Debug.Log("A Hitting Error");
+                    //Debug.Log("A Hitting Error");
                     yield return new WaitForSeconds(1.001f);
                     trueCallback();
                     yield return true;

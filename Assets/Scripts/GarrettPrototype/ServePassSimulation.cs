@@ -94,7 +94,7 @@ public class ServePassSimulation : MonoBehaviour
         int serveValue = 0;
         // calculate the serve value
         serveValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _baseServeAbility));
-        Debug.Log("Serve Value was " + serveValue);
+        // Debug.Log("Serve Value was " + serveValue);
         return serveValue;
     }
 
@@ -103,7 +103,7 @@ public class ServePassSimulation : MonoBehaviour
         int passValue = 0;
         // calculate the pass value
         passValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, passAbility));
-        Debug.Log("Pass Value was " + passValue);
+        // Debug.Log("Pass Value was " + passValue);
         return passValue;
     }
 
@@ -160,8 +160,8 @@ public class ServePassSimulation : MonoBehaviour
         }
         // if its not an ace, alter the pass number based on the distance
         int newPass = pass - ((xDistance - 1) * Mathf.RoundToInt(distanceMod / 2)) - ((yDistance - 1) * distanceMod);
-        Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
-        Debug.LogWarning("Passers number modified from " + pass + " to " + newPass);
+        // Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
+        // Debug.LogWarning("Passers number modified from " + pass + " to " + newPass);
         pass = newPass;
 
         if (serve < 5)

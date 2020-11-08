@@ -187,7 +187,7 @@ public class PassSetSimulation : MonoBehaviour
         // 3 is good set
 
         int setValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _settingAbility));
-        Debug.Log("Set value was " + setValue);
+        // Debug.Log("Set value was " + setValue);
 
         int goodThreshold = 100 - (passNumber * 28);
 

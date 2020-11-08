@@ -183,7 +183,7 @@ public class RotationManager : MonoBehaviour
         playerPositionsArray[5] = position5;
         playerPositionsArray[0] = position6;
 
-        Debug.LogWarning("Rotating Players");
+        // Debug.LogWarning("Rotating Players");
     }
     public void RotateAI()
     {
@@ -201,7 +201,7 @@ public class RotationManager : MonoBehaviour
         aiPositionsArray[5] = position5;
         aiPositionsArray[0] = position6;
 
-        Debug.LogWarning("Rotating AI's");
+        // Debug.LogWarning("Rotating AI's");
     }
 
     public void SetPlayerRecievePositions(float travelTime)

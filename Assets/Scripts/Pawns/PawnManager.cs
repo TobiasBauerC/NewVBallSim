@@ -150,7 +150,7 @@ public class PawnManager : MonoBehaviour
         }
         if (closestPawn == null)
             closestPawn = pawns[5];
-        Debug.Log("Closest pawn calculated at " + closestPawn.name);
+        // Debug.Log("Closest pawn calculated at " + closestPawn.name);
         return closestPawn;
     }
 
@@ -174,7 +174,7 @@ public class PawnManager : MonoBehaviour
         }
         if (closestPawn == null)
             closestPawn = pawns[5];
-        Debug.Log("Closest pawn calculated at " + closestPawn.name);
+        // Debug.Log("Closest pawn calculated at " + closestPawn.name);
         return closestPawn;
     }
 
@@ -231,7 +231,7 @@ public class PawnManager : MonoBehaviour
             }
         }
 
-        Debug.Log(" There are " + numberOfBlockersHands + " blockers hands nearby");
+        //Debug.Log(" There are " + numberOfBlockersHands + " blockers hands nearby");
 
         return numberOfBlockersHands;
     }

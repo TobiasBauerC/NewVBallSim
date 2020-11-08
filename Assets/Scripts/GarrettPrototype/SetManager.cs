@@ -95,9 +95,9 @@ public class SetManager : MonoBehaviour
             bool didServingTeamWinTheRally = false;
             if (AteamServing)
             {
-                Debug.Log("A team should be serving");
+                // Debug.Log("A team should be serving");
                 // didServingTeamWinTheRally = StartCoroutine(rallyManagerV2.SimulateRallyAServing());
-
+                Debug.Log("Starting a new rally A serving");
                 StartCoroutine(rallyManagerV2.SimulateRallyAServing(ReturnTrue, ReturnFalse));
                 yield return new WaitUntil(() => coroutineResult != 3);
                 if (coroutineResult == 0)
@@ -109,8 +109,9 @@ public class SetManager : MonoBehaviour
             }
             else if (!AteamServing)
             {
-                Debug.Log("B team should be serving");
+                // Debug.Log("B team should be serving");
                 // didServingTeamWinTheRally = rallyManagerV2.SimulateRallyBServing();
+                Debug.Log("Starting a new rally B serving");
                 StartCoroutine(rallyManagerV2.SimulateRallyBServing(ReturnTrue, ReturnFalse));
                 yield return new WaitUntil(() => coroutineResult != 3);
                 if (coroutineResult == 0)
@@ -124,21 +125,21 @@ public class SetManager : MonoBehaviour
             // serving team won the rally, A serving
             if (didServingTeamWinTheRally && AteamServing)
             {
-                Debug.Log("A wins the point, continues serving");
+                // Debug.Log("A wins the point, continues serving");
                 AteamScore++;
             }
 
             // serving team won the rally, B serving
             else if(didServingTeamWinTheRally && !AteamServing)
             {
-                Debug.Log("B wins the point, continues serving");
+                // Debug.Log("B wins the point, continues serving");
                 BteamScore++;
             }
 
             // serving team lost the rally, A serving
             else if(!didServingTeamWinTheRally && AteamServing)
             {
-                Debug.Log("B wins the point, takes over the serve");
+                // Debug.Log("B wins the point, takes over the serve");
                 BteamScore++;
                 AteamServing = !AteamServing;
                 rotationManager.RotateAI();
@@ -147,7 +148,7 @@ public class SetManager : MonoBehaviour
             // serving team lost the rally, B serving
             else if (!didServingTeamWinTheRally && !AteamServing)
             {
-                Debug.Log("A wins the point, takes over the serve");
+                // Debug.Log("A wins the point, takes over the serve");
                 AteamScore++;
                 AteamServing = !AteamServing;
                 rotationManager.RotatePlayer();

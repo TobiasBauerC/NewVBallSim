@@ -314,7 +314,7 @@ public class SetAttackSimulation : MonoBehaviour
     public int GetAttackNumber(int setNumber)
     {
         int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _attackingAbility));
-        Debug.Log("Attack value was " + attackValue);
+        // Debug.Log("Attack value was " + attackValue);
         return attackValue;
     }
 
@@ -324,7 +324,7 @@ public class SetAttackSimulation : MonoBehaviour
         if (rotationManager.IsPlayerPawnLocatedInBackRow(attackingPlayer))
             attackMax -= 20;
         int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, attackMax));
-        Debug.Log("Attack value was " + attackValue);
+        // Debug.Log("Attack value was " + attackValue);
         return attackValue;
     }
 

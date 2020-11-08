@@ -228,17 +228,17 @@ public class AttackDefenceSimulation : MonoBehaviour
             // calculate the quality of dig
             if (defenceValue + defenceMod > trueAttackStrength + 60)
             {
-                Debug.Log("Dig quality was a 3");
+                //Debug.Log("Dig quality was a 3");
                 return 3;
             }
             else if (defenceValue + defenceMod > trueAttackStrength + 30)
             {
-                Debug.Log("Dig quality was a 2");
+                //Debug.Log("Dig quality was a 2");
                 return 2;
             }
             else
             {
-                Debug.Log("Dig quality was a 1");
+                //Debug.Log("Dig quality was a 1");
                 return 1;
             }
         }
@@ -287,13 +287,13 @@ public class AttackDefenceSimulation : MonoBehaviour
         if (xDistance > 4 || yDistance > 3)
         {
             // ball is too far from the player, lands for an ace
-            Debug.Log("Ball is too far from the player, lands for kill");
+            //Debug.Log("Ball is too far from the player, lands for kill");
             return 0;
         }
         // if its not a straight kill, alter the pass number based on the distance
         int newDig = defenceValue - ((xDistance - 1) * Mathf.RoundToInt(distanceMod / 2)) - ((yDistance - 1) * distanceMod);
-        Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
-        Debug.LogWarning("Passers number modified from " + defenceValue + " to " + newDig);
+        //Debug.LogWarning("Closest player xDistance is " + xDistance + " and yDistance is " + yDistance);
+        //Debug.LogWarning("Passers number modified from " + defenceValue + " to " + newDig);
         defenceValue = newDig;
 
         // if attack beats block, continue to check defense
@@ -304,17 +304,17 @@ public class AttackDefenceSimulation : MonoBehaviour
             // calculate the quality of dig
             if (defenceValue + defenceMod > trueAttackStrength + 60)
             {
-                Debug.Log("Dig quality was a 3");
+                //Debug.Log("Dig quality was a 3");
                 return 3;
             }
             else if (defenceValue + defenceMod > trueAttackStrength + 30)
             {
-                Debug.Log("Dig quality was a 2");
+                //Debug.Log("Dig quality was a 2");
                 return 2;
             }
             else
             {
-                Debug.Log("Dig quality was a 1");
+                //Debug.Log("Dig quality was a 1");
                 return 1;
             }
         }
@@ -442,14 +442,14 @@ public class AttackDefenceSimulation : MonoBehaviour
     private int GetBlockValue(float blockAbility)
     {
         int blockValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, blockAbility));
-        Debug.Log("Block value was: " + blockValue);
+        // Debug.Log("Block value was: " + blockValue);
         return blockValue;
     }
 
     public int GetBlockNumber()
     {
         int blockValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
-        Debug.Log("Block number was " + blockValue);
+        // Debug.Log("Block number was " + blockValue);
         return blockValue;
     }
 
@@ -477,14 +477,14 @@ public class AttackDefenceSimulation : MonoBehaviour
     private int GetDefenceValue(float defenceAbility)
     {
         int defenceValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, defenceAbility));
-        Debug.Log("Dig value was: " + defenceValue);
+        //Debug.Log("Dig value was: " + defenceValue);
         return defenceValue;
     }
 
     public int GetDefenceNumber()
     {
         int defenceValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _defenceAbility));
-        Debug.Log("Defence value was " + defenceValue);
+        //Debug.Log("Defence value was " + defenceValue);
         return defenceValue;
     }
 
