@@ -874,7 +874,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMove(true);
+                playerPawnManager.EnablePawnMoveMinusSetter(true);
                 messageText.text = "Player can transition their players to offensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -1286,8 +1286,8 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
-        playerPawnManager.EnablePawnMove(true);
-        messageText.text = "Player has a chance to move their attackers into position";
+        playerPawnManager.EnablePawnMoveMinusSetter(true);
+        messageText.text = "Player can transition their players to offensive positions";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
         playerPawnManager.EnablePawnMove(false);
@@ -1581,8 +1581,8 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMove(true);
-                messageText.text = "Player transitions to attack positions";
+                playerPawnManager.EnablePawnMoveMinusSetter(true);
+                messageText.text = "Player can transition their players to offensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
                 playerPawnManager.EnablePawnMove(false);
