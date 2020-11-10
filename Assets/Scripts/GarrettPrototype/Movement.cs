@@ -15,6 +15,8 @@ public static class Movement
             t += Time.deltaTime / time;
             objectToMove.position = Vector3.Lerp(worldStartPosition, worldEndPosition, t);
             timeSpent += Time.deltaTime;
+            if (timeSpent > time)
+                yield break;
             yield return null;
         }
         //Pawn pawnToMove = objectToMove.GetComponent<Pawn>();
@@ -44,6 +46,8 @@ public static class Movement
             t += Time.deltaTime / time;
             objectToMove.position = Vector3.Lerp(worldStartPosition, worldEndPosition, t);
             timeSpent += Time.deltaTime;
+            if (timeSpent > time)
+                yield break;
             yield return null;
         }
         //Pawn pawnToMove = objectToMove.GetComponent<Pawn>();
@@ -73,6 +77,8 @@ public static class Movement
             t += Time.deltaTime / time;
             objectToMove.position = Vector3.Lerp(worldStartPosition, worldEndPosition, t);
             timeSpent += Time.deltaTime;
+            if (timeSpent > time)
+                yield break;
             yield return null;
         }
         SoundManager.Instance.PlaySFX(endSounds);
@@ -103,6 +109,8 @@ public static class Movement
             t += Time.deltaTime / time;
             objectToMove.position = Vector3.Lerp(worldStartPosition, worldEndPosition, t);
             timeSpent += Time.deltaTime;
+            if (timeSpent > time)
+                yield break;
             yield return null;
         }
         SoundManager.Instance.PlaySFX(sounds);

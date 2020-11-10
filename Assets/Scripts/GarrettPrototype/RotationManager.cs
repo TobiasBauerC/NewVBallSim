@@ -136,6 +136,7 @@ public class RotationManager : MonoBehaviour
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
+            Debug.Log("Setting cell occupied at " + positions[i]);
         }
         yield break;
     }
@@ -155,6 +156,7 @@ public class RotationManager : MonoBehaviour
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
             aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
+            Debug.Log("Setting cell occupied at " + positions[i]);
         }
 
         yield break;
@@ -238,6 +240,28 @@ public class RotationManager : MonoBehaviour
 
         StartCoroutine(SetPlayerPawnPositions(positions, travelTime));
     }
+    public void SetPlayerOffensePositions(int passValue, float travelTime, Pawn diggingPawn)
+    {
+        Vector2[] positions = new Vector2[] { playerPosition6OffenseLocation, playerPosition1OffenseLocation, playerPosition2OffenseLocation, playerPosition3OffenseLocation, playerPosition4OffenseLocation, playerPosition5OffenseLocation };
+        bool setterDug = false;
+        if (diggingPawn.pawnRole == PawnRole.Setter)
+            setterDug = true;
+
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            if ((playerPositionsArray[i].pawnRole == PawnRole.Setter && !setterDug) || (playerPositionsArray[i].pawnRole == PawnRole.RightSide && setterDug))
+            {
+                if (passValue == 1)
+                    positions[i] = playerSetterPosition1Pass;
+                else if (passValue == 2)
+                    positions[i] = playerSetterPosition2Pass;
+                else if (passValue == 3)
+                    positions[i] = playerSetterPosition3Pass;
+            }
+        }
+
+        StartCoroutine(SetPlayerPawnPositions(positions, travelTime));
+    }
 
     public void SetPlayerDefensivePositions(float travelTime)
     {
@@ -284,6 +308,29 @@ public class RotationManager : MonoBehaviour
         StartCoroutine(SetAIPawnPositions(positions, travelTime));
     }
 
+    public void SetAIOffensePositions(int passValue, float travelTime, Pawn diggingPawn)
+    {
+        Vector2[] positions = new Vector2[] { aiPosition6OffenseLocation, aiPosition1OffenseLocation, aiPosition2OffenseLocation, aiPosition3OffenseLocation, aiPosition4OffenseLocation, aiPosition5OffenseLocation };
+        bool setterDug = false;
+        if (diggingPawn.pawnRole == PawnRole.Setter)
+            setterDug = true;
+
+        for (int i = 0; i < aiPositionsArray.Length; i++)
+        {
+            if ((aiPositionsArray[i].pawnRole == PawnRole.Setter && !setterDug) || (aiPositionsArray[i].pawnRole == PawnRole.RightSide && setterDug))
+            {
+                if (passValue == 1)
+                    positions[i] = aiSetterPosition1Pass;
+                else if (passValue == 2)
+                    positions[i] = aiSetterPosition2Pass;
+                else if (passValue == 3)
+                    positions[i] = aiSetterPosition3Pass;
+            }
+        }
+
+        StartCoroutine(SetAIPawnPositions(positions, travelTime));
+    }
+
     public void SetAIDefensivePositions(float travelTime)
     {
         StartCoroutine(SetAIPawnPositions(aiDefensivePositions, travelTime));
@@ -312,7 +359,7 @@ public class RotationManager : MonoBehaviour
         else return true;
     }
 
-    public void ActivateSetButtonsBasedOnPassDigNumber(int passDigNumber)
+    public void ActivateSetButtonsBasedOnPassDigNumber(int passDigNumber, Pawn diggingPawn)
     {
         if (passDigNumber > 0)
         {
@@ -348,6 +395,36 @@ public class RotationManager : MonoBehaviour
                 }
             }
         }
+
+        // disable the setter and right side hitters if the setter dug the ball
+        if(diggingPawn.pawnRole == PawnRole.Setter)
+        {
+            for (int i = 0; i < playerPositionsArray.Length; i++)
+            {
+                if (playerPositionsArray[i].pawnRole == PawnRole.Setter || playerPositionsArray[i].pawnRole == PawnRole.RightSide)
+                {
+                    playerPositionsArray[i].setButton.transform.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        // check to make sure at least one set option is available
+        int setOptions = 0;
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            if (playerPositionsArray[i].setButton.IsActive())
+                setOptions++;
+        }
+        if(setOptions < 1)
+        {
+            if(playerPositionsArray[0].pawnRole != PawnRole.Setter && playerPositionsArray[0] != diggingPawn)
+                playerPositionsArray[0].setButton.transform.gameObject.SetActive(true);
+            else if (playerPositionsArray[2].pawnRole != PawnRole.Setter && playerPositionsArray[2] != diggingPawn)
+                playerPositionsArray[2].setButton.transform.gameObject.SetActive(true);
+            else if (playerPositionsArray[5].pawnRole != PawnRole.Setter && playerPositionsArray[5] != diggingPawn)
+                playerPositionsArray[5].setButton.transform.gameObject.SetActive(true);
+        }
+
         Debug.Log("Activated the buttons fine");
     }
 

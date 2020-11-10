@@ -86,6 +86,27 @@ public class PawnManager : MonoBehaviour
         }
     }
 
+    public void EnablePawnMoveMinusSetter(bool enabled, Pawn diggingPawn, Pawn[] pawns = null)
+    {
+        if (pawns == null || pawns.Length == 0)
+            pawns = this.pawns;
+        foreach (Pawn p in pawns)
+        {
+            if(diggingPawn.pawnRole == PawnRole.Setter)
+            {
+                if (p.pawnRole != PawnRole.RightSide)
+                    p.enabled = enabled;
+                else p.enabled = false;
+            }
+            else
+            {
+                if (p.pawnRole != PawnRole.Setter)
+                    p.enabled = enabled;
+                else p.enabled = false;
+            }
+        }
+    }
+
     public void EnableLimitedMove(int limitX, int limitY, Pawn[] pawns = null)
     {
         if (pawns == null || pawns.Length == 0)

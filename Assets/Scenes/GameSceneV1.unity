@@ -561,10 +561,6 @@ MonoBehaviour:
   BpassSet: {fileID: 98711573}
   BsetAttack: {fileID: 1303322272}
   BattackDefence: {fileID: 916939049}
-  setDecisionButtons: {fileID: 1885662491}
-  setLeftSideButton: {fileID: 1503181430}
-  setMiddleButton: {fileID: 1801074584}
-  setRightSideButton: {fileID: 2083774637}
   messageText: {fileID: 1439844376}
   playerInteractionButton: {fileID: 2084409202}
   playerPawnManager: {fileID: 196471412}
@@ -12038,7 +12034,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1254cf9714aa48a4993c04bff3783550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rallyManager: {fileID: 0}
   rallyManagerV2: {fileID: 57551695}
   aWinsText: {fileID: 1865855884}
   bWinsText: {fileID: 644070405}

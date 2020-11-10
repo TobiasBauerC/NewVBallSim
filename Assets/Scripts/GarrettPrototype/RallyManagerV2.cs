@@ -249,10 +249,10 @@ public class RallyManagerV2 : MonoBehaviour
 
     private bool CompareResultsA(int result, Vector2Int attackLocation)
     {
-        Debug.Log("Comparing results");
+        // Debug.Log("Comparing results");
         if (result == 100)
         {
-            Debug.Log("B Block");
+            // Debug.Log("B Block");
             messageText.text = "AI slams the player";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(6, 4), 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, 6, 4, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
@@ -263,7 +263,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (result == -1)
         {
-            Debug.Log("A Tool");
+            // Debug.Log("A Tool");
             messageText.text = "Player tools the block hard";
             int toolModifier = 8;
             if (aiGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
@@ -282,7 +282,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (result == 0)
         {
-            Debug.Log("A Attack Lands for a Kill");
+            // Debug.Log("A Attack Lands for a Kill");
             messageText.text = "Player pounds it past the defence for a point";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
@@ -302,10 +302,10 @@ public class RallyManagerV2 : MonoBehaviour
 
     private bool CompareResultsB(int result, Vector2Int attackLocation)
     {
-        Debug.Log("Comparing results");
+        // Debug.Log("Comparing results");
         if (result == 100)
         {
-            Debug.Log("A Block");
+            // Debug.Log("A Block");
             messageText.text = "Player slams the AI";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3,3), 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 3, 3, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
@@ -316,7 +316,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (result == -1)
         {
-            Debug.Log("B Tool");
+            // Debug.Log("B Tool");
             messageText.text = "AI tools the player easily";
             int toolModifier = 8;
             if (playerGridManager.GetGridXYPosition(ballScript.transform.position).y < 5)
@@ -335,7 +335,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         else if (result == 0)
         {
-            Debug.Log("B Attack Lands for a Kill");
+            // Debug.Log("B Attack Lands for a Kill");
             messageText.text = "AI bounces it on the player";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
@@ -355,7 +355,7 @@ public class RallyManagerV2 : MonoBehaviour
 
 
 
-    private void SetAIPositionsBasedOffPass(int passNumber, float travelTime)
+    private void SetAIPositionsBasedOffPass(int passNumber, float travelTime, Pawn diggingPawn)
     {
         //if(passNumber == 1)
         //{
@@ -370,18 +370,25 @@ public class RallyManagerV2 : MonoBehaviour
         //    AIPawnManager.SetPositions(AIPawnManager.allPositionSets[2].positions);
         //}
 
-        rotationManager.SetAIOffensePositions(passNumber, travelTime);
+        rotationManager.SetAIOffensePositions(passNumber, travelTime, diggingPawn);
     }
-    private SkillManager.PlayerSkills AISetSelection(int digNumber)
+    private SkillManager.PlayerSkills AISetSelection(int digNumber, Pawn diggingPawn)
     {
+        Pawn newSetter = null;
+        if (diggingPawn.pawnRole == PawnRole.Setter)
+        {
+            for (int i = 0; i < rotationManager.aiPositionsArray.Length; i++)
+            {
+                if (rotationManager.aiPositionsArray[i].pawnRole == PawnRole.RightSide)
+                    newSetter = rotationManager.aiPositionsArray[i];
+            }
+        }
+            
         if (digNumber == 1)
         {
-            // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[4].positions);
-
-            //if(rotationManager.aiPositionsArray[4].pawnRole == PawnRole.Setter)
             // Debug.Log("AI forced to set Power 1");
             UnityEngine.Vector2 playerLocation;
-            if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
+            if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
                 playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
             else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
             StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
@@ -395,7 +402,7 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
-                if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
+                if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
                 else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
@@ -406,7 +413,7 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 // Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
-                if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter)
+                if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[2] != newSetter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
                 else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
@@ -422,7 +429,7 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
-                if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter)
+                if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
                 else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
@@ -432,7 +439,7 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 //Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
-                if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter)
+                if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[2] != newSetter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
                 else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
@@ -442,17 +449,24 @@ public class RallyManagerV2 : MonoBehaviour
             {
                 //Debug.Log("AI sets middle 2");
                 UnityEngine.Vector2 playerLocation;
-                if (rotationManager.aiPositionsArray[3].pawnRole != PawnRole.Setter)
+                if (rotationManager.aiPositionsArray[3].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[3] != newSetter)
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[3]);
-                else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[0]);
+                else
+                {
+                    if(rotationManager.aiPositionsArray[0] != newSetter && rotationManager.aiPositionsArray[0].pawnRole != PawnRole.Setter)
+                        playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[0]);
+                    else
+                        playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                }
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds));
                 return skillManager.AIM1;
             }
         }
+        Debug.LogError("AI Set selection didn't work, something broke. Likely no valid set options were available");
         return skillManager.AIP1;
     }
 
-    private void PlayerSetChoiceButtonsActivate(int passNumber)
+    private void PlayerSetChoiceButtonsActivate(int passNumber, Pawn diggingPawn)
     {
         //if (passNumber > 0)
         //{
@@ -468,11 +482,11 @@ public class RallyManagerV2 : MonoBehaviour
         //}
         //Debug.Log("Activated the buttons fine");
 
-        rotationManager.ActivateSetButtonsBasedOnPassDigNumber(passNumber);
+        rotationManager.ActivateSetButtonsBasedOnPassDigNumber(passNumber, diggingPawn);
         
     }
 
-    private void SetBallPositionOffDigPlayer(int digNumber, float time)
+    private void SetBallPositionOffDigPlayer(int digNumber, float time, Pawn diggingPawn)
     {
         if (digNumber == 1) {
             StartCoroutine(ballScript.SetPosition(playerGridManager, 4, 4, time, SoundManager.Instance.volleyballPassSounds));
@@ -487,7 +501,7 @@ public class RallyManagerV2 : MonoBehaviour
             // playerPawnManager.MoveSetter(8, 3);
         }
 
-        rotationManager.SetPlayerOffensePositions(digNumber, time);
+        rotationManager.SetPlayerOffensePositions(digNumber, time, diggingPawn);
     }
 
     private void SetBallPositionOffDigAI(int digNumber, float time)
@@ -708,6 +722,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
 
         float serveTravelTime = 1.5f;
+        aiGridManager.SetCellOccupied(passingPawn.transform.position, false); // setting the passing pawn's tile occupation to false before moving towards the ball
         StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, aiGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), serveTravelTime));
         StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, serveTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         messageText.text = "Player serves";
@@ -721,7 +736,7 @@ public class RallyManagerV2 : MonoBehaviour
         passingPawn.SetSprite(Pawn.Sprites.dig);
         yield return new WaitForSeconds(0.2f);
         passingPawn.SetSprite(Pawn.Sprites.neutral);
-        SetAIPositionsBasedOffPass(BpassNumber, AIPassDigTime);
+        SetAIPositionsBasedOffPass(BpassNumber, AIPassDigTime, passingPawn);
         yield return new WaitForSeconds(AIPassDigTime);
         
 
@@ -737,7 +752,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         // PASS SET
         // SET CHOICE
-        AIsetChoiceSkills = AISetSelection(BpassNumber); // ai set selection also sets the ai attack position, and the ball position
+        AIsetChoiceSkills = AISetSelection(BpassNumber, passingPawn); // ai set selection also sets the ai attack position, and the ball position
         yield return new WaitForSeconds(1); // ball travel time wait
         messageText.text = "AI making a set choice";
         attackersRow = ballScript.GetGridPosition().y;
@@ -854,6 +869,7 @@ public class RallyManagerV2 : MonoBehaviour
             // return result2;
             while (resultNumber == 2 || resultNumber == 1 || resultNumber == 3)
             {
+                playerGridManager.SetCellOccupied(diggingPawn.transform.position, false); // setting the digging pawn's tile occupation to false before moving towards the ball
                 StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, aiBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y, 1, null));
@@ -864,7 +880,7 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player digs it up";
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float playerPassDigTravelTime = 1;
-                SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime);
+                SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
                 yield return new WaitForSeconds(0.2f);
                 playerPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
                 rotationManager.SetAIDefensivePositions(playerPassDigTravelTime);
@@ -876,7 +892,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMoveMinusSetter(true);
+                playerPawnManager.EnablePawnMoveMinusSetter(true, diggingPawn);
                 messageText.text = "Player can transition their players to offensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -887,7 +903,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET CHOICE
                 // PLAYER INTERACTION
                 playerSetDecision = false;
-                PlayerSetChoiceButtonsActivate(digNumber);
+                PlayerSetChoiceButtonsActivate(digNumber, diggingPawn);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
                 rotationManager.TurnOffAllSetButtons();
@@ -1007,6 +1023,7 @@ public class RallyManagerV2 : MonoBehaviour
                     yield return result3;
                     yield break;
                 }
+                aiGridManager.SetCellOccupied(diggingPawn.transform.position, false); // setting the digging pawn's tile occupation to false before moving towards the ball
                 StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y, 1, null));
@@ -1020,7 +1037,7 @@ public class RallyManagerV2 : MonoBehaviour
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
                 yield return new WaitForSeconds(0.2f);
                 AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
-                SetAIPositionsBasedOffPass(digNumber, AIPassDigTime);
+                SetAIPositionsBasedOffPass(digNumber, AIPassDigTime, diggingPawn);
                 rotationManager.SetPlayerDefensivePositions(AIPassDigTime);
                 yield return new WaitForSeconds(AIPassDigTime);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
@@ -1041,7 +1058,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // PASS SET
                 // SET CHOICE
-                AIsetChoiceSkills = AISetSelection(digNumber);
+                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 messageText.text = "AI making a set choice";
                 attackersRow = ballScript.GetGridPosition().y;
@@ -1270,6 +1287,7 @@ public class RallyManagerV2 : MonoBehaviour
         }
         float AIServeTravelTime = 1;
         rotationManager.SetAIDefensivePositions(AIServeTravelTime);
+        playerGridManager.SetCellOccupied(passingPawn.transform.position, false); // setting the passing pawn's tile occupation to false before moving towards the ball
         StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, playerGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime));
         // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
@@ -1277,7 +1295,7 @@ public class RallyManagerV2 : MonoBehaviour
         // Debug.Log("A Passed " + ApassNumber);
         messageText.text = "Player passes it up";
         float playerPassDigTravelTime = 1;
-        SetBallPositionOffDigPlayer(ApassNumber, playerPassDigTravelTime);
+        SetBallPositionOffDigPlayer(ApassNumber, playerPassDigTravelTime, passingPawn);
         passingPawn.SetSprite(Pawn.Sprites.dig);
         yield return new WaitForSeconds(0.2f);
         passingPawn.SetSprite(Pawn.Sprites.neutral);
@@ -1291,7 +1309,7 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
-        playerPawnManager.EnablePawnMoveMinusSetter(true);
+        playerPawnManager.EnablePawnMoveMinusSetter(true, passingPawn);
         messageText.text = "Player can transition their players to offensive positions";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
         playerInteractionButton.SetActive(false);
@@ -1300,7 +1318,7 @@ public class RallyManagerV2 : MonoBehaviour
         // SET CHOICE
         // PLAYER INTERACTION
         playerSetDecision = false;
-        PlayerSetChoiceButtonsActivate(ApassNumber);
+        PlayerSetChoiceButtonsActivate(ApassNumber, passingPawn);
         messageText.text = "Player choose who to set";
         yield return new WaitUntil(() => playerSetDecision);
         rotationManager.TurnOffAllSetButtons();
@@ -1422,6 +1440,7 @@ public class RallyManagerV2 : MonoBehaviour
 
             while (resultNumber == 2 || resultNumber == 1 || resultNumber == 3)
             {
+                aiGridManager.SetCellOccupied(diggingPawn.transform.position, false); // setting the digging pawn's tile occupation to false before moving towards the ball
                 StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x, playerAttackLocation.y, 1, null));
@@ -1436,7 +1455,7 @@ public class RallyManagerV2 : MonoBehaviour
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
                 yield return new WaitForSeconds(0.2f);
                 AIPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
-                SetAIPositionsBasedOffPass(digNumber, AIPassDigTime);
+                SetAIPositionsBasedOffPass(digNumber, AIPassDigTime, diggingPawn);
                 rotationManager.SetPlayerDefensivePositions(AIPassDigTime);
                 yield return new WaitForSeconds(AIPassDigTime);
                 playerPawnManager.SetBlockersAndDefendersSprites(playerBlockingColumn);
@@ -1458,7 +1477,7 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // PASS SET
                 // SET CHOICE
-                AIsetChoiceSkills = AISetSelection(digNumber);
+                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
@@ -1566,7 +1585,7 @@ public class RallyManagerV2 : MonoBehaviour
                     yield return result3;
                     yield break;
                 }
-
+                playerGridManager.SetCellOccupied(diggingPawn.transform.position, false); // setting the digging pawn's tile occupation to false before moving towards the ball
                 StartCoroutine(Movement.MoveFromAtoB(diggingPawn.transform, diggingPawn.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y), 1));
                 // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, aiBallIndicator.transform.position, 1, SoundManager.Instance.volleyballSpikeSounds));
                 StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y, 1, null));
@@ -1576,7 +1595,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 //Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
-                SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime);
+                SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 yield return new WaitForSeconds(0.2f);
                 playerPawnManager.SetAllPawnSprites(Pawn.Sprites.neutral);
@@ -1588,7 +1607,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnablePawnMoveMinusSetter(true);
+                playerPawnManager.EnablePawnMoveMinusSetter(true, diggingPawn);
                 messageText.text = "Player can transition their players to offensive positions";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
                 playerInteractionButton.SetActive(false);
@@ -1597,7 +1616,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // PASS SET
                 // SET CHOICE
                 playerSetDecision = false;
-                PlayerSetChoiceButtonsActivate(ApassNumber);
+                PlayerSetChoiceButtonsActivate(ApassNumber, diggingPawn);
                 messageText.text = "Player choose who to set";
                 yield return new WaitUntil(() => playerSetDecision);
                 rotationManager.TurnOffAllSetButtons();

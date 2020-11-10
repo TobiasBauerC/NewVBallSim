@@ -60,6 +60,7 @@ public class Pawn : MonoBehaviour
         this.pawnManager = pawnManager;
         transform.position = pawnManager.gridManager.GetGridPosition(x, y);
         pawnManager.gridManager.SetCellOccupied(transform.position, true);
+        Debug.Log("Setting cell occupied at " + x + " " + y);
     }
 
     void Update()
@@ -81,6 +82,7 @@ public class Pawn : MonoBehaviour
                 selected = false;
                 transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
+                Debug.Log("Setting cell occupied at " + pawnManager.gridManager.GetGridXYPosition(transform.position));
             }
         }
     }
