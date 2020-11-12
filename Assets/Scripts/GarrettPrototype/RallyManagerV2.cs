@@ -1210,7 +1210,9 @@ public class RallyManagerV2 : MonoBehaviour
         messageText.text = "Player has a chance to set up their reception positions";
         // playerPawnManager.SetPositions(playerPawnManager.allPositionSets[2].positions);
         rotationManager.SetPlayerRecievePositions(0);
+        playerPawnManager.serveRecieve = true;
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
+        playerPawnManager.serveRecieve = false;
         playerInteractionButton.SetActive(false);
         playerPawnManager.EnablePawnMove(false);
 

@@ -81,7 +81,7 @@ public class SetManager : MonoBehaviour
     {
         setOver = false;
         // A team serves first
-        AteamServing = true;
+        AteamServing = false;
         AteamScore = 0;
         BteamScore = 0;
         coroutineResult = 3;

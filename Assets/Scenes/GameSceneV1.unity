@@ -2763,6 +2763,7 @@ MonoBehaviour:
   blockingLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  rotationManager: {fileID: 531197301}
 --- !u!1 &200074695
 GameObject:
   m_ObjectHideFlags: 0
@@ -19943,6 +19944,7 @@ MonoBehaviour:
   blockingLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  rotationManager: {fileID: 531197301}
 --- !u!1001 &1799822318
 PrefabInstance:
   m_ObjectHideFlags: 0

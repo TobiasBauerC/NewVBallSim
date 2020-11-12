@@ -17,6 +17,8 @@ public class Pawn : MonoBehaviour
     [SerializeField] private PawnRole _pawnRole = 0;
     public PawnRole pawnRole { get { return _pawnRole; } }
 
+
+
     [Header("Starting Pos")]
     [SerializeField] private int x = 0;
     [SerializeField] private int y = 0;
@@ -60,7 +62,6 @@ public class Pawn : MonoBehaviour
         this.pawnManager = pawnManager;
         transform.position = pawnManager.gridManager.GetGridPosition(x, y);
         pawnManager.gridManager.SetCellOccupied(transform.position, true);
-        Debug.Log("Setting cell occupied at " + x + " " + y);
     }
 
     void Update()
@@ -75,14 +76,29 @@ public class Pawn : MonoBehaviour
         // if selected, have it follow mouse
         else if (selected)
         {
-            transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+            if (!pawnManager.serveRecieve)
+            {
+                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+            }
+            else
+            {
+                // check if the pawn location is a valid rotation location
+                if (pawnManager.rotationManager.CheckIfPawnInRotation(this))
+                {
+                    // can set the position
+                    transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid(), this);
+                }
+            }
+                
          
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
-                transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
+                if(!pawnManager.serveRecieve)
+                    transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
+                else transform.position = pawnManager.gridManager.GetGridPosition(transform.position, pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
-                Debug.Log("Setting cell occupied at " + pawnManager.gridManager.GetGridXYPosition(transform.position));
+                
             }
         }
     }

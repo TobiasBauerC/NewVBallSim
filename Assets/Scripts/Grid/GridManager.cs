@@ -32,6 +32,11 @@ public class GridManager : MonoBehaviour
         return grid.GetGridPosition(worldPosition, startCell, limitX, limitY);
     }
 
+    public Vector3 GetGridPosition(Vector3 worldPosition, Vector2 startCell, int limitX, int limitY, Pawn pawnToCheck)
+    {
+        return grid.GetGridPosition(worldPosition, startCell, limitX, limitY, pawnToCheck);
+    }
+
     public Vector3 GetGridPosition(int x, int y)
     {
         return grid.GetGridPosition(x, y);

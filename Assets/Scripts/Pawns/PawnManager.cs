@@ -27,6 +27,15 @@ public class PawnManager : MonoBehaviour
 
     [SerializeField] private LayerMask blockingLayerMask = 0;
 
+    public RotationManager rotationManager;
+
+    private bool _serveRecieve = false;
+    public bool serveRecieve
+    {
+        get { return _serveRecieve; }
+        set { _serveRecieve = value; }
+    }
+
     /// <summary>
     /// Gets the cursor's position in world space
     /// </summary>

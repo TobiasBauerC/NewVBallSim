@@ -136,7 +136,7 @@ public class RotationManager : MonoBehaviour
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
-            Debug.Log("Setting cell occupied at " + positions[i]);
+            // Debug.Log("Setting cell occupied at " + positions[i]);
         }
         yield break;
     }
@@ -156,7 +156,7 @@ public class RotationManager : MonoBehaviour
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
             aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
-            Debug.Log("Setting cell occupied at " + positions[i]);
+            // Debug.Log("Setting cell occupied at " + positions[i]);
         }
 
         yield break;
@@ -435,4 +435,145 @@ public class RotationManager : MonoBehaviour
             playerPositionsArray[i].setButton.transform.gameObject.SetActive(false);
         }
     }
+
+    public bool CheckIfPawnInRotation(Pawn pawnToCheck)
+    {
+        int positionOfPawnToCheck = -1;
+
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            if (playerPositionsArray[i] == pawnToCheck)
+            {
+                positionOfPawnToCheck = i;
+                Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
+            }
+        }
+
+
+        if (positionOfPawnToCheck < 0 || positionOfPawnToCheck > 6)
+        {
+            Debug.LogError("Pawn position is a number that doesn't make sense");
+            return true;
+        }
+
+        Vector2 pawnToMoveGridPosition = playerGridManager.GetGridXYPosition(pawnToCheck.GetMyManager().GetCursorPosition());
+        Vector2 pos0GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[0].transform.position);
+        Vector2 pos1GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[1].transform.position);
+        Vector2 pos2GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[2].transform.position);
+        Vector2 pos3GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[3].transform.position);
+        Vector2 pos4GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[4].transform.position);
+        Vector2 pos5GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[5].transform.position);
+
+        switch (positionOfPawnToCheck)
+        {
+            case 0:
+                // player x position must be lower or equal to pos 3
+                // player y position must be higher or equal to pos 1 AND lower or equal to pos 5
+                if (pawnToMoveGridPosition.x <= pos3GridPosition.x && pawnToMoveGridPosition.y >= pos1GridPosition.y && pawnToMoveGridPosition.y <= pos5GridPosition.y)
+                    return true;
+                else return false;
+            case 1:
+                // player x position must be lower or equal than pos 2
+                // player y position must be lower or equal to pos 0
+                if (pawnToMoveGridPosition.x <= pos2GridPosition.x && pawnToMoveGridPosition.y <= pos0GridPosition.y)
+                    return true;
+                else return false;
+            case 2:
+                // player x position must be higher or equal to pos 1
+                // player y position must be lower or equal to pos 3
+                if (pawnToMoveGridPosition.x >= pos1GridPosition.x && pawnToMoveGridPosition.y <= pos3GridPosition.y)
+                    return true;
+                else return false;
+            case 3:
+                // player x pos must be higher or equal to pos 0
+                // player y pos must be higher or equal to pos 2 AND lower or equal to pos 4
+                if (pawnToMoveGridPosition.x >= pos0GridPosition.x && pawnToMoveGridPosition.y >= pos2GridPosition.y && pawnToMoveGridPosition.y <= pos4GridPosition.y)
+                    return true;
+                else return false;
+            case 4:
+                // player x pos must be higher or equal to pos 5
+                // player y post must be higher or equal to pos 3
+                if (pawnToMoveGridPosition.x >= pos5GridPosition.x && pawnToMoveGridPosition.y >= pos3GridPosition.y)
+                    return true;
+                else return false;
+            case 5:
+                // player x pos must be lower or equal to pos 4
+                // player y pos must be greater or equal to pos 0
+                if (pawnToMoveGridPosition.x <= pos4GridPosition.x && pawnToMoveGridPosition.y >= pos0GridPosition.y)
+                    return true;
+                else return false;
+
+        }
+
+        Debug.LogError("Didn't want to get here");
+        return true;
+    }
+
+    public bool CheckIfLocationInRotation(Vector2 gridLocation, Pawn pawnToCheck)
+    {
+        int positionOfPawnToCheck = -1;
+
+        for (int i = 0; i < playerPositionsArray.Length; i++)
+        {
+            if (playerPositionsArray[i] == pawnToCheck)
+            {
+                positionOfPawnToCheck = i;
+                Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
+            }
+        }
+
+        Vector2 pawnToMoveGridPosition = gridLocation;
+        Vector2 pos0GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[0].transform.position);
+        Vector2 pos1GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[1].transform.position);
+        Vector2 pos2GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[2].transform.position);
+        Vector2 pos3GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[3].transform.position);
+        Vector2 pos4GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[4].transform.position);
+        Vector2 pos5GridPosition = playerGridManager.GetGridXYPosition(playerPositionsArray[5].transform.position);
+
+        switch (positionOfPawnToCheck)
+        {
+            case 0:
+                // player x position must be lower or equal to pos 3
+                // player y position must be higher or equal to pos 1 AND lower or equal to pos 5
+                if (pawnToMoveGridPosition.x <= pos3GridPosition.x && pawnToMoveGridPosition.y >= pos1GridPosition.y && pawnToMoveGridPosition.y <= pos5GridPosition.y)
+                    return true;
+                else return false;
+            case 1:
+                // player x position must be lower or equal than pos 2
+                // player y position must be lower or equal to pos 0
+                if (pawnToMoveGridPosition.x <= pos2GridPosition.x && pawnToMoveGridPosition.y <= pos0GridPosition.y)
+                    return true;
+                else return false;
+            case 2:
+                // player x position must be higher or equal to pos 1
+                // player y position must be lower or equal to pos 3
+                if (pawnToMoveGridPosition.x >= pos1GridPosition.x && pawnToMoveGridPosition.y <= pos3GridPosition.y)
+                    return true;
+                else return false;
+            case 3:
+                // player x pos must be higher or equal to pos 0
+                // player y pos must be higher or equal to pos 2 AND lower or equal to pos 4
+                if (pawnToMoveGridPosition.x >= pos0GridPosition.x && pawnToMoveGridPosition.y >= pos2GridPosition.y && pawnToMoveGridPosition.y <= pos4GridPosition.y)
+                    return true;
+                else return false;
+            case 4:
+                // player x pos must be higher or equal to pos 5
+                // player y post must be higher or equal to pos 3
+                if (pawnToMoveGridPosition.x >= pos5GridPosition.x && pawnToMoveGridPosition.y >= pos3GridPosition.y)
+                    return true;
+                else return false;
+            case 5:
+                // player x pos must be lower or equal to pos 4
+                // player y pos must be greater or equal to pos 0
+                if (pawnToMoveGridPosition.x <= pos4GridPosition.x && pawnToMoveGridPosition.y >= pos0GridPosition.y)
+                    return true;
+                else return false;
+
+        }
+
+
+        Debug.Log("Didn't want to get here");
+        return true;
+    }
+    
 }
