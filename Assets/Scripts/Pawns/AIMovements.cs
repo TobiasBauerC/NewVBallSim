@@ -14,7 +14,7 @@ public static class AIMovements
         Vector2 pawnGridPositionVector2 = aiGridManager.GetGridXYPosition(aiToMove.transform.position);
         Vector2Int pawnGridPosition = new Vector2Int(Mathf.RoundToInt(pawnGridPositionVector2.x), Mathf.RoundToInt(pawnGridPositionVector2.y));
 
-        Vector3 targetPositionWithLimit = aiGridManager.GetGridPosition(targetPosition, pawnGridPosition, xLimit, yLimit);
+        Vector3 targetPositionWithLimit = aiGridManager.ForceGetGridPosition(targetPosition, pawnGridPosition, xLimit, yLimit);
         Debug.Log("Target grid position with limit is " + aiGridManager.GetGridXYPosition(targetPositionWithLimit));
 
         Debug.Log("Target grid position is " + targetGridPosition);

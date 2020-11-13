@@ -47,6 +47,10 @@ public class GridManager : MonoBehaviour
     {
         return grid.ForceGetGridPosition(worldPosition);
     }
+    public Vector3 ForceGetGridPosition(Vector3 worldPosition, Vector2 startCell, int limitX, int limitY)
+    {
+        return grid.ForceGetGridPosition(worldPosition, startCell, limitX, limitY);
+    }
 
     public Vector3 ForceGetGridPosition(int x, int y)
     {

@@ -51,6 +51,7 @@ public class Grid
         y = Mathf.Clamp(Mathf.FloorToInt(worldPosition.y / cellSize), 0, height - 1);
     }
 
+
     void GetAvailableXY(Vector3 worldPosition, out int x, out int y)
     {
         // Modify world pos by origin point
@@ -97,6 +98,15 @@ public class Grid
 
         GetAvailableXY(x, y, out x, out y, startCell, limitX, limitY);
     }
+    void GetAnyXY(Vector3 worldPosition, out int x, out int y, Vector2 startCell, int limitX, int limitY)
+    {
+        // Modify world pos by origin point
+        worldPosition -= origin;
+        x = Mathf.FloorToInt(worldPosition.x / cellSize);
+        y = Mathf.FloorToInt(worldPosition.y / cellSize);
+
+        GetAnyXY(x, y, out x, out y, startCell, limitX, limitY);
+    }
 
     void GetAvailableXY(Vector3 worldPosition, out int x, out int y, Vector2 startCell, int limitX, int limitY, Pawn pawnToCheck)
     {
@@ -134,9 +144,15 @@ public class Grid
             }
         }
     }
+    void GetAnyXY(int xPos, int yPos, out int x, out int y, Vector2 startCell, int limitX, int limitY)
+    {
+        // Modify world pos by origin point and clamp return values to the grid
+        x = Mathf.Clamp(Mathf.Clamp(xPos, (int)startCell.x - limitX, (int)startCell.x + limitX), 0, width - 1);
+        y = Mathf.Clamp(Mathf.Clamp(yPos, (int)startCell.y - limitY, (int)startCell.y + limitY), 0, height - 1);
+    }
 
     void GetAvailableXY(int xPos, int yPos, out int x, out int y, Vector2 startCell, int limitX, int limitY, Pawn pawnTryingToMoveOnServeRecieve)
-    {
+    { 
         // Modify world pos by origin point and clamp return values to the grid
         x = Mathf.Clamp(Mathf.Clamp(xPos, (int)startCell.x - limitX, (int)startCell.x + limitX), 0, width - 1);
         y = Mathf.Clamp(Mathf.Clamp(yPos, (int)startCell.y - limitY, (int)startCell.y + limitY), 0, height - 1);
@@ -197,6 +213,12 @@ public class Grid
     {
         int x, y;
         GetAvailableXY(worldPosition, out x, out y, startCell, limitX, limitY);
+        return GetCellCenter(x, y);
+    }
+    public Vector3 ForceGetGridPosition(Vector3 worldPosition, Vector2 startCell, int limitX, int limitY)
+    {
+        int x, y;
+        GetAnyXY(worldPosition, out x, out y, startCell, limitX, limitY);
         return GetCellCenter(x, y);
     }
 
