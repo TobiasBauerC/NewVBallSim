@@ -203,12 +203,9 @@ public class PawnManager : MonoBehaviour
         {
             if (closestPawn == null)
             {
-
                 closestPawn = pawnList[i];
-                continue;
-
             }
-            else if (closestPawn != null)
+            else /*if (closestPawn != null)*/
             {
                 if (Vector2.Distance(pawnList[i].transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition))
                 {

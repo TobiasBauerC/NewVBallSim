@@ -927,6 +927,10 @@ public class RallyManagerV2 : MonoBehaviour
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(0.001f);
 
+                float blockersReactTime = 0.2f;
+                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+                yield return new WaitForSeconds(blockersReactTime);
+
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
@@ -1644,6 +1648,10 @@ public class RallyManagerV2 : MonoBehaviour
 
                 messageText.text = "Player sets it up";
                 yield return new WaitForSeconds(0.001f);
+
+                blockersReactTime = 0.2f;
+                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+                yield return new WaitForSeconds(blockersReactTime);
 
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
