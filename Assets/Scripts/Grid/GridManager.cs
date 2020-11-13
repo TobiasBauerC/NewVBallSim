@@ -83,4 +83,9 @@ public class GridManager : MonoBehaviour
     {
         return grid.GetGridHeight();
     }
+
+    public bool GetCellOccupied(Vector3 worldPosition)
+    {
+        return grid.GetGridOccupied(worldPosition);
+    }
 }

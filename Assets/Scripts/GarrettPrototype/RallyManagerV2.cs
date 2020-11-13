@@ -646,6 +646,7 @@ public class RallyManagerV2 : MonoBehaviour
         Vector2Int serveLocation = new Vector2Int(4,4);
         playerBallIndicator.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.001f);
+        // StartCoroutine(AIMovements.MoveSingleAITowardsTarget(rotationManager.aiPositionsArray[1], 1, 5, aiGridManager.GetGridPosition(0, 0), aiGridManager, AIPawnManager, rotationManager, 2f));
         while (waitingForPlayerInteraction)
         {
             if (Input.GetMouseButtonUp(0))
@@ -1342,6 +1343,10 @@ public class RallyManagerV2 : MonoBehaviour
         // SET ATTACK
         messageText.text = "Player sets it up";
         yield return new WaitForSeconds(0.001f);
+
+        float blockersReactTime = 0.2f;
+        StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+        yield return new WaitForSeconds(blockersReactTime);
 
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;

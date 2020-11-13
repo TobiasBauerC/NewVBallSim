@@ -196,6 +196,34 @@ public class PawnManager : MonoBehaviour
         return closestPawn;
     }
 
+    public Pawn GetClosestPawn(Vector2 ballWorldPosition, List<Pawn> pawnList)
+    {
+        Pawn closestPawn = null;
+        for(int i = 0; i < pawnList.Count; i++)
+        {
+            if (closestPawn == null)
+            {
+
+                closestPawn = pawnList[i];
+                continue;
+
+            }
+            else if (closestPawn != null)
+            {
+                if (Vector2.Distance(pawnList[i].transform.position, ballWorldPosition) < Vector2.Distance(closestPawn.transform.position, ballWorldPosition))
+                {
+                    closestPawn = pawnList[i];
+                }
+            }
+        }
+        if (closestPawn == null)
+        {
+            closestPawn = pawns[4];
+            Debug.LogError("Something went wrong, didn't find the closest pawn");
+        }
+        return closestPawn;
+    }
+
     public Pawn GetClosestPawn(Vector2 ballWorldPosition)
     {
         Pawn closestPawn = null;
