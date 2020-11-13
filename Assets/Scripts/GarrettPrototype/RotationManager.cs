@@ -162,6 +162,100 @@ public class RotationManager : MonoBehaviour
         yield break;
     }
 
+    public IEnumerator LineUpBlockers(float travelTime)
+    {
+        Vector2[] newPositions = aiDefensivePositions;
+        Vector2[] playerCurrentPositions = new Vector2[] { playerGridManager.GetGridXYPosition(playerPositionsArray[0].transform.position),
+        playerGridManager.GetGridXYPosition(playerPositionsArray[1].transform.position),
+        playerGridManager.GetGridXYPosition(playerPositionsArray[2].transform.position),
+        playerGridManager.GetGridXYPosition(playerPositionsArray[3].transform.position),
+        playerGridManager.GetGridXYPosition(playerPositionsArray[4].transform.position),
+        playerGridManager.GetGridXYPosition(playerPositionsArray[5].transform.position)};
+
+        int blockingStrategy = UnityEngine.Random.Range(0, 3);
+        blockingStrategy = 0;
+        // block strategy 0 -> just line up in base defense spots and react
+        if (blockingStrategy == 0)
+        {
+            // do nothing, default positions are correct
+        }
+        // block strategy 1 -> line the blockers up with their attackers, 6 moves up
+        else if (blockingStrategy == 1)
+        {
+            newPositions[2].y = playerCurrentPositions[4].y;
+            newPositions[3].y = playerCurrentPositions[3].y;
+            newPositions[4].y = playerCurrentPositions[2].y;
+            newPositions[0].x -= 1;
+
+            // check if all three attackers are stacked
+            if(playerCurrentPositions[4].y == playerCurrentPositions[3].y && playerCurrentPositions[4].y == playerCurrentPositions[2].y)
+            {
+                // check if position is at the top of the grid
+                if(playerCurrentPositions[4].y == 8)
+                {
+                    newPositions[2].y = 8;
+                    newPositions[3].y = 7;
+                    newPositions[4].y = 6;
+                }
+                // check if position is at the bottom of the grid
+                else if(playerCurrentPositions[4].y == 0)
+                {
+                    newPositions[2].y = 2;
+                    newPositions[3].y = 1;
+                    newPositions[4].y = 0;
+                }
+                // otherwise can stack the triple on the stack
+                else
+                {
+                    newPositions[2].y = playerCurrentPositions[4].y + 1;
+                    newPositions[3].y = playerCurrentPositions[3].y;
+                    newPositions[4].y = playerCurrentPositions[2].y - 1;
+                }
+            }
+            // check if any two of the positions match
+            else if (playerCurrentPositions[4].y == playerCurrentPositions[3].y || playerCurrentPositions[4].y == playerCurrentPositions[2].y || playerCurrentPositions[3].y == playerCurrentPositions[2].y)
+            {
+                Debug.LogWarning("Still need to update the solution here");
+            }
+        }
+        // block strategy 2 -> blockers bunch close together in the middle, six moves up 
+        else if(blockingStrategy == 2)
+        {
+            newPositions[2].y = 5;
+            newPositions[3].y = 4;
+            newPositions[4].y = 3;
+            newPositions[0].x -= 1;
+        }
+        // block strategy 3 -> blockers peel and play defense
+        else if(blockingStrategy == 3)
+        {
+            newPositions[2].x += 2;
+            newPositions[3].x += 1;
+            newPositions[4].x += 2;
+            newPositions[0].x -= 1;
+            newPositions[1].x += 1;
+            newPositions[5].x += 1;
+        }
+        // block strategy 4 -> ignore the middle, 6 moves up
+        else if (blockingStrategy == 4)
+        {
+            // set the 2 and 4 blockers to line up against their hitters
+            newPositions[4].y = playerCurrentPositions[2].y;
+            newPositions[2].y = playerCurrentPositions[4].y;
+            // randomly pick if the middle goes up or down
+            int middleDirection = UnityEngine.Random.Range(0, 1);
+            if (middleDirection == 0)
+                aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(playerCurrentPositions[2].x), Mathf.RoundToInt(playerCurrentPositions[2].y));
+            else aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(playerCurrentPositions[4].x), Mathf.RoundToInt(playerCurrentPositions[4].y));
+
+            newPositions[0].x -= 1;
+        }
+
+        StartCoroutine(SetAIPawnPositions(newPositions, travelTime));
+        newPositions = aiDefensivePositions;
+        yield break;
+    }
+
     public void ResetRotations()
     {
         playerPositionsArray = playerStartingRotation;
