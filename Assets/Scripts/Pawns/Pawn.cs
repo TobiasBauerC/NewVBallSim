@@ -17,6 +17,8 @@ public class Pawn : MonoBehaviour
     [SerializeField] private PawnRole _pawnRole = 0;
     public PawnRole pawnRole { get { return _pawnRole; } }
 
+    private Vector3 reactionStartPoint = Vector3.zero;
+
 
 
     [Header("Starting Pos")]
@@ -69,6 +71,10 @@ public class Pawn : MonoBehaviour
         // If left mosue is clicked on pawn, set it to selected and set cell to unoccupied
         if (Input.GetMouseButtonDown(0) && Vector3.Distance(transform.position, pawnManager.GetCursorPosition()) < pawnManager.pickupDist)
         {
+            if (limitX >= 0 && limitY >= 0 && reactionStartPoint == Vector3.zero)
+            {
+                reactionStartPoint = pawnManager.gridManager.GetGridXYPosition(transform.position);
+            }
             pickupOrigin = pawnManager.gridManager.GetGridXYPosition(transform.position);
             selected = true;
             pawnManager.gridManager.SetCellOccupied(transform.position, false);
@@ -78,7 +84,9 @@ public class Pawn : MonoBehaviour
         {
             if (!pawnManager.serveRecieve)
             {
-                transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+                if(limitX >= 0 && limitY >= 0)
+                    transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), reactionStartPoint, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+                else transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
             }
             else
             {
@@ -94,8 +102,12 @@ public class Pawn : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
-                if(!pawnManager.serveRecieve)
-                    transform.position = pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
+                if (!pawnManager.serveRecieve)
+                {
+                    if (limitX >= 0 && limitY >= 0)
+                        transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), reactionStartPoint, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+                    else transform.position = pawnManager.snapToGrid ? pawnManager.gridManager.GetGridPosition(pawnManager.GetCursorPosition(), pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid()) : pawnManager.GetCursorPosition();
+                }
                 else transform.position = pawnManager.gridManager.GetGridPosition(transform.position, pickupOrigin, GetXLimitForGrid(), GetYLimitForGrid());
                 pawnManager.gridManager.SetCellOccupied(transform.position, true);
                 
@@ -119,6 +131,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     public void ResetMoveLimits()
     {
+        reactionStartPoint = Vector3.zero;
         SetMoveLimits();
     }
 

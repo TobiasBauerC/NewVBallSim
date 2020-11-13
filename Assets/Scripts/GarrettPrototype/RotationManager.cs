@@ -445,7 +445,7 @@ public class RotationManager : MonoBehaviour
             if (playerPositionsArray[i] == pawnToCheck)
             {
                 positionOfPawnToCheck = i;
-                Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
+                // Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
             }
         }
 
@@ -518,7 +518,7 @@ public class RotationManager : MonoBehaviour
             if (playerPositionsArray[i] == pawnToCheck)
             {
                 positionOfPawnToCheck = i;
-                Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
+                // Debug.Log("Checking rotation of pawn in position " + positionOfPawnToCheck);
             }
         }
 

@@ -627,6 +627,7 @@ public class RallyManagerV2 : MonoBehaviour
         // set the players team skills to whats on the sliders
         skillManager.SetPlayersTeamSkills();
         isAteamServing = true;
+        playerPawnManager.serveRecieve = false;
         playerPawnManager.EnablePawnMove(false);
         rotationManager.SetAIRecievePositions(0);
         // set all the sprites to neutral
