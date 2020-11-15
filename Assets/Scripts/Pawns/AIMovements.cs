@@ -55,8 +55,19 @@ public static class AIMovements
             Pawn closestBlocker = aiPawnManager.GetClosestPawn(properTargetPosition, blockers);
 
             // move that pawn closer to the target location
-            if(aiGridManager.GetGridXYPosition(properTargetPosition) != aiGridManager.GetGridXYPosition(closestBlocker.transform.position))
-                aiGridManager.StartCoroutine(AIMovements.MoveSingleAITowardsTarget(closestBlocker, 0, 1, properTargetPosition, aiGridManager, aiPawnManager, rotationManager, time));
+            if (aiGridManager.GetGridXYPosition(properTargetPosition) != aiGridManager.GetGridXYPosition(closestBlocker.transform.position))
+            {
+                // check if the blocker is too far to block, then move them off the net
+                int aiXMovementLimit = 0;
+                int aiYDifference = Mathf.RoundToInt(Mathf.Abs(aiGridManager.GetGridXYPosition(closestBlocker.transform.position).y - aiGridManager.GetGridXYPosition(properTargetPosition).y));
+                // Debug.Log("Y distance calculated at " + aiYDifference);
+                if(aiYDifference > 3)
+                {
+                    aiXMovementLimit = 1;
+                    properTargetPosition = aiGridManager.ForceGetGridPosition(1, targetGridPosition.y);
+                }
+                aiGridManager.StartCoroutine(AIMovements.MoveSingleAITowardsTarget(closestBlocker, aiXMovementLimit, 1, properTargetPosition, aiGridManager, aiPawnManager, rotationManager, time));
+            }
 
             // pop that blocker from the list
             int count = blockers.Count;

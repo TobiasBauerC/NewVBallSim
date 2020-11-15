@@ -8,6 +8,15 @@ public class SetManager : MonoBehaviour
     private int AteamScore;
     private int BteamScore;
 
+    public int GetPlayerTeamScore()
+    {
+        return AteamScore;
+    }
+    public int GetAITeamScore()
+    {
+        return BteamScore;
+    }
+
     private bool AteamServing;
     private bool setOver = false;
 
