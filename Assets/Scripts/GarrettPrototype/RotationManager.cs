@@ -123,6 +123,11 @@ public class RotationManager : MonoBehaviour
         return playerPositionsArray;
     }
 
+    private void ResetAIDefensivePositions()
+    {
+        aiDefensivePositions = new Vector2[] { aiDefensivePosition6Location, aiDefensivePosition1Location, aiDefensivePosition2Location, aiDefensivePosition3Location, aiDefensivePosition4Location, aiDefensivePosition5Location };
+    }
+
     private IEnumerator SetPlayerPawnPositions(Vector2[] positions, float travelTime)
     {
         for (int i = 0; i < playerPositionsArray.Length; i++)
@@ -172,16 +177,18 @@ public class RotationManager : MonoBehaviour
         playerGridManager.GetGridXYPosition(playerPositionsArray[4].transform.position),
         playerGridManager.GetGridXYPosition(playerPositionsArray[5].transform.position)};
 
-        int blockingStrategy = UnityEngine.Random.Range(0, 3);
-        blockingStrategy = 0;
+        int blockingStrategy = UnityEngine.Random.Range(0, 4);
+        // blockingStrategy = 1;
         // block strategy 0 -> just line up in base defense spots and react
         if (blockingStrategy == 0)
         {
+            Debug.LogWarning("Executing 'neutral' strategy");
             // do nothing, default positions are correct
         }
         // block strategy 1 -> line the blockers up with their attackers, 6 moves up
         else if (blockingStrategy == 1)
         {
+            Debug.LogWarning("Executing 'line up' strategy");
             newPositions[2].y = playerCurrentPositions[4].y;
             newPositions[3].y = playerCurrentPositions[3].y;
             newPositions[4].y = playerCurrentPositions[2].y;
@@ -215,12 +222,121 @@ public class RotationManager : MonoBehaviour
             // check if any two of the positions match
             else if (playerCurrentPositions[4].y == playerCurrentPositions[3].y || playerCurrentPositions[4].y == playerCurrentPositions[2].y || playerCurrentPositions[3].y == playerCurrentPositions[2].y)
             {
-                Debug.LogWarning("Still need to update the solution here");
+                if(playerCurrentPositions[4].y == playerCurrentPositions[3].y)
+                {
+                    // check if position is at the top of the grid
+                    if (playerCurrentPositions[4].y == 8)
+                    {
+                        newPositions[2].y = 8;
+                        newPositions[3].y = 7;
+                    }
+                    // check if position is at the bottom of the grid
+                    else if (playerCurrentPositions[4].y == 0)
+                    {
+                        newPositions[2].y = 1;
+                        newPositions[3].y = 0;
+                    }
+                    // otherwise can stack the double on the stack
+                    else
+                    {
+                        newPositions[3].y = playerCurrentPositions[3].y;
+                        if (newPositions[2].y > 4)
+                            newPositions[2].y = playerCurrentPositions[4].y - 1;
+                        else newPositions[2].y = playerCurrentPositions[4].y + 1;
+                    }
+                }
+                else if(playerCurrentPositions[4].y == playerCurrentPositions[2].y)
+                {
+                    // check if position is at the top of the grid
+                    if (playerCurrentPositions[4].y == 8)
+                    {
+                        newPositions[2].y = 8;
+                        newPositions[4].y = 7;
+                    }
+                    // check if position is at the bottom of the grid
+                    else if (playerCurrentPositions[4].y == 0)
+                    {
+                        newPositions[2].y = 1;
+                        newPositions[4].y = 0;
+                    }
+                    // otherwise can stack the double on the stack
+                    else
+                    {
+                        newPositions[4].y = playerCurrentPositions[2].y;
+
+                        if (newPositions[2].y > 4)
+                            newPositions[2].y = playerCurrentPositions[4].y - 1;
+                        else newPositions[2].y = playerCurrentPositions[4].y + 1;
+                    }
+                }
+                else if(playerCurrentPositions[3].y == playerCurrentPositions[2].y)
+                {
+                    // check if position is at the top of the grid
+                    if (playerCurrentPositions[3].y == 8)
+                    {
+                        newPositions[3].y = 8;
+                        newPositions[4].y = 7;
+                    }
+                    // check if position is at the bottom of the grid
+                    else if (playerCurrentPositions[3].y == 0)
+                    {
+                        newPositions[3].y = 1;
+                        newPositions[4].y = 0;
+                    }
+                    // otherwise can stack the double on the stack
+                    else
+                    {
+                        newPositions[3].y = playerCurrentPositions[3].y + 1;
+                        newPositions[4].y = playerCurrentPositions[2].y;
+
+                        if (newPositions[3].y > 4)
+                            newPositions[3].y = playerCurrentPositions[3].y - 1;
+                        else newPositions[3].y = playerCurrentPositions[3].y + 1;
+                    }
+                }
+            }
+
+            bool positionStillOverlapping = false;
+            int indexOfOverlappingPosition = -1;
+            int indexOfOtherPosition = -1;
+            
+
+            if(newPositions[2].y == newPositions[3].y || newPositions[2].y == newPositions[4].y)
+            {
+                positionStillOverlapping = true;
+                indexOfOverlappingPosition = 2;
+                indexOfOtherPosition = 4;
+            }
+            else if(newPositions[4].y == newPositions[2].y || newPositions[3].y == newPositions[3].y)
+            {
+                positionStillOverlapping = true;
+                indexOfOverlappingPosition = 4;
+                indexOfOtherPosition = 2;
+            }
+
+            if(positionStillOverlapping && indexOfOverlappingPosition >= 0 && indexOfOtherPosition >= 0)
+            {
+                // Debug.Log("blockers positions were still overlapping, adjusting now");
+                if(newPositions[indexOfOverlappingPosition].y > 4)
+                {
+                    while(newPositions[indexOfOverlappingPosition].y == newPositions[3].y || newPositions[indexOfOverlappingPosition].y == newPositions[indexOfOtherPosition].y)
+                    {
+                        newPositions[indexOfOverlappingPosition].y -= 1;
+                    }
+                }
+                else
+                {
+                    while (newPositions[indexOfOverlappingPosition].y == newPositions[3].y || newPositions[indexOfOverlappingPosition].y == newPositions[indexOfOtherPosition].y)
+                    {
+                        newPositions[indexOfOverlappingPosition].y += 1;
+                    }
+                }
             }
         }
         // block strategy 2 -> blockers bunch close together in the middle, six moves up 
         else if(blockingStrategy == 2)
         {
+            Debug.LogWarning("Executing 'middle triple' strategy");
             newPositions[2].y = 5;
             newPositions[3].y = 4;
             newPositions[4].y = 3;
@@ -229,6 +345,7 @@ public class RotationManager : MonoBehaviour
         // block strategy 3 -> blockers peel and play defense
         else if(blockingStrategy == 3)
         {
+            Debug.LogWarning("Executing 'peel' strategy");
             newPositions[2].x += 2;
             newPositions[3].x += 1;
             newPositions[4].x += 2;
@@ -236,23 +353,9 @@ public class RotationManager : MonoBehaviour
             newPositions[1].x += 1;
             newPositions[5].x += 1;
         }
-        // block strategy 4 -> ignore the middle, 6 moves up
-        else if (blockingStrategy == 4)
-        {
-            // set the 2 and 4 blockers to line up against their hitters
-            newPositions[4].y = playerCurrentPositions[2].y;
-            newPositions[2].y = playerCurrentPositions[4].y;
-            // randomly pick if the middle goes up or down
-            int middleDirection = UnityEngine.Random.Range(0, 1);
-            if (middleDirection == 0)
-                aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(playerCurrentPositions[2].x), Mathf.RoundToInt(playerCurrentPositions[2].y));
-            else aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(playerCurrentPositions[4].x), Mathf.RoundToInt(playerCurrentPositions[4].y));
-
-            newPositions[0].x -= 1;
-        }
 
         StartCoroutine(SetAIPawnPositions(newPositions, travelTime));
-        newPositions = aiDefensivePositions;
+        ResetAIDefensivePositions();
         yield break;
     }
 
