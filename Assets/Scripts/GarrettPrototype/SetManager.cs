@@ -95,6 +95,7 @@ public class SetManager : MonoBehaviour
         BteamScore = 0;
         coroutineResult = 3;
         rotationManager.ResetRotations();
+        AICoach.Instance.ResetAllStats();
 
         while(setOver == false)
         {

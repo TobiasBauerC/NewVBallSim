@@ -257,6 +257,7 @@ public class RallyManagerV2 : MonoBehaviour
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(6, 4), 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, 6, 4, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             // check who's serving, returning true for a serving team won point, false for the recieving team winning the point
+            AICoach.Instance.StatAIBlock();
             if (isAteamServing)
                 return false;
             else return true;
@@ -270,7 +271,7 @@ public class RallyManagerV2 : MonoBehaviour
                 toolModifier = 0;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 0, toolModifier, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
-            
+            AICoach.Instance.StatPlayerTool();
             if (isAteamServing)
                 return true;
             else return false;
@@ -286,7 +287,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "Player pounds it past the defence for a point";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
-            
+            AICoach.Instance.StatPlayerKill();
             if (isAteamServing)
                 return true;
             else return false;
@@ -309,7 +310,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "Player slams the AI";
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(3,3), 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 3, 3, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballBounceSounds));
-            
+            AICoach.Instance.StatPlayerBlock();
             if (isAteamServing)
                 return true;
             else return false;
@@ -323,7 +324,7 @@ public class RallyManagerV2 : MonoBehaviour
                 toolModifier = 0;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(3, 3) + toolModifier, 1f, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, 8, toolModifier, 1, SoundManager.Instance.volleyballSetSounds, SoundManager.Instance.volleyballToolSounds));
-            
+            AICoach.Instance.StatAITool();
             if (isAteamServing)
                 return false;
             else return true;
@@ -339,7 +340,7 @@ public class RallyManagerV2 : MonoBehaviour
             messageText.text = "AI bounces it on the player";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
-            
+            AICoach.Instance.StatAIKill();
             if (isAteamServing)
                 return false;
             else return true;
@@ -696,6 +697,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatPlayerServiceError();
             falseCallback();
             yield return false;
             yield break;
@@ -707,6 +709,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatPlayerServiceError();
             falseCallback();
             yield return false;
             yield break;
@@ -718,6 +721,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
             // Debug.Log("A Ace");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatPlayerAce();
             trueCallback();
             yield return true;
             yield break;
@@ -733,6 +737,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         // Debug.Log("B Passed " + BpassNumber);
         messageText.text = "AI passes it up";
+        AICoach.Instance.StatAIPass(BpassNumber);
         float AIPassDigTime = 1;
         SetBallPositionOffDigAI(BpassNumber, AIPassDigTime);
         passingPawn.SetSprite(Pawn.Sprites.dig);
@@ -803,6 +808,7 @@ public class RallyManagerV2 : MonoBehaviour
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             yield return new WaitForSeconds(1 + .001f);
+            AICoach.Instance.StatAIHittingError();
             trueCallback();
             yield return true;
             yield break;
@@ -849,6 +855,7 @@ public class RallyManagerV2 : MonoBehaviour
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatAIHittingError();
             trueCallback();
             yield return true;
             yield break;
@@ -880,6 +887,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // A SIDE WITH A DIG
                 // Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
+                AICoach.Instance.StatPlayerDig();
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float playerPassDigTravelTime = 1;
                 SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
@@ -971,6 +979,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatPlayerHittingError();
                     falseCallback();
                     yield return false;
                     yield break;
@@ -1015,6 +1024,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatPlayerHittingError();
                     falseCallback();
                     yield return false;
                     yield break;
@@ -1041,6 +1051,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 // Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
+                AICoach.Instance.StatAIDig();
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
                 yield return new WaitForSeconds(0.2f);
@@ -1114,6 +1125,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatAIHittingError();
                     trueCallback();
                     yield return true;
                     yield break;
@@ -1158,6 +1170,7 @@ public class RallyManagerV2 : MonoBehaviour
                     StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     // Debug.Log("B Hitting Error");
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatAIHittingError();
                     trueCallback();
                     yield return true;
                     yield break;
@@ -1269,6 +1282,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             // Debug.Log("B Miss Serve");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatAIServiceError();
             falseCallback();
             yield return false;
             yield break;
@@ -1280,6 +1294,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             // Debug.Log("B Miss Serve");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatAIServiceError();
             falseCallback();
             yield return false;
             yield break;
@@ -1291,6 +1306,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballBounceSounds));
             // Debug.Log("B Ace");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatAIAce();
             trueCallback();
             yield return true;
             yield break;
@@ -1304,6 +1320,7 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(AIServeTravelTime + .001f);
         // Debug.Log("A Passed " + ApassNumber);
         messageText.text = "Player passes it up";
+        AICoach.Instance.StatPlayerPass(ApassNumber);
         float playerPassDigTravelTime = 1;
         SetBallPositionOffDigPlayer(ApassNumber, playerPassDigTravelTime, passingPawn);
         passingPawn.SetSprite(Pawn.Sprites.dig);
@@ -1393,6 +1410,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatPlayerHittingError();
             trueCallback();
             yield return true;
             yield break;
@@ -1436,6 +1454,7 @@ public class RallyManagerV2 : MonoBehaviour
             StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
             //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
+            AICoach.Instance.StatPlayerHittingError();
             trueCallback();
             yield return true;
             yield break;
@@ -1468,6 +1487,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // A SIDE WITH A DIG
                 //Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
+                AICoach.Instance.StatAIDig();
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float AIPassDigTime = 1;
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
@@ -1544,6 +1564,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(0, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(aiGridManager, 0, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatAIHittingError();
                     falseCallback();
                     yield return false;
                     yield break;
@@ -1580,7 +1601,7 @@ public class RallyManagerV2 : MonoBehaviour
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
                     //Debug.Log("B Hitting Error");
-                    messageText.text = "AI hits it out of bounds";
+                    messageText.text = "AI attacks it just out of bounds";
                     Vector3Int modVector = Vector3Int.zero;
                     if (aiAttackLocation.y > 4)
                         modVector = aiOutOfBoundsVectorUp;
@@ -1588,6 +1609,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatAIHittingError();
                     falseCallback();
                     yield return false;
                     yield break;
@@ -1613,6 +1635,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 //Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
+                AICoach.Instance.StatPlayerDig();
                 SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
                 yield return new WaitForSeconds(0.2f);
@@ -1699,6 +1722,7 @@ public class RallyManagerV2 : MonoBehaviour
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(8, 4), 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     StartCoroutine(ballScript.SetPosition(playerGridManager, 8, 4, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatPlayerHittingError();
                     trueCallback();
                     yield return true;
                     yield break;
@@ -1742,6 +1766,7 @@ public class RallyManagerV2 : MonoBehaviour
                     StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
                     //Debug.Log("A Hitting Error");
                     yield return new WaitForSeconds(1.001f);
+                    AICoach.Instance.StatPlayerHittingError();
                     trueCallback();
                     yield return true;
                     yield break;
