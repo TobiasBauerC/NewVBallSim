@@ -61,7 +61,7 @@ public static class AIMovements
                 int aiXMovementLimit = 0;
                 int aiYDifference = Mathf.RoundToInt(Mathf.Abs(aiGridManager.GetGridXYPosition(closestBlocker.transform.position).y - aiGridManager.GetGridXYPosition(properTargetPosition).y));
                 // Debug.Log("Y distance calculated at " + aiYDifference);
-                if(aiYDifference > 3)
+                if(aiYDifference > 4)
                 {
                     aiXMovementLimit = 1;
                     properTargetPosition = aiGridManager.ForceGetGridPosition(1, targetGridPosition.y);

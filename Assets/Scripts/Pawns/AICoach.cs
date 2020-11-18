@@ -51,21 +51,55 @@ public class AICoach : MonoBehaviour
     private float aiHittingAverage = 0;
 
 
-    public void StatPlayerKill()
+    // variables to keep track of hitting zones that the player scores from
+    private int topZoneScoreCount = 0;
+    private int midZoneScoreCount = 0;
+    private int bottomZoneScoreCount = 0;
+    private Vector3Int[] allDefensiveStrategies = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0), new Vector3Int(2, 0, 0), new Vector3Int(3, 0, 0), new Vector3Int(4, 0, 0),
+    new Vector3Int(5, 0, 0), new Vector3Int(6, 0, 0), new Vector3Int(7, 0, 0), new Vector3Int(8, 0, 0), new Vector3Int(9, 0, 0),
+    new Vector3Int(10, 0, 0), new Vector3Int(11, 0, 0), new Vector3Int(12, 0, 0), new Vector3Int(13, 0, 0), new Vector3Int(14, 0, 0),
+    new Vector3Int(15, 0, 0), new Vector3Int(16, 0, 0), new Vector3Int(17, 0, 0), new Vector3Int(18, 0, 0), new Vector3Int(19, 0, 0) };
+    private int lastDefensiveStrategyUsedIndex = -1;
+
+    // Vectors to store lists of defensive strategies
+    // x = defensive strategy number
+    // y = number of times strategy has been used
+    // z = number of times the strategy has been successful
+    private Vector3Int[] keyLeftHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(6, 0, 0), new Vector3Int(9, 0, 0), new Vector3Int(11, 0, 0), new Vector3Int(14, 0, 0) };
+    private Vector3Int[] keyMidHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(2, 0, 0), new Vector3Int(8, 0, 0), new Vector3Int(12, 0, 0) };
+    private Vector3Int[] keyRightHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(7, 0, 0), new Vector3Int(10, 0, 0), new Vector3Int(13, 0, 0), new Vector3Int(16, 0, 0) };
+    private Vector3Int[] neutralCloseGameBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0), new Vector3Int(4, 0, 0), new Vector3Int(5, 0, 0), new Vector3Int(8, 0, 0) };
+
+
+    public void StatPlayerKill(int attackerYValue)
     {
+        if (attackerYValue < 3)
+            bottomZoneScoreCount++;
+        else if (attackerYValue < 6)
+            midZoneScoreCount++;
+        else topZoneScoreCount++;
+
         playerTotalAttacks++;
         playerStraightKills += 1;
         playerHittingAverage = (playerStraightKills + playerTools - playerHittingErrors)/ playerTotalAttacks;
     }
 
-    public void StatPlayerTool()
+    public void StatPlayerTool(int attackerYValue)
     {
+        if (attackerYValue < 3)
+            bottomZoneScoreCount++;
+        else if (attackerYValue < 6)
+            midZoneScoreCount++;
+        else topZoneScoreCount++;
+
         playerTotalAttacks++;
         playerTools += 1;
         playerHittingAverage = (playerStraightKills + playerTools - playerHittingErrors) / playerTotalAttacks;
     }
     public void StatPlayerHittingError()
     {
+        allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
+
         playerTotalAttacks++;
         playerHittingErrors += 1;
         playerHittingAverage = (playerStraightKills + playerTools - playerHittingErrors) / playerTotalAttacks;
@@ -123,6 +157,10 @@ public class AICoach : MonoBehaviour
         aiTotalPasses = 0;
         aiPassingAverage = 0;
         aiHittingAverage = 0;
+
+        topZoneScoreCount = 0;
+        midZoneScoreCount = 0;
+        bottomZoneScoreCount = 0;
     }
     public void StatAIKill()
     {
@@ -145,11 +183,15 @@ public class AICoach : MonoBehaviour
     }
     public void StatAIBlock()
     {
+        allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
+
         aiBlocks += 1;
         StatPlayerHittingError();
     }
     public void StatAIDig()
     {
+        allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
+
         playerTotalAttacks++;
         aiDigs += 1;
         playerHittingAverage = (playerStraightKills + playerTools - playerHittingErrors) / playerTotalAttacks;
@@ -178,9 +220,104 @@ public class AICoach : MonoBehaviour
     {
         int defensiveStrategy = 0;
 
+        int scoreDifference = setManager.GetAITeamScore() - setManager.GetPlayerTeamScore();
 
+        // enter various functions depending on the score
+        if (scoreDifference >= 4)
+            defensiveStrategy = BehaviourUpBig();
+        else if (scoreDifference <= -4)
+            defensiveStrategy = BehaviourDownBig();
+        else defensiveStrategy = BehaviourCloseGame();
+
+        
 
         return defensiveStrategy;
     }
+
+    private int BehaviourCloseGame()
+    {
+        // check for a consistant hitting zone
+        if (topZoneScoreCount - midZoneScoreCount >= 4 && topZoneScoreCount - bottomZoneScoreCount >= 4)
+            BehaviourCloseGameKeyHitter(1);
+        else if (midZoneScoreCount - topZoneScoreCount >= 4 && midZoneScoreCount - bottomZoneScoreCount >= 4)
+            BehaviourCloseGameKeyHitter(2);
+        else if (bottomZoneScoreCount - topZoneScoreCount >= 4 && bottomZoneScoreCount - midZoneScoreCount >= 4)
+            BehaviourCloseGameKeyHitter(3);
+
+        // else check for a strategy that hasn't been tried yet
+        List<Vector3Int> newStratsIndex = new List<Vector3Int>();
+        for(int i = 0; i < neutralCloseGameBucket.Length; i++)
+        {
+            if(neutralCloseGameBucket[i].y == 0)
+            {
+                newStratsIndex.Add(neutralCloseGameBucket[i]);
+            }
+        }
+        if(newStratsIndex.Count > 0)
+        {
+            Debug.LogWarning("Trying a new strategy: " + newStratsIndex.Count + " to choose from");
+            int number = Random.Range(0, newStratsIndex.Count);
+            for(int i = 0; i < neutralCloseGameBucket.Length; i++)
+            {
+                if(newStratsIndex[number].x == neutralCloseGameBucket[i].x)
+                    neutralCloseGameBucket[i].y += 1;
+            }
+            lastDefensiveStrategyUsedIndex = newStratsIndex[number].x;
+            return newStratsIndex[number].x;
+        }
+
+        // else randomly select from the neutral close game pool
+        Debug.LogWarning("Randomly selecting a neutral close game strategy");
+        int thing = Random.Range(0, neutralCloseGameBucket.Length);
+        neutralCloseGameBucket[thing].y += 1;
+        lastDefensiveStrategyUsedIndex = neutralCloseGameBucket[thing].x;
+        return neutralCloseGameBucket[thing].x;
+    }
+    private int BehaviourCloseGameKeyHitter(int hitterToKey)
+    {
+        int number = -1;
+
+        if(hitterToKey == 1)
+        {
+            number = Random.Range(0, keyLeftHitterCloseGameBucket.Length);
+            keyLeftHitterCloseGameBucket[number].y += 1;
+            lastDefensiveStrategyUsedIndex = keyLeftHitterCloseGameBucket[number].x;
+            return keyLeftHitterCloseGameBucket[number].x;
+        }
+        else if(hitterToKey == 3)
+        {
+            number = Random.Range(0, keyRightHitterCloseGameBucket.Length);
+            keyRightHitterCloseGameBucket[number].y += 1;
+            lastDefensiveStrategyUsedIndex = keyRightHitterCloseGameBucket[number].x;
+            return keyRightHitterCloseGameBucket[number].x;
+        }
+        else
+        {
+            number = Random.Range(0, keyMidHitterCloseGameBucket.Length);
+            keyMidHitterCloseGameBucket[number].y += 1;
+            lastDefensiveStrategyUsedIndex = keyMidHitterCloseGameBucket[number].x;
+            return keyMidHitterCloseGameBucket[number].x;
+        }
+    }
+
+
+
+
+    private int BehaviourDownBig()
+    {
+        return 0;
+    }
+
+
+
+
+
+
+
+    private int BehaviourUpBig()
+    {
+        return 0;
+    }
+
 
 }
