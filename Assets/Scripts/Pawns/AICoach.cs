@@ -170,4 +170,17 @@ public class AICoach : MonoBehaviour
         aiTotalPasses++;
         aiPassingAverage = (tempPassingTotals + passNumber) / aiTotalPasses;
     }
+
+
+
+
+    public int GetDefensiveStrategy()
+    {
+        int defensiveStrategy = 0;
+
+
+
+        return defensiveStrategy;
+    }
+
 }

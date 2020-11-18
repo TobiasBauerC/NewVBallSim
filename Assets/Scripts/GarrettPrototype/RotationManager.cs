@@ -177,14 +177,18 @@ public class RotationManager : MonoBehaviour
         playerGridManager.GetGridXYPosition(playerPositionsArray[4].transform.position),
         playerGridManager.GetGridXYPosition(playerPositionsArray[5].transform.position)};
 
-        int blockingStrategy = UnityEngine.Random.Range(0, 4);
+        int blockingStrategy = AICoach.Instance.GetDefensiveStrategy();
         // blockingStrategy = 1;
+
+        // STRATEGY 0
         // block strategy 0 -> just line up in base defense spots and react
         if (blockingStrategy == 0)
         {
             Debug.LogWarning("Executing 'neutral' strategy");
             // do nothing, default positions are correct
         }
+
+        // Strategy 1
         // block strategy 1 -> line the blockers up with their attackers, 6 moves up
         else if (blockingStrategy == 1)
         {
@@ -333,6 +337,8 @@ public class RotationManager : MonoBehaviour
                 }
             }
         }
+
+        // STRATEGY 2
         // block strategy 2 -> blockers bunch close together in the middle, six moves up 
         else if(blockingStrategy == 2)
         {
@@ -342,6 +348,8 @@ public class RotationManager : MonoBehaviour
             newPositions[4].y = 3;
             newPositions[0].x -= 1;
         }
+
+        // STRATEGY 3
         // block strategy 3 -> blockers peel and play defense
         else if(blockingStrategy == 3)
         {
@@ -352,6 +360,204 @@ public class RotationManager : MonoBehaviour
             newPositions[0].x -= 1;
             newPositions[1].x += 1;
             newPositions[5].x += 1;
+        }
+
+        // Strategy 4
+        // Wide Spread
+        else if(blockingStrategy == 4)
+        {
+            Debug.LogWarning("Executing 'Wide Spread' strategy");
+            newPositions[2].y = 8;
+            newPositions[3].y = 4;
+            newPositions[4].y = 0;
+            newPositions[1].y -= 1;
+            newPositions[0].x -= 1;
+            newPositions[5].y += 1;
+        }
+
+        // Strategy 5
+        // Mid Spread
+        else if (blockingStrategy == 5)
+        {
+            Debug.LogWarning("Executing 'Mid Spread w/ 6 up' strategy");
+            newPositions[2].y = 7;
+            newPositions[3].y = 4;
+            newPositions[4].y = 1;
+            newPositions[1].x += 2;
+            newPositions[0].x = 3;
+            newPositions[5].x += 2;
+        }
+
+        // Strategy 6
+        // Left Heavy
+        else if (blockingStrategy == 6)
+        {
+            Debug.LogWarning("Executing 'Left Heavy' strategy");
+            newPositions[2].y = 8;
+            newPositions[3].y = 6;
+            newPositions[4].y = 4;
+            newPositions[0].y -= 1;
+            newPositions[0].x -= 1;
+        }
+
+        // Strategy 7
+        // Right Heavy
+        else if (blockingStrategy == 7)
+        {
+            Debug.LogWarning("Executing 'Right Heavy' strategy");
+            newPositions[2].y = 4;
+            newPositions[3].y = 2;
+            newPositions[4].y = 0;
+            newPositions[0].y += 1;
+            newPositions[0].x -= 1;
+        }
+
+        // Strategy 8
+        // 2 Blockers
+        else if (blockingStrategy == 8)
+        {
+            Debug.LogWarning("Executing '2 Blockers' strategy");
+            newPositions[2].y = 6;
+            newPositions[3].x += 2;
+            newPositions[4].y = 2;
+        }
+
+        // Strategy 9
+        // Left Shift
+        else if (blockingStrategy == 9)
+        {
+            Debug.LogWarning("Executing 'Left Shift' strategy");
+            newPositions[2] = new Vector2(0, 7);
+            newPositions[3] = new Vector2(0, 5);
+            newPositions[4] = new Vector2(4, 1);
+            newPositions[1].x -= 2;
+            newPositions[0].y += 3;
+            newPositions[5].x += 3;
+            newPositions[5].y += 1;
+        }
+
+        // Strategy 10
+        // Right Shift
+        else if (blockingStrategy == 10)
+        {
+            Debug.LogWarning("Executing 'Right Shift' strategy");
+            newPositions[2] = new Vector2(4, 7);
+            newPositions[3] = new Vector2(0, 3);
+            newPositions[4] = new Vector2(0, 1);
+            newPositions[5].x -= 2;
+            newPositions[0].y -= 3;
+            newPositions[1].x += 3;
+            newPositions[1].y -= 1;
+        }
+
+        // Strategy 11
+        // Solo Up
+        else if (blockingStrategy == 11)
+        {
+            Debug.LogWarning("Executing 'Solo Up' strategy");
+            // newPositions[2].x += 2;
+            newPositions[3].x += 2;
+            newPositions[4].x += 2;
+            newPositions[0].x -= 1;
+            newPositions[1].x += 1;
+            newPositions[5].x += 1;
+        }
+
+        // Strategy 12
+        // Solo Mid
+        else if (blockingStrategy == 12)
+        {
+            Debug.LogWarning("Executing 'Solo Mid' strategy");
+            newPositions[2].x += 2;
+            // newPositions[3].x += 2;
+            newPositions[4].x += 2;
+            newPositions[0].x -= 1;
+            newPositions[1].x += 1;
+            newPositions[5].x += 1;
+        }
+
+        // Strategy 13
+        // Solo Down
+        else if (blockingStrategy == 13)
+        {
+            Debug.LogWarning("Executing 'Solo Down' strategy");
+            newPositions[2].x += 2;
+            newPositions[3].x += 2;
+            // newPositions[4].x += 2;
+            newPositions[0].x -= 1;
+            newPositions[1].x += 1;
+            newPositions[5].x += 1;
+        }
+
+        // Strategy 14
+        // Double Up - Easy
+        else if (blockingStrategy == 14)
+        {
+            Debug.LogWarning("Executing 'Double Up - Easy' strategy");
+            newPositions[2].y = 6;
+            newPositions[3].y = 5;
+            newPositions[4] = new Vector2(3, 4);
+            newPositions[1].x += 1;
+        }
+
+        // Strategy 15
+        // Double Mid - Easy
+        else if (blockingStrategy == 15)
+        {
+            Debug.LogWarning("Executing 'Double Mid - Easy' strategy");
+            newPositions[2].y = 5;
+            newPositions[3].y = 4;
+            newPositions[4] = new Vector2(3, 3);
+            newPositions[1].x -= 1;
+        }
+
+        // Strategy 16
+        // Double Down - Easy
+        else if (blockingStrategy == 16)
+        {
+            Debug.LogWarning("Executing 'Double Down - Easy' strategy");
+            newPositions[2] = new Vector2(3, 4);
+            newPositions[3].y = 3;
+            newPositions[4].y = 2;
+        }
+
+        // Strategy 17
+        // Double Up - Hard
+        else if (blockingStrategy == 17)
+        {
+            Debug.LogWarning("Executing 'Double Up - Hard' strategy");
+            newPositions[2].y = 7;
+            newPositions[3].y = 6;
+            newPositions[4] = new Vector2(3, 5);
+            newPositions[1].x += 1;
+            newPositions[5].x -= 1;
+            newPositions[0].y -= 1;
+        }
+
+        // Strategy 18
+        // Double Mid - Hard
+        else if (blockingStrategy == 18)
+        {
+            Debug.LogWarning("Executing 'Double Mid - Hard' strategy");
+            newPositions[2].y = 5;
+            newPositions[3].y = 4;
+            newPositions[4] = new Vector2(3, 4);
+            newPositions[1].x -= 1;
+            newPositions[5].x -= 1;
+            newPositions[0].x -= 1;
+        }
+
+        // Strategy 19
+        // Double Down - Hard
+        else if (blockingStrategy == 19)
+        {
+            Debug.LogWarning("Executing 'Double Down - Hard' strategy");
+            newPositions[2] = new Vector2(3, 4);
+            newPositions[3].y = 2;
+            newPositions[4].y = 1;
+            newPositions[1].x -= 1;
+            newPositions[5].x += 1;
+            newPositions[0].y += 1;
         }
 
         StartCoroutine(SetAIPawnPositions(newPositions, travelTime));
@@ -622,7 +828,7 @@ public class RotationManager : MonoBehaviour
                 playerPositionsArray[5].setButton.transform.gameObject.SetActive(true);
         }
 
-        Debug.Log("Activated the buttons fine");
+        // Debug.Log("Activated the buttons fine");
     }
 
     public void TurnOffAllSetButtons()
