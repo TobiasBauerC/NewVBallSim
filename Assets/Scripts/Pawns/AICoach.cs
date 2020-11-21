@@ -24,7 +24,7 @@ public class AICoach : MonoBehaviour
 
 
 
-    [SerializeField] private SetManager setManager;
+    [SerializeField] private SetManager setManager = null;
 
     private int playerTotalAttacks = 0;
     private int playerStraightKills = 0;
@@ -60,6 +60,7 @@ public class AICoach : MonoBehaviour
     new Vector3Int(10, 0, 0), new Vector3Int(11, 0, 0), new Vector3Int(12, 0, 0), new Vector3Int(13, 0, 0), new Vector3Int(14, 0, 0),
     new Vector3Int(15, 0, 0), new Vector3Int(16, 0, 0), new Vector3Int(17, 0, 0), new Vector3Int(18, 0, 0), new Vector3Int(19, 0, 0) };
     private int lastDefensiveStrategyUsedIndex = -1;
+    private bool didLastDefensiveStrategyWork = false;
 
     // Vectors to store lists of defensive strategies
     // x = defensive strategy number
@@ -68,7 +69,11 @@ public class AICoach : MonoBehaviour
     private Vector3Int[] keyLeftHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(6, 0, 0), new Vector3Int(9, 0, 0), new Vector3Int(11, 0, 0), new Vector3Int(14, 0, 0) };
     private Vector3Int[] keyMidHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(2, 0, 0), new Vector3Int(8, 0, 0), new Vector3Int(12, 0, 0) };
     private Vector3Int[] keyRightHitterCloseGameBucket = new Vector3Int[] { new Vector3Int(7, 0, 0), new Vector3Int(10, 0, 0), new Vector3Int(13, 0, 0), new Vector3Int(16, 0, 0) };
-    private Vector3Int[] neutralCloseGameBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0), new Vector3Int(4, 0, 0), new Vector3Int(5, 0, 0), new Vector3Int(8, 0, 0) };
+    private Vector3Int[] neutralCloseGameBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0), new Vector3Int(2, 0, 0), new Vector3Int(4, 0, 0), new Vector3Int(5, 0, 0), 
+        new Vector3Int(6, 0, 0), new Vector3Int(7, 0, 0), new Vector3Int(8, 0, 0) };
+
+    private Vector3Int[] conservativeBucket = new Vector3Int[] { new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0), new Vector3Int(3, 0, 0), new Vector3Int(4, 0, 0), new Vector3Int(5, 0, 0),
+    new Vector3Int(8, 0, 0), new Vector3Int(12, 0, 0), };
 
 
     public void StatPlayerKill(int attackerYValue)
@@ -78,6 +83,8 @@ public class AICoach : MonoBehaviour
         else if (attackerYValue < 6)
             midZoneScoreCount++;
         else topZoneScoreCount++;
+
+        didLastDefensiveStrategyWork = false;
 
         playerTotalAttacks++;
         playerStraightKills += 1;
@@ -92,6 +99,8 @@ public class AICoach : MonoBehaviour
             midZoneScoreCount++;
         else topZoneScoreCount++;
 
+        didLastDefensiveStrategyWork = false;
+
         playerTotalAttacks++;
         playerTools += 1;
         playerHittingAverage = (playerStraightKills + playerTools - playerHittingErrors) / playerTotalAttacks;
@@ -99,6 +108,8 @@ public class AICoach : MonoBehaviour
     public void StatPlayerHittingError()
     {
         allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
+
+        didLastDefensiveStrategyWork = true;
 
         playerTotalAttacks++;
         playerHittingErrors += 1;
@@ -183,14 +194,13 @@ public class AICoach : MonoBehaviour
     }
     public void StatAIBlock()
     {
-        allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
-
         aiBlocks += 1;
         StatPlayerHittingError();
     }
     public void StatAIDig()
     {
         allDefensiveStrategies[lastDefensiveStrategyUsedIndex].z++;
+        didLastDefensiveStrategyWork = true;
 
         playerTotalAttacks++;
         aiDigs += 1;
@@ -214,7 +224,13 @@ public class AICoach : MonoBehaviour
     }
 
 
-
+    private int ReturnDefensiveStrategy(int defensiveStrategyToReturn)
+    {
+        Debug.Log("Returning defensive strategy properly");
+        lastDefensiveStrategyUsedIndex = defensiveStrategyToReturn;
+        allDefensiveStrategies[defensiveStrategyToReturn].y++;
+        return defensiveStrategyToReturn;
+    }
 
     public int GetDefensiveStrategy()
     {
@@ -236,42 +252,48 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourCloseGame()
     {
+        Debug.LogWarning("Close game behaviour");
+        // check if the last defensive strategy had worked, if it did, use it again
+        if (didLastDefensiveStrategyWork)
+        {
+            Debug.LogWarning("Repeating successful last defensive strategy");
+            return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
+        }
+
         // check for a consistant hitting zone
-        if (topZoneScoreCount - midZoneScoreCount >= 4 && topZoneScoreCount - bottomZoneScoreCount >= 4)
-            BehaviourCloseGameKeyHitter(1);
-        else if (midZoneScoreCount - topZoneScoreCount >= 4 && midZoneScoreCount - bottomZoneScoreCount >= 4)
-            BehaviourCloseGameKeyHitter(2);
-        else if (bottomZoneScoreCount - topZoneScoreCount >= 4 && bottomZoneScoreCount - midZoneScoreCount >= 4)
-            BehaviourCloseGameKeyHitter(3);
+        if (topZoneScoreCount - midZoneScoreCount >= 3 && topZoneScoreCount - bottomZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(1);
+        else if (midZoneScoreCount - topZoneScoreCount >= 3 && midZoneScoreCount - bottomZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(2);
+        else if (bottomZoneScoreCount - topZoneScoreCount >= 3 && bottomZoneScoreCount - midZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(3);
 
         // else check for a strategy that hasn't been tried yet
         List<Vector3Int> newStratsIndex = new List<Vector3Int>();
         for(int i = 0; i < neutralCloseGameBucket.Length; i++)
         {
-            if(neutralCloseGameBucket[i].y == 0)
+            if(allDefensiveStrategies[neutralCloseGameBucket[i].x].y == 0)
             {
-                newStratsIndex.Add(neutralCloseGameBucket[i]);
+                newStratsIndex.Add(allDefensiveStrategies[neutralCloseGameBucket[i].x]);
             }
         }
         if(newStratsIndex.Count > 0)
         {
             Debug.LogWarning("Trying a new strategy: " + newStratsIndex.Count + " to choose from");
             int number = Random.Range(0, newStratsIndex.Count);
-            for(int i = 0; i < neutralCloseGameBucket.Length; i++)
-            {
-                if(newStratsIndex[number].x == neutralCloseGameBucket[i].x)
-                    neutralCloseGameBucket[i].y += 1;
-            }
-            lastDefensiveStrategyUsedIndex = newStratsIndex[number].x;
-            return newStratsIndex[number].x;
+            //for(int i = 0; i < neutralCloseGameBucket.Length; i++)
+            //{
+            //    if(newStratsIndex[number].x == neutralCloseGameBucket[i].x)
+            //        allDefensiveStrategies[neutralCloseGameBucket[i].x].y += 1;
+            //}
+            //lastDefensiveStrategyUsedIndex = newStratsIndex[number].x;
+            return ReturnDefensiveStrategy(newStratsIndex[number].x);
         }
 
         // else randomly select from the neutral close game pool
         Debug.LogWarning("Randomly selecting a neutral close game strategy");
         int thing = Random.Range(0, neutralCloseGameBucket.Length);
-        neutralCloseGameBucket[thing].y += 1;
-        lastDefensiveStrategyUsedIndex = neutralCloseGameBucket[thing].x;
-        return neutralCloseGameBucket[thing].x;
+        return ReturnDefensiveStrategy(neutralCloseGameBucket[thing].x);
     }
     private int BehaviourCloseGameKeyHitter(int hitterToKey)
     {
@@ -279,25 +301,52 @@ public class AICoach : MonoBehaviour
 
         if(hitterToKey == 1)
         {
+            Debug.LogWarning("Keying on the left side hitter");
             number = Random.Range(0, keyLeftHitterCloseGameBucket.Length);
-            keyLeftHitterCloseGameBucket[number].y += 1;
-            lastDefensiveStrategyUsedIndex = keyLeftHitterCloseGameBucket[number].x;
-            return keyLeftHitterCloseGameBucket[number].x;
+            return ReturnDefensiveStrategy(keyLeftHitterCloseGameBucket[number].x);
         }
         else if(hitterToKey == 3)
         {
+            Debug.LogWarning("Keying on the right side hitter");
             number = Random.Range(0, keyRightHitterCloseGameBucket.Length);
-            keyRightHitterCloseGameBucket[number].y += 1;
-            lastDefensiveStrategyUsedIndex = keyRightHitterCloseGameBucket[number].x;
-            return keyRightHitterCloseGameBucket[number].x;
+            return ReturnDefensiveStrategy(keyRightHitterCloseGameBucket[number].x);
         }
         else
         {
+            Debug.LogWarning("Keying on the middle hitter");
             number = Random.Range(0, keyMidHitterCloseGameBucket.Length);
-            keyMidHitterCloseGameBucket[number].y += 1;
-            lastDefensiveStrategyUsedIndex = keyMidHitterCloseGameBucket[number].x;
-            return keyMidHitterCloseGameBucket[number].x;
+            return ReturnDefensiveStrategy(keyMidHitterCloseGameBucket[number].x);
         }
+    }
+
+    private int BehaviourDoMostSuccessfulStrategy()
+    {
+        // will grab the highest successful strategy, if there is a tie will grab the earliest in the array (tends to be more conservative)
+        // if nothing has worked, will return 0 (default strategy)
+        Debug.LogWarning("doing most successful strategy");
+        int strategy = 0;
+        for(int i = 0; i < allDefensiveStrategies.Length; i++)
+        {
+            if(allDefensiveStrategies[i].z > allDefensiveStrategies[strategy].z)
+            {
+                strategy = allDefensiveStrategies[i].x;
+            }
+        }
+        return ReturnDefensiveStrategy(strategy);
+    }
+
+    private int BehaviourDoMostSuccessfulConservativeStrategy()
+    {
+        Debug.LogWarning("doing most successful conservative strategy");
+        int strategy = 0;
+        for (int i = 0; i < conservativeBucket.Length; i++)
+        {
+            if (allDefensiveStrategies[conservativeBucket[i].x].z > allDefensiveStrategies[strategy].z)
+            {
+                strategy = allDefensiveStrategies[conservativeBucket[i].x].x;
+            }
+        }
+        return ReturnDefensiveStrategy(strategy);
     }
 
 
@@ -305,7 +354,35 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourDownBig()
     {
-        return 0;
+        Debug.LogWarning("Down big behaviour");
+        // check if the last defensive strategy had worked, if it did, use it again
+        if (didLastDefensiveStrategyWork)
+        {
+            Debug.LogWarning("repeating last defensive strategy");
+            return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
+        }
+
+        // otherwise, try something new
+        for(int i= 0; i < allDefensiveStrategies.Length; i++)
+        {
+            if (allDefensiveStrategies[i].y == 0)
+            {
+                Debug.LogWarning("Trying something new");
+                return ReturnDefensiveStrategy(allDefensiveStrategies[i].x);
+            }
+        }
+
+        // if everything has been tried at least once, check for a key hitter
+        if (topZoneScoreCount - midZoneScoreCount >= 3 && topZoneScoreCount - bottomZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(1);
+        else if (midZoneScoreCount - topZoneScoreCount >= 3 && midZoneScoreCount - bottomZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(2);
+        else if (bottomZoneScoreCount - topZoneScoreCount >= 3 && bottomZoneScoreCount - midZoneScoreCount >= 3)
+            return BehaviourCloseGameKeyHitter(3);
+
+        // if no key hitter, do what has worked
+        Debug.Log("No key hitter and nothing new to try");
+        return BehaviourDoMostSuccessfulStrategy();
     }
 
 
@@ -316,7 +393,43 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourUpBig()
     {
-        return 0;
+        // check if the last defensive strategy had worked, if it did, use it again
+        if (didLastDefensiveStrategyWork)
+        {
+            Debug.LogWarning("repeating last defensive strategy");
+            return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
+        }
+
+        // see if the most successful strategy is clear (at laest x more than the next highest)
+        int mostSuccessfulStrategy = 0;
+        // get the most successful strategy
+        for (int i = 0; i < allDefensiveStrategies.Length; i++)
+        {
+            if (allDefensiveStrategies[i].z > allDefensiveStrategies[mostSuccessfulStrategy].z)
+            {
+                mostSuccessfulStrategy = allDefensiveStrategies[i].x;
+            }
+        }
+        // then check if the most successful strategy is x more than the next
+        bool isThereClearStrategy = true;
+        for (int i = 0; i < allDefensiveStrategies.Length; i++)
+        {
+            if(allDefensiveStrategies[mostSuccessfulStrategy].x != allDefensiveStrategies[i].x)
+            {
+                if (allDefensiveStrategies[mostSuccessfulStrategy].y - allDefensiveStrategies[i].y <= 2 )
+                {
+                    isThereClearStrategy = false;
+                }
+            }
+        }
+        if (isThereClearStrategy)
+        {
+            Debug.LogWarning("clearly superior defensive strategy present");
+            return ReturnDefensiveStrategy(allDefensiveStrategies[mostSuccessfulStrategy].x);
+        }
+
+        // if no clear strategy, get the most successful from the very conservative bucket
+        return BehaviourDoMostSuccessfulConservativeStrategy();
     }
 
 
