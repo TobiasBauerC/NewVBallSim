@@ -290,8 +290,16 @@ public class PawnManager : MonoBehaviour
                         // then check if its in the right column
                         if (GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x == blockersColumn)
                         {
-                            numberOfBlockersHands += 1;
-                            // Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
+                            if (isPlayersBlockers)
+                            {
+                                if (rotationManager.IsPawnRotationFrontRow(hit.transform.parent.gameObject.GetComponent<Pawn>()))
+                                {
+                                    numberOfBlockersHands += 1;
+                                    Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
+                                }
+                            }
+                            else numberOfBlockersHands += 1;
+                            
                         }
                     }
                 }  
@@ -315,7 +323,6 @@ public class PawnManager : MonoBehaviour
             }
         }
     }
-
     public void SetAllPawnSprites(Pawn.Sprites sprite)
     {
         foreach(Pawn p in pawns)
@@ -328,7 +335,7 @@ public class PawnManager : MonoBehaviour
     {
         foreach(Pawn p in pawns)
         {
-            if (GetPawnGridPositon(p).x == blockersColumn)
+            if (GetPawnGridPositon(p).x == blockersColumn && rotationManager.IsPawnRotationFrontRow(p))
                 p.SetSprite(Pawn.Sprites.block);
             else p.SetSprite(Pawn.Sprites.neutral);
         }
