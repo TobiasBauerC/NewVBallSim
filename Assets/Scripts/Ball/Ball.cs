@@ -93,6 +93,37 @@ public class Ball : MonoBehaviour
         // yield break;
     }
 
+    public IEnumerator SetPositionOutOfBounds(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, bool ballOnPlayerSide)
+    {
+        Vector3 targetPosition = GetPositionOutOfBounds(gridManager.ForceGetGridPosition(x, y), ballOnPlayerSide);
+
+        StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, targetPosition, time));
+        if (startSounds != null)
+            SoundManager.Instance.PlaySFX(startSounds);
+        yield return new WaitForSeconds(time + .001f);
+        if (endSounds != null)
+            SoundManager.Instance.PlaySFX(endSounds);
+    }
+
+    private Vector3 GetPositionOutOfBounds(Vector3 inBoundsPosition, bool ballOnPlayerSide)
+    {
+        Vector3 returnVector = inBoundsPosition;
+
+        if (inBoundsPosition.x > 0)
+        {
+            returnVector.x += 1;
+        }
+        else returnVector.x -= 1;
+
+        if (inBoundsPosition.y > 0)
+        {
+            returnVector.y += 1;
+        }
+        else returnVector.y -= 1;
+
+        return returnVector;
+    }
+
     public Vector2Int GetGridPosition()
     {
         Vector2 position = currentGrid.GetGridXYPosition(transform.position);

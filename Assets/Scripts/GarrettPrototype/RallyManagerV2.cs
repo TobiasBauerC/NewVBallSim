@@ -694,7 +694,7 @@ public class RallyManagerV2 : MonoBehaviour
                 modVector = playerOutOfBoundsVectorUp;
             else modVector = playerOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, false));
             // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
             AICoach.Instance.StatPlayerServiceError();
@@ -853,7 +853,7 @@ public class RallyManagerV2 : MonoBehaviour
                 modVector = aiOutOfBoundsVectorUp;
             else modVector = aiOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true));
             yield return new WaitForSeconds(1.001f);
             AICoach.Instance.StatAIHittingError();
             trueCallback();
@@ -1022,7 +1022,7 @@ public class RallyManagerV2 : MonoBehaviour
                         modVector = playerOutOfBoundsVectorUp;
                     else modVector = playerOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, false));
                     yield return new WaitForSeconds(1.001f);
                     AICoach.Instance.StatPlayerHittingError();
                     falseCallback();
@@ -1167,7 +1167,7 @@ public class RallyManagerV2 : MonoBehaviour
                         modVector = aiOutOfBoundsVectorUp;
                     else modVector = aiOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true));
                     // Debug.Log("B Hitting Error");
                     yield return new WaitForSeconds(1.001f);
                     AICoach.Instance.StatAIHittingError();
@@ -1279,7 +1279,7 @@ public class RallyManagerV2 : MonoBehaviour
                 modVector = aiOutOfBoundsVectorUp;
             else modVector = aiOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(playerGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true));
             // Debug.Log("B Miss Serve");
             yield return new WaitForSeconds(1.001f);
             AICoach.Instance.StatAIServiceError();
@@ -1451,7 +1451,7 @@ public class RallyManagerV2 : MonoBehaviour
                 modVector = playerOutOfBoundsVectorUp;
             else modVector = playerOutOfBoundsVectorDown;
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, false));
             //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
             AICoach.Instance.StatPlayerHittingError();
@@ -1607,7 +1607,7 @@ public class RallyManagerV2 : MonoBehaviour
                         modVector = aiOutOfBoundsVectorUp;
                     else modVector = aiOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(aiAttackLocation.x, aiAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPosition(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(playerGridManager, aiAttackLocation.x + modVector.x, aiAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true));
                     yield return new WaitForSeconds(1.001f);
                     AICoach.Instance.StatAIHittingError();
                     falseCallback();
@@ -1763,7 +1763,7 @@ public class RallyManagerV2 : MonoBehaviour
                         modVector = playerOutOfBoundsVectorUp;
                     else modVector = playerOutOfBoundsVectorDown;
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPosition(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, false));
                     //Debug.Log("A Hitting Error");
                     yield return new WaitForSeconds(1.001f);
                     AICoach.Instance.StatPlayerHittingError();
