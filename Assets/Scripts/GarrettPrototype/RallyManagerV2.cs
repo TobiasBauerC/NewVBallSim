@@ -643,6 +643,7 @@ public class RallyManagerV2 : MonoBehaviour
         playerBallIndicator.SetPosition(aiGridManager, 4, 4);
 
         rotationManager.SetPlayerServicePositions(0);
+        ballScript.transform.position = ballScript.transform.position + new Vector3(-1, 0, 0);
         // yield return new WaitUntil(() => !waitingForPlayerInteraction);
         Vector2Int serveLocation = new Vector2Int(4,4);
         playerBallIndicator.gameObject.SetActive(true);
@@ -1216,8 +1217,9 @@ public class RallyManagerV2 : MonoBehaviour
         playerPawnManager.EnablePawnMove(false);
         //AIPawnManager.SetPositions(AIPawnManager.allPositionSets[0].positions);
         rotationManager.SetAIServicePositions(0);
-        
-        
+        ballScript.transform.position = ballScript.transform.position + new Vector3(1, 0, 0);
+
+
         // Debug.Log("Ball currently at " + ballScript.GetGridPosition());
 
         // set all the sprites to neutral
