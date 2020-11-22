@@ -295,7 +295,7 @@ public class PawnManager : MonoBehaviour
                                 if (rotationManager.IsPawnRotationFrontRow(hit.transform.parent.gameObject.GetComponent<Pawn>()))
                                 {
                                     numberOfBlockersHands += 1;
-                                    Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
+                                    //Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
                                 }
                             }
                             else numberOfBlockersHands += 1;

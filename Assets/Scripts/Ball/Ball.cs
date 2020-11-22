@@ -93,9 +93,9 @@ public class Ball : MonoBehaviour
         // yield break;
     }
 
-    public IEnumerator SetPositionOutOfBounds(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, bool ballOnPlayerSide)
+    public IEnumerator SetPositionOutOfBounds(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, bool ballOnOpposite)
     {
-        Vector3 targetPosition = GetPositionOutOfBounds(gridManager.ForceGetGridPosition(x, y), ballOnPlayerSide);
+        Vector3 targetPosition = GetPositionOutOfBounds(gridManager.ForceGetGridPosition(x, y), ballOnOpposite);
 
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, targetPosition, time));
         if (startSounds != null)
@@ -105,21 +105,36 @@ public class Ball : MonoBehaviour
             SoundManager.Instance.PlaySFX(endSounds);
     }
 
-    private Vector3 GetPositionOutOfBounds(Vector3 inBoundsPosition, bool ballOnPlayerSide)
+    private Vector3 GetPositionOutOfBounds(Vector3 inBoundsPosition, bool ballOnOpposite)
     {
         Vector3 returnVector = inBoundsPosition;
 
-        if (inBoundsPosition.x > 0)
+        if (ballOnOpposite)
         {
-            returnVector.x += 1;
+            if (inBoundsPosition.x > 0)
+            {
+                returnVector.x += 1;
+            }
+            else returnVector.x -= 1;
+            if (inBoundsPosition.y > 0)
+            {
+                returnVector.y += 1;
+            }
+            else returnVector.y -= 1;
         }
-        else returnVector.x -= 1;
-
-        if (inBoundsPosition.y > 0)
+        else
         {
-            returnVector.y += 1;
+            if (inBoundsPosition.x > 0)
+            {
+                returnVector.x -= 2;
+            }
+            else returnVector.x += 1;
+            if (inBoundsPosition.y > 0)
+            {
+                returnVector.y += 1;
+            }
+            else returnVector.y -= 1;
         }
-        else returnVector.y -= 1;
 
         return returnVector;
     }
