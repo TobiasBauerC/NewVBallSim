@@ -226,7 +226,7 @@ public class AICoach : MonoBehaviour
 
     private int ReturnDefensiveStrategy(int defensiveStrategyToReturn)
     {
-        Debug.Log("Returning defensive strategy properly");
+        // Debug.Log("Returning defensive strategy properly");
         lastDefensiveStrategyUsedIndex = defensiveStrategyToReturn;
         allDefensiveStrategies[defensiveStrategyToReturn].y++;
         return defensiveStrategyToReturn;
@@ -252,11 +252,11 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourCloseGame()
     {
-        Debug.LogWarning("Close game behaviour");
+        // Debug.LogWarning("Close game behaviour");
         // check if the last defensive strategy had worked, if it did, use it again
         if (didLastDefensiveStrategyWork)
         {
-            Debug.LogWarning("Repeating successful last defensive strategy");
+            // Debug.LogWarning("Repeating successful last defensive strategy");
             return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
         }
 
@@ -279,7 +279,7 @@ public class AICoach : MonoBehaviour
         }
         if(newStratsIndex.Count > 0)
         {
-            Debug.LogWarning("Trying a new strategy: " + newStratsIndex.Count + " to choose from");
+           // Debug.LogWarning("Trying a new strategy: " + newStratsIndex.Count + " to choose from");
             int number = Random.Range(0, newStratsIndex.Count);
             //for(int i = 0; i < neutralCloseGameBucket.Length; i++)
             //{
@@ -291,7 +291,7 @@ public class AICoach : MonoBehaviour
         }
 
         // else randomly select from the neutral close game pool
-        Debug.LogWarning("Randomly selecting a neutral close game strategy");
+        // Debug.LogWarning("Randomly selecting a neutral close game strategy");
         int thing = Random.Range(0, neutralCloseGameBucket.Length);
         return ReturnDefensiveStrategy(neutralCloseGameBucket[thing].x);
     }
@@ -301,19 +301,19 @@ public class AICoach : MonoBehaviour
 
         if(hitterToKey == 1)
         {
-            Debug.LogWarning("Keying on the left side hitter");
+           // Debug.LogWarning("Keying on the left side hitter");
             number = Random.Range(0, keyLeftHitterCloseGameBucket.Length);
             return ReturnDefensiveStrategy(keyLeftHitterCloseGameBucket[number].x);
         }
         else if(hitterToKey == 3)
         {
-            Debug.LogWarning("Keying on the right side hitter");
+            //Debug.LogWarning("Keying on the right side hitter");
             number = Random.Range(0, keyRightHitterCloseGameBucket.Length);
             return ReturnDefensiveStrategy(keyRightHitterCloseGameBucket[number].x);
         }
         else
         {
-            Debug.LogWarning("Keying on the middle hitter");
+            //Debug.LogWarning("Keying on the middle hitter");
             number = Random.Range(0, keyMidHitterCloseGameBucket.Length);
             return ReturnDefensiveStrategy(keyMidHitterCloseGameBucket[number].x);
         }
@@ -323,7 +323,7 @@ public class AICoach : MonoBehaviour
     {
         // will grab the highest successful strategy, if there is a tie will grab the earliest in the array (tends to be more conservative)
         // if nothing has worked, will return 0 (default strategy)
-        Debug.LogWarning("doing most successful strategy");
+        //Debug.LogWarning("doing most successful strategy");
         int strategy = 0;
         for(int i = 0; i < allDefensiveStrategies.Length; i++)
         {
@@ -337,7 +337,7 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourDoMostSuccessfulConservativeStrategy()
     {
-        Debug.LogWarning("doing most successful conservative strategy");
+        //Debug.LogWarning("doing most successful conservative strategy");
         int strategy = 0;
         for (int i = 0; i < conservativeBucket.Length; i++)
         {
@@ -354,11 +354,11 @@ public class AICoach : MonoBehaviour
 
     private int BehaviourDownBig()
     {
-        Debug.LogWarning("Down big behaviour");
+        //Debug.LogWarning("Down big behaviour");
         // check if the last defensive strategy had worked, if it did, use it again
         if (didLastDefensiveStrategyWork)
         {
-            Debug.LogWarning("repeating last defensive strategy");
+            //Debug.LogWarning("repeating last defensive strategy");
             return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
         }
 
@@ -367,7 +367,7 @@ public class AICoach : MonoBehaviour
         {
             if (allDefensiveStrategies[i].y == 0)
             {
-                Debug.LogWarning("Trying something new");
+               // Debug.LogWarning("Trying something new");
                 return ReturnDefensiveStrategy(allDefensiveStrategies[i].x);
             }
         }
@@ -381,7 +381,7 @@ public class AICoach : MonoBehaviour
             return BehaviourCloseGameKeyHitter(3);
 
         // if no key hitter, do what has worked
-        Debug.Log("No key hitter and nothing new to try");
+       // Debug.Log("No key hitter and nothing new to try");
         return BehaviourDoMostSuccessfulStrategy();
     }
 
@@ -396,7 +396,7 @@ public class AICoach : MonoBehaviour
         // check if the last defensive strategy had worked, if it did, use it again
         if (didLastDefensiveStrategyWork)
         {
-            Debug.LogWarning("repeating last defensive strategy");
+            //Debug.LogWarning("repeating last defensive strategy");
             return ReturnDefensiveStrategy(lastDefensiveStrategyUsedIndex);
         }
 
@@ -424,7 +424,7 @@ public class AICoach : MonoBehaviour
         }
         if (isThereClearStrategy)
         {
-            Debug.LogWarning("clearly superior defensive strategy present");
+            //Debug.LogWarning("clearly superior defensive strategy present");
             return ReturnDefensiveStrategy(allDefensiveStrategies[mostSuccessfulStrategy].x);
         }
 

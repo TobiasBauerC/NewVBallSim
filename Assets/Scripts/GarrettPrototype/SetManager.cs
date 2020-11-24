@@ -107,7 +107,7 @@ public class SetManager : MonoBehaviour
             {
                 // Debug.Log("A team should be serving");
                 // didServingTeamWinTheRally = StartCoroutine(rallyManagerV2.SimulateRallyAServing());
-                Debug.Log("Starting a new rally A serving");
+                // Debug.Log("Starting a new rally A serving");
                 StartCoroutine(rallyManagerV2.SimulateRallyAServing(ReturnTrue, ReturnFalse));
                 yield return new WaitUntil(() => coroutineResult != 3);
                 if (coroutineResult == 0)
@@ -121,7 +121,7 @@ public class SetManager : MonoBehaviour
             {
                 // Debug.Log("B team should be serving");
                 // didServingTeamWinTheRally = rallyManagerV2.SimulateRallyBServing();
-                Debug.Log("Starting a new rally B serving");
+                // Debug.Log("Starting a new rally B serving");
                 StartCoroutine(rallyManagerV2.SimulateRallyBServing(ReturnTrue, ReturnFalse));
                 yield return new WaitUntil(() => coroutineResult != 3);
                 if (coroutineResult == 0)
@@ -164,7 +164,7 @@ public class SetManager : MonoBehaviour
                 rotationManager.RotatePlayer();
             }
 
-            Debug.Log("Score: " + AteamScore + " - " + BteamScore);
+            // Debug.Log("Score: " + AteamScore + " - " + BteamScore);
             scoreText.text = "Score \n" + AteamScore + " - " + BteamScore;
 
             yield return new WaitForSeconds(2);

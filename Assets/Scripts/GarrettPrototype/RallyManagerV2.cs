@@ -293,7 +293,7 @@ public class RallyManagerV2 : MonoBehaviour
             // Debug.Log("A Attack Lands for a Kill");
             messageText.text = "Player pounds it past the defence for a point";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
-            StartCoroutine(ballScript.SetPosition(aiGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
+            StartCoroutine(ballScript.SetPosition(aiGridManager, attackLocation.x, attackLocation.y, .5f, null, SoundManager.Instance.volleyballBounceSounds));
             AICoach.Instance.StatPlayerKill(attackerGridLocation.y);
             if (isAteamServing)
                 return true;
@@ -353,7 +353,7 @@ public class RallyManagerV2 : MonoBehaviour
             // Debug.Log("B Attack Lands for a Kill");
             messageText.text = "AI bounces it on the player";
             // StartCoroutine(Movement.MoveFromAtoBWithEndSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(attackLocation.x, attackLocation.y), 1f, SoundManager.Instance.volleyballBounceSounds));
-            StartCoroutine(ballScript.SetPosition(playerGridManager, attackLocation.x, attackLocation.y, 1, null, SoundManager.Instance.volleyballBounceSounds));
+            StartCoroutine(ballScript.SetPosition(playerGridManager, attackLocation.x, attackLocation.y, .5f, null, SoundManager.Instance.volleyballBounceSounds));
             AICoach.Instance.StatAIKill();
             if (isAteamServing)
                 return false;
@@ -588,6 +588,20 @@ public class RallyManagerV2 : MonoBehaviour
         int ballY = Vector2Int.RoundToInt(gridManager.GetGridXYPosition(ball.transform.position)).y;
         yDistance = Mathf.Abs(playerY - ballY);
         return yDistance;
+    }
+
+    private Vector3 GetNetContactPointWithAttackDirection(Vector3 startingPos, Vector3 endingPos)
+    {
+        Vector3 result = Vector3.zero;
+        Debug.LogWarning("Starting Pos is " + startingPos + " and ending pos is " + endingPos);
+        float slope = (startingPos.y - endingPos.y) / (startingPos.x - endingPos.x);
+        // y = slope x + b
+        float b = startingPos.y - (slope * startingPos.x);
+        result.y = b;
+
+        Debug.LogWarning("Returning position " + result);
+
+        return result;
     }
 
 
@@ -877,7 +891,8 @@ public class RallyManagerV2 : MonoBehaviour
         }
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
         {
-            StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(-0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+            if(resultNumber != 0)
+                StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
             yield return new WaitForSeconds(0.2f);
             bool result = CompareResultsB(resultNumber, aiAttackLocation);
             yield return new WaitForSeconds(1 + .001f);
@@ -1046,7 +1061,8 @@ public class RallyManagerV2 : MonoBehaviour
                 }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
-                    StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+                    if (resultNumber != 0)
+                        StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result3 = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
                     yield return new WaitForSeconds(1 + .001f);
@@ -1192,7 +1208,8 @@ public class RallyManagerV2 : MonoBehaviour
                 }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
-                    StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(-0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+                    if (resultNumber != 0)
+                        StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result4 = CompareResultsB(resultNumber, aiAttackLocation);
                     yield return new WaitForSeconds(1 + .001f);
@@ -1477,7 +1494,8 @@ public class RallyManagerV2 : MonoBehaviour
         }
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
         {
-            StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+            if (resultNumber != 0)
+                StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
             yield return new WaitForSeconds(0.2f + .001f);
             bool result = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
             yield return new WaitForSeconds(1 + .001f);
@@ -1632,7 +1650,8 @@ public class RallyManagerV2 : MonoBehaviour
                 }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
-                    StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(-0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+                    if (resultNumber != 0)
+                        StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result3 = CompareResultsB(resultNumber, aiAttackLocation);
                     yield return new WaitForSeconds(1 + .001f);
@@ -1789,7 +1808,8 @@ public class RallyManagerV2 : MonoBehaviour
                 }
                 if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
                 {
-                    StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, ballScript.transform.position + new Vector3(0.5f, 0, 0), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
+                    if (resultNumber != 0)
+                        StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result4 = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
                     yield return new WaitForSeconds(1 + .001f);

@@ -258,7 +258,7 @@ public class RotationManager : MonoBehaviour
         // block strategy 0 -> just line up in base defense spots and react
         if (blockingStrategy == 0)
         {
-            Debug.LogWarning("Executing 'neutral' strategy");
+           //  Debug.LogWarning("Executing 'neutral' strategy");
             // do nothing, default positions are correct
         }
 
@@ -266,7 +266,7 @@ public class RotationManager : MonoBehaviour
         // block strategy 1 -> line the blockers up with their attackers, 6 moves up
         else if (blockingStrategy == 1)
         {
-            Debug.LogWarning("Executing 'line up' strategy");
+           // Debug.LogWarning("Executing 'line up' strategy");
             newPositions[2].y = playerCurrentPositions[4].y;
             newPositions[3].y = playerCurrentPositions[3].y;
             newPositions[4].y = playerCurrentPositions[2].y;
@@ -416,7 +416,7 @@ public class RotationManager : MonoBehaviour
         // block strategy 2 -> blockers bunch close together in the middle, six moves up 
         else if(blockingStrategy == 2)
         {
-            Debug.LogWarning("Executing 'middle triple' strategy");
+           // Debug.LogWarning("Executing 'middle triple' strategy");
             newPositions[2].y = 5;
             newPositions[3].y = 4;
             newPositions[4].y = 3;
@@ -427,7 +427,7 @@ public class RotationManager : MonoBehaviour
         // block strategy 3 -> blockers peel and play defense
         else if(blockingStrategy == 3)
         {
-            Debug.LogWarning("Executing 'peel' strategy");
+          //  Debug.LogWarning("Executing 'peel' strategy");
             newPositions[2].x += 2;
             newPositions[3].x += 1;
             newPositions[4].x += 2;
@@ -440,7 +440,7 @@ public class RotationManager : MonoBehaviour
         // Wide Spread
         else if(blockingStrategy == 4)
         {
-            Debug.LogWarning("Executing 'Wide Spread' strategy");
+          //  Debug.LogWarning("Executing 'Wide Spread' strategy");
             newPositions[2].y = 8;
             newPositions[3].y = 4;
             newPositions[4].y = 0;
@@ -453,7 +453,7 @@ public class RotationManager : MonoBehaviour
         // Mid Spread
         else if (blockingStrategy == 5)
         {
-            Debug.LogWarning("Executing 'Mid Spread w/ 6 up' strategy");
+          //  Debug.LogWarning("Executing 'Mid Spread w/ 6 up' strategy");
             newPositions[2].y = 7;
             newPositions[3].y = 4;
             newPositions[4].y = 1;
@@ -466,7 +466,7 @@ public class RotationManager : MonoBehaviour
         // Left Heavy
         else if (blockingStrategy == 6)
         {
-            Debug.LogWarning("Executing 'Left Heavy' strategy");
+           // Debug.LogWarning("Executing 'Left Heavy' strategy");
             newPositions[2].y = 8;
             newPositions[3].y = 6;
             newPositions[4].y = 4;
@@ -478,7 +478,7 @@ public class RotationManager : MonoBehaviour
         // Right Heavy
         else if (blockingStrategy == 7)
         {
-            Debug.LogWarning("Executing 'Right Heavy' strategy");
+          //  Debug.LogWarning("Executing 'Right Heavy' strategy");
             newPositions[2].y = 4;
             newPositions[3].y = 2;
             newPositions[4].y = 0;
@@ -490,7 +490,7 @@ public class RotationManager : MonoBehaviour
         // 2 Blockers
         else if (blockingStrategy == 8)
         {
-            Debug.LogWarning("Executing '2 Blockers' strategy");
+         //   Debug.LogWarning("Executing '2 Blockers' strategy");
             newPositions[2].y = 6;
             newPositions[3].x += 2;
             newPositions[4].y = 2;
@@ -500,7 +500,7 @@ public class RotationManager : MonoBehaviour
         // Left Shift
         else if (blockingStrategy == 9)
         {
-            Debug.LogWarning("Executing 'Left Shift' strategy");
+           // Debug.LogWarning("Executing 'Left Shift' strategy");
             newPositions[2] = new Vector2(0, 7);
             newPositions[3] = new Vector2(0, 5);
             newPositions[4] = new Vector2(4, 1);
@@ -514,7 +514,7 @@ public class RotationManager : MonoBehaviour
         // Right Shift
         else if (blockingStrategy == 10)
         {
-            Debug.LogWarning("Executing 'Right Shift' strategy");
+           // Debug.LogWarning("Executing 'Right Shift' strategy");
             newPositions[2] = new Vector2(4, 7);
             newPositions[3] = new Vector2(0, 3);
             newPositions[4] = new Vector2(0, 1);
@@ -528,7 +528,7 @@ public class RotationManager : MonoBehaviour
         // Solo Up
         else if (blockingStrategy == 11)
         {
-            Debug.LogWarning("Executing 'Solo Up' strategy");
+          //  Debug.LogWarning("Executing 'Solo Up' strategy");
             // newPositions[2].x += 2;
             newPositions[3].x += 2;
             newPositions[4].x += 2;
@@ -541,7 +541,7 @@ public class RotationManager : MonoBehaviour
         // Solo Mid
         else if (blockingStrategy == 12)
         {
-            Debug.LogWarning("Executing 'Solo Mid' strategy");
+          //  Debug.LogWarning("Executing 'Solo Mid' strategy");
             newPositions[2].x += 2;
             // newPositions[3].x += 2;
             newPositions[4].x += 2;
@@ -554,7 +554,7 @@ public class RotationManager : MonoBehaviour
         // Solo Down
         else if (blockingStrategy == 13)
         {
-            Debug.LogWarning("Executing 'Solo Down' strategy");
+           // Debug.LogWarning("Executing 'Solo Down' strategy");
             newPositions[2].x += 2;
             newPositions[3].x += 2;
             // newPositions[4].x += 2;
@@ -567,7 +567,7 @@ public class RotationManager : MonoBehaviour
         // Double Up - Easy
         else if (blockingStrategy == 14)
         {
-            Debug.LogWarning("Executing 'Double Up - Easy' strategy");
+           // Debug.LogWarning("Executing 'Double Up - Easy' strategy");
             newPositions[2].y = 6;
             newPositions[3].y = 5;
             newPositions[4] = new Vector2(3, 4);
@@ -578,7 +578,7 @@ public class RotationManager : MonoBehaviour
         // Double Mid - Easy
         else if (blockingStrategy == 15)
         {
-            Debug.LogWarning("Executing 'Double Mid - Easy' strategy");
+          //  Debug.LogWarning("Executing 'Double Mid - Easy' strategy");
             newPositions[2].y = 5;
             newPositions[3].y = 4;
             newPositions[4] = new Vector2(3, 3);
@@ -589,7 +589,7 @@ public class RotationManager : MonoBehaviour
         // Double Down - Easy
         else if (blockingStrategy == 16)
         {
-            Debug.LogWarning("Executing 'Double Down - Easy' strategy");
+           // Debug.LogWarning("Executing 'Double Down - Easy' strategy");
             newPositions[2] = new Vector2(3, 4);
             newPositions[3].y = 3;
             newPositions[4].y = 2;
@@ -599,7 +599,7 @@ public class RotationManager : MonoBehaviour
         // Double Up - Hard
         else if (blockingStrategy == 17)
         {
-            Debug.LogWarning("Executing 'Double Up - Hard' strategy");
+           // Debug.LogWarning("Executing 'Double Up - Hard' strategy");
             newPositions[2].y = 7;
             newPositions[3].y = 6;
             newPositions[4] = new Vector2(3, 5);
@@ -612,7 +612,7 @@ public class RotationManager : MonoBehaviour
         // Double Mid - Hard
         else if (blockingStrategy == 18)
         {
-            Debug.LogWarning("Executing 'Double Mid - Hard' strategy");
+          //  Debug.LogWarning("Executing 'Double Mid - Hard' strategy");
             newPositions[2].y = 5;
             newPositions[3].y = 4;
             newPositions[4] = new Vector2(3, 4);
@@ -625,7 +625,7 @@ public class RotationManager : MonoBehaviour
         // Double Down - Hard
         else if (blockingStrategy == 19)
         {
-            Debug.LogWarning("Executing 'Double Down - Hard' strategy");
+          //  Debug.LogWarning("Executing 'Double Down - Hard' strategy");
             newPositions[2] = new Vector2(3, 4);
             newPositions[3].y = 2;
             newPositions[4].y = 1;
