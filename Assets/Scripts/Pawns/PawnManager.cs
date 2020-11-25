@@ -260,7 +260,7 @@ public class PawnManager : MonoBehaviour
             if (GetPawnGridPositon(p).x == blockersColumn && Mathf.Abs(GetPawnGridPositon(p).y - attackersRow) == 2)
                 numberOfBlockersHands += 1;
         }
-        Debug.LogWarning(" There are " + numberOfBlockersHands + " blockers hands nearby");
+        // Debug.LogWarning(" There are " + numberOfBlockersHands + " blockers hands nearby");
 
 
         return numberOfBlockersHands;

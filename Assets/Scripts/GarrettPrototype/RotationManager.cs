@@ -805,37 +805,14 @@ public class RotationManager : MonoBehaviour
             }
         }
 
-        // randomize the attacker locations as long as they're not the setter
-        for (int i = 2; i < 5; i++)
-        {
-            Debug.Log("Getting here");
-            if ((aiPositionsArray[i].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[i].pawnRole != PawnRole.RightSide && setterDug))
-            {
-                Debug.Log("made it in here");
-                positions[i].x = UnityEngine.Random.Range(positions[i].x, positions[i].x + 2);
-                positions[i].y = UnityEngine.Random.Range(positions[i].y - 1, positions[i].y + 1);
-            }
-        }
-
-        for (int i = 0; i < aiPositionsArray.Length; i++)
-        {
-            if(aiPositionsArray[i].pawnRole == PawnRole.Setter)
-            {
-                Debug.Log("grabbed the setter");
-                for (int j = 0; j < aiPositionsArray.Length; j++)
-                {
-                    if (aiPositionsArray[j].pawnRole != PawnRole.Setter)
-                    {
-                        Debug.Log("checking " + aiPositionsArray[j].transform.name);
-                        if (aiPositionsArray[i].transform.position == aiPositionsArray[j].transform.position)
-                        {
-                            positions[i].x += 1;
-                            Debug.LogWarning("Oops someone was overlapping with the setter, move them");
-                        }
-                    }
-                }
-            }
-        }
+        // update the positions with values taken from the coach
+        Vector2Int[] updatedFrontRowPositions = AICoach.Instance.GetFrontRowHittersLineup(passValue);
+        if((aiPositionsArray[2].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[2].pawnRole == PawnRole.RightSide && setterDug))
+            positions[2] = updatedFrontRowPositions[0];
+        if ((aiPositionsArray[3].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[3].pawnRole == PawnRole.RightSide && setterDug))
+            positions[3] = updatedFrontRowPositions[1];
+        if ((aiPositionsArray[2].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[2].pawnRole == PawnRole.RightSide && setterDug))
+            positions[4] = updatedFrontRowPositions[2];
 
         StartCoroutine(SetAIPawnPositions(positions, travelTime));
     }

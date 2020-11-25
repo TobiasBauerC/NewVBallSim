@@ -175,6 +175,7 @@ public class AICoach : MonoBehaviour
     }
     public void StatAIKill()
     {
+        Debug.Log("statting AI outcome");
         aiTotalAttacks++;
         aiStraightKills += 1;
         aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
@@ -182,12 +183,14 @@ public class AICoach : MonoBehaviour
 
     public void StatAITool()
     {
+        Debug.Log("statting AI outcome");
         aiTotalAttacks++;
         aiTools += 1;
         aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
     }
     public void StatAIHittingError()
     {
+        Debug.Log("statting AI outcome");
         aiTotalAttacks++;
         aiHittingErrors += 1;
         aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
@@ -430,6 +433,86 @@ public class AICoach : MonoBehaviour
 
         // if no clear strategy, get the most successful from the very conservative bucket
         return BehaviourDoMostSuccessfulConservativeStrategy();
+    }
+
+
+
+
+
+
+
+    public Vector2Int[] GetFrontRowHittersLineup(int passValue)
+    {
+        Vector2Int[] frontRowHittersLocations = new Vector2Int[3];
+
+        if (passValue == 1) // BAD PASS BEHAVIOUR
+        {
+            Debug.Log("Hitters move to cover left side and stay off the net on a bad pass");
+            frontRowHittersLocations[0] = new Vector2Int(2, 3);
+            frontRowHittersLocations[1] = new Vector2Int(3, 2);
+            frontRowHittersLocations[2] = new Vector2Int(1, 0);
+        }
+        else if (passValue == 2) // OK PASS BEHAVIOUR
+        {
+            Debug.Log("Hitters Stay off the net and spread on an ok pass");
+            frontRowHittersLocations[0] = new Vector2Int(1, 8);
+            frontRowHittersLocations[1] = new Vector2Int(0, 4);
+            frontRowHittersLocations[2] = new Vector2Int(1, 0);
+        }
+        else if (passValue == 3) // GOOD PASS BEHAVIOUR
+        {
+            aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
+            Debug.Log("Hitting average is " + aiHittingAverage);
+            if(aiHittingAverage >= 0)
+            {
+                int offensiveChoice = Random.Range(0, 2);
+                if(offensiveChoice == 0)
+                {
+                    frontRowHittersLocations = BackQuickOffence();
+                }
+                else
+                {
+                    frontRowHittersLocations = ShootOffence();
+                }
+            }
+            else
+            {
+                frontRowHittersLocations = SpreadOffense();
+            }
+        }
+        else Debug.LogError("Something went wrong");
+
+        return frontRowHittersLocations;
+    }
+
+    private Vector2Int[] SpreadOffense()
+    {
+        Vector2Int[] spreadOffense = new Vector2Int[3];
+        Debug.Log("Hitters spread across the court evenly");
+        spreadOffense[0] = new Vector2Int(0, 8);
+        spreadOffense[1] = new Vector2Int(1, 4);
+        spreadOffense[2] = new Vector2Int(0, 0);
+        return spreadOffense;
+    }
+
+    private Vector2Int[] BackQuickOffence()
+    {
+        Vector2Int[] backQuickOffense = new Vector2Int[3];
+        Debug.Log("Hitters spread + a back quick");
+        backQuickOffense[0] = new Vector2Int(0, 8);
+        backQuickOffense[1] = new Vector2Int(1, 6);
+        backQuickOffense[2] = new Vector2Int(0, 0);
+        return backQuickOffense;
+    }
+
+    private Vector2Int[] ShootOffence()
+    {
+        Vector2Int[] shootOffense = new Vector2Int[3];
+        Debug.Log("Hitters spread + a shoot");
+        shootOffense[0] = new Vector2Int(0, 8);
+        shootOffense[1] = new Vector2Int(1, 2);
+        shootOffense[2] = new Vector2Int(0, 0);
+        return shootOffense;
     }
 
 
