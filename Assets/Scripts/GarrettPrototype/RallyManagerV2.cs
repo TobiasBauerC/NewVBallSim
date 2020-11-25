@@ -593,13 +593,13 @@ public class RallyManagerV2 : MonoBehaviour
     private Vector3 GetNetContactPointWithAttackDirection(Vector3 startingPos, Vector3 endingPos)
     {
         Vector3 result = Vector3.zero;
-        Debug.LogWarning("Starting Pos is " + startingPos + " and ending pos is " + endingPos);
+        // Debug.LogWarning("Starting Pos is " + startingPos + " and ending pos is " + endingPos);
         float slope = (startingPos.y - endingPos.y) / (startingPos.x - endingPos.x);
         // y = slope x + b
         float b = startingPos.y - (slope * startingPos.x);
         result.y = b;
 
-        Debug.LogWarning("Returning position " + result);
+        // Debug.LogWarning("Returning position " + result);
 
         return result;
     }

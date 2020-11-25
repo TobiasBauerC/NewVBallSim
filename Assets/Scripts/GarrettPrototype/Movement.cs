@@ -130,4 +130,26 @@ public static class Movement
         yield break;
     }
 
+    public static IEnumerator Rotate(Transform objectToMove, float time, float degreesToRotate = 0, bool rotateRight = true )
+    {
+        if (degreesToRotate == 0)
+            degreesToRotate += 360;
+        if (!rotateRight)
+            degreesToRotate = degreesToRotate * -1;
+
+        float startRotation = objectToMove.eulerAngles.y;
+        float endRotation = startRotation - degreesToRotate;
+        float t = 0.0f;
+
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            float zRotation = Mathf.Lerp(startRotation, endRotation, t / time) % 360.0f;
+            objectToMove.eulerAngles = new Vector3(objectToMove.eulerAngles.x, objectToMove.eulerAngles.y, zRotation);
+            yield return null;
+        }
+
+        yield break;
+    }
+
 }
