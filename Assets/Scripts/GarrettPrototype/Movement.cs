@@ -35,12 +35,16 @@ public static class Movement
         yield break;
     }
 
-    public static IEnumerator MoveFromAtoBWithStartSound(Transform objectToMove, Vector3 worldStartPosition, Vector3 worldEndPosition, float time, AudioClip[] sounds)
+    public static IEnumerator MoveFromAtoBWithStartSound(Transform objectToMove, Vector3 worldStartPosition, Vector3 worldEndPosition, float time, AudioClip[] sounds, float rotationValue, bool rotateRight)
     {
         // Debug.Log("Trying to move " + objectToMove.name + " from " + worldStartPosition + " to " + worldEndPosition + " in " + time + " seconds.");
         float timeSpent = 0;
         float t = 0;
         SoundManager.Instance.PlaySFX(sounds);
+
+        if (rotationValue != 0)
+            objectToMove.GetComponent<Ball>().StartRotationCoroutine(objectToMove, time, rotationValue, rotateRight);
+
         while (objectToMove.position != worldEndPosition)
         {
             t += Time.deltaTime / time;
@@ -132,6 +136,7 @@ public static class Movement
 
     public static IEnumerator Rotate(Transform objectToMove, float time, float degreesToRotate = 0, bool rotateRight = true )
     {
+        Debug.Log("Calling rotation function");
         if (degreesToRotate == 0)
             degreesToRotate += 360;
         if (!rotateRight)

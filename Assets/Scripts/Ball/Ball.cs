@@ -65,10 +65,16 @@ public class Ball : MonoBehaviour
         SetPosition(x, y);
     }
 
-    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds)
+    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, float rotationValue, bool rotateRight)
     {
         // Debug.Log("starting to move ball towards " + x + " " + y);
         // currentGrid = gridManager;
+        Debug.Log("Calling ball position function");
+        if (rotationValue != 0)
+        {
+            Debug.Log("set position funtion if rotationValue != 0");
+            StartCoroutine(Movement.Rotate(transform, time, rotationValue, rotateRight));
+        }
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.ForceGetGridPosition(x, y), time));
         if(startSounds != null)
             SoundManager.Instance.PlaySFX(startSounds);
@@ -78,10 +84,12 @@ public class Ball : MonoBehaviour
         // yield break;
     }
 
-    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds)
+    public IEnumerator SetPosition(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, float rotationValue, bool rotateRight)
     {
         // Debug.Log("starting to move ball towards " + x + " " + y);
         // currentGrid = gridManager;
+        if (rotationValue != 0)
+            StartCoroutine(Movement.Rotate(transform, time, rotationValue, rotateRight));
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.ForceGetGridPosition(x, y), time));
         if (startSounds != null)
             SoundManager.Instance.PlaySFX(startSounds);
@@ -93,16 +101,22 @@ public class Ball : MonoBehaviour
         // yield break;
     }
 
-    public IEnumerator SetPositionOutOfBounds(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, bool ballOnOpposite)
+    public IEnumerator SetPositionOutOfBounds(GridManager gridManager, int x, int y, float time, AudioClip[] startSounds, AudioClip[] endSounds, bool ballOnOpposite, float rotationValue, bool rotateRight)
     {
         Vector3 targetPosition = GetPositionOutOfBounds(gridManager.ForceGetGridPosition(x, y), ballOnOpposite);
-
+        if (rotationValue != 0)
+            StartCoroutine(Movement.Rotate(transform, time, rotationValue, rotateRight));
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, targetPosition, time));
         if (startSounds != null)
             SoundManager.Instance.PlaySFX(startSounds);
         yield return new WaitForSeconds(time + .001f);
         if (endSounds != null)
             SoundManager.Instance.PlaySFX(endSounds);
+    }
+
+    public void StartRotationCoroutine(Transform objectToMove, float time, float rotationValue, bool rotateRight)
+    {
+        StartCoroutine(Movement.Rotate(objectToMove, time, rotationValue, rotateRight));
     }
 
     private Vector3 GetPositionOutOfBounds(Vector3 inBoundsPosition, bool ballOnOpposite)
