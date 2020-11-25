@@ -824,10 +824,11 @@ public class RallyManagerV2 : MonoBehaviour
         // Debug.Log("B Hit " + BattackQuality);
         // AI chooses where to attack
         messageText.text = "AI swinging to attack here";
-        int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-        int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-        Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
-        aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
+        //int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        //int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        //Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
+        Vector2Int aiAttackLocation = playerPawnManager.AIPickAttackDirection(attackerPosition);
+        aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
         yield return new WaitForSeconds(0.1f);
 
         if (BattackQuality == 1)
@@ -1143,10 +1144,11 @@ public class RallyManagerV2 : MonoBehaviour
                 // Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
                 messageText.text = "AI swinging to attack here";
-                aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-                aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-                aiAttackLocation = new Vector2Int(aix, aiy);
-                aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
+                //aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                //aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                //aiAttackLocation = new Vector2Int(aix, aiy);
+                aiAttackLocation = playerPawnManager.AIPickAttackDirection(attackerPosition);
+                aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
                 yield return new WaitForSeconds(0.1f);
 
                 if (BattackQuality == 1)
@@ -1585,10 +1587,11 @@ public class RallyManagerV2 : MonoBehaviour
                 //Debug.Log("B Hit " + BattackQuality);
                 // AI chooses where to attack
                 messageText.text = "AI swinging to attack here";
-                int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-                int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
-                Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
-                aiBallIndicator.SetPosition(playerGridManager, aix, aiy);
+                //int aix = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                //int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+                //Vector2Int aiAttackLocation = new Vector2Int(aix, aiy);
+                Vector2Int aiAttackLocation = playerPawnManager.AIPickAttackDirection(attackerPosition);
+                aiBallIndicator.SetPosition(playerGridManager, aiAttackLocation.x, aiAttackLocation.y);
                 yield return new WaitForSeconds(0.1f);
 
                 if (BattackQuality == 1)

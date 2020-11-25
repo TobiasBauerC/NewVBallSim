@@ -69,10 +69,10 @@ public class Ball : MonoBehaviour
     {
         // Debug.Log("starting to move ball towards " + x + " " + y);
         // currentGrid = gridManager;
-        Debug.Log("Calling ball position function");
+        // Debug.Log("Calling ball position function");
         if (rotationValue != 0)
         {
-            Debug.Log("set position funtion if rotationValue != 0");
+            // Debug.Log("set position funtion if rotationValue != 0");
             StartCoroutine(Movement.Rotate(transform, time, rotationValue, rotateRight));
         }
         StartCoroutine(Movement.MoveFromAtoB(transform, transform.position, gridManager.ForceGetGridPosition(x, y), time));

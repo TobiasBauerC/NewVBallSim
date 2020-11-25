@@ -6,8 +6,8 @@ using UnityEditorInternal;
 
 public class RotationManager : MonoBehaviour
 {
-    [SerializeField] private GridManager playerGridManager = null;
-    [SerializeField] private GridManager aiGridManager = null;
+    public GridManager playerGridManager = null;
+    public GridManager aiGridManager = null;
 
     public Pawn[] playerPositionsArray;
     public Pawn playerSetter;
@@ -802,6 +802,38 @@ public class RotationManager : MonoBehaviour
                     positions[i] = aiSetterPosition2Pass;
                 else if (passValue == 3)
                     positions[i] = aiSetterPosition3Pass;
+            }
+        }
+
+        // randomize the attacker locations as long as they're not the setter
+        for (int i = 2; i < 5; i++)
+        {
+            Debug.Log("Getting here");
+            if ((aiPositionsArray[i].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[i].pawnRole != PawnRole.RightSide && setterDug))
+            {
+                Debug.Log("made it in here");
+                positions[i].x = UnityEngine.Random.Range(positions[i].x, positions[i].x + 2);
+                positions[i].y = UnityEngine.Random.Range(positions[i].y - 1, positions[i].y + 1);
+            }
+        }
+
+        for (int i = 0; i < aiPositionsArray.Length; i++)
+        {
+            if(aiPositionsArray[i].pawnRole == PawnRole.Setter)
+            {
+                Debug.Log("grabbed the setter");
+                for (int j = 0; j < aiPositionsArray.Length; j++)
+                {
+                    if (aiPositionsArray[j].pawnRole != PawnRole.Setter)
+                    {
+                        Debug.Log("checking " + aiPositionsArray[j].transform.name);
+                        if (aiPositionsArray[i].transform.position == aiPositionsArray[j].transform.position)
+                        {
+                            positions[i].x += 1;
+                            Debug.LogWarning("Oops someone was overlapping with the setter, move them");
+                        }
+                    }
+                }
             }
         }
 

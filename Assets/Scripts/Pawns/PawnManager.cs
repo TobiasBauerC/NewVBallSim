@@ -295,7 +295,7 @@ public class PawnManager : MonoBehaviour
                                 if (rotationManager.IsPawnRotationFrontRow(hit.transform.parent.gameObject.GetComponent<Pawn>()))
                                 {
                                     numberOfBlockersHands += 1;
-                                    //Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
+                                    // Debug.LogWarning("Counting " + hit.transform.name + " part of the " + hit.transform.parent.name + " object as a raycast hit. It is in column " + GetPawnGridPositon(hit.transform.parent.gameObject.GetComponent<Pawn>()).x);
                                 }
                             }
                             else numberOfBlockersHands += 1;
@@ -309,6 +309,78 @@ public class PawnManager : MonoBehaviour
         //Debug.Log(" There are " + numberOfBlockersHands + " blockers hands nearby");
 
         return numberOfBlockersHands;
+    }
+
+    public Vector2Int AIPickAttackDirection(Vector3 attackerPosition)
+    {
+        Vector2Int attackDirection = Vector2Int.zero;
+
+        Vector2Int position1 = new Vector2Int(2, 1);
+        Vector2Int position5 = new Vector2Int(2, 7);
+        Vector2Int position2 = new Vector2Int(6, 1);
+        Vector2Int position4 = new Vector2Int(6, 7);
+        Vector2Int shortMiddle = new Vector2Int(5, 4);
+        Vector2Int deepMiddle = new Vector2Int(1, 4);
+        Vector2Int shortTip = new Vector2Int(7, 4);
+        Vector2Int sideline1 = new Vector2Int(4, 0);
+        Vector2Int sideline5 = new Vector2Int(4, 8);
+        Vector2Int veryMiddle = new Vector2Int(4, 4);
+        Vector2Int[] attackLocations = new Vector2Int[10];
+        Vector3[] attackLocationsWorldPosition = new Vector3[10];
+
+        attackLocations[2] = position1;
+        attackLocations[1] = position5;
+        attackLocations[4] = position2;
+        attackLocations[3] = position4;
+        attackLocations[6] = shortMiddle;
+        attackLocations[5] = deepMiddle;
+        attackLocations[9] = shortTip;
+        attackLocations[7] = sideline1;
+        attackLocations[8] = sideline5;
+        attackLocations[0] = veryMiddle;
+
+        for (int i = 0; i < attackLocations.Length; i++)
+        {
+            attackLocationsWorldPosition[i] = rotationManager.playerGridManager.ForceGetGridPosition(attackLocations[i].x, attackLocations[i].y);
+            // Debug.Log(i + " world position being set at " + attackLocationsWorldPosition[i]);
+        }
+
+        // check how many blockers are present at each shot location
+        int[] attackLocationsOpponentBlockersInTheWay = new int[10];
+        for(int i = 0; i < attackLocations.Length; i++)
+        {
+            attackLocationsOpponentBlockersInTheWay[i] = GetNumberOfBlockersHandsNearby(attackerPosition, attackLocationsWorldPosition[i], true);
+            // Debug.Log(i + " has " + attackLocationsOpponentBlockersInTheWay[i] + " blockers in the way");
+        }
+
+        // go through them all, track the lowest number's index
+        int bestShotOptionIndex = -1;
+        for(int i = 0; i < attackLocationsOpponentBlockersInTheWay.Length; i++)
+        {
+            if(i == 0)
+            {
+                bestShotOptionIndex = i;
+            }
+            else
+            {
+                if(attackLocationsOpponentBlockersInTheWay[i] < attackLocationsOpponentBlockersInTheWay[bestShotOptionIndex])
+                {
+                    bestShotOptionIndex = i;
+                }
+            }
+        }
+        // Debug.Log("Best shop option index selected at " + bestShotOptionIndex);
+
+        // when a location is selected, generate a random location that is within 1 square of that spot
+        int aix = Mathf.CeilToInt((UnityEngine.Random.Range(attackLocations[bestShotOptionIndex].x - 1, attackLocations[bestShotOptionIndex].x + 1)));
+        int aiy = Mathf.CeilToInt((UnityEngine.Random.Range(attackLocations[bestShotOptionIndex].y - 1, attackLocations[bestShotOptionIndex].y + 1)));
+
+        attackDirection.x = aix;
+        attackDirection.y = aiy;
+
+        Debug.Log("Attack location decided to be " + attackDirection);
+
+        return attackDirection;
     }
 
     public void MoveSetter(int x, int y)

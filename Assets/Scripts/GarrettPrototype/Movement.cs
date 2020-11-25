@@ -136,7 +136,7 @@ public static class Movement
 
     public static IEnumerator Rotate(Transform objectToMove, float time, float degreesToRotate = 0, bool rotateRight = true )
     {
-        Debug.Log("Calling rotation function");
+        // Debug.Log("Calling rotation function");
         if (degreesToRotate == 0)
             degreesToRotate += 360;
         if (!rotateRight)
