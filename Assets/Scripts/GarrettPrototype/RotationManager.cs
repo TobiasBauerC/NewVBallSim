@@ -132,12 +132,15 @@ public class RotationManager : MonoBehaviour
     {
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
+            if(Vector3.Distance(playerPositionsArray[i].transform.position, playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y)) > 0.3f)
+                playerPositionsArray[i].GetMyManager().SetAnimation(playerPositionsArray[i], 1);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             StartCoroutine(Movement.MoveFromAtoB(playerPositionsArray[i].transform, playerPositionsArray[i].transform.position, playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
         }
         yield return new WaitForSeconds(travelTime);
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
+            playerPositionsArray[i].GetMyManager().SetAnimation(playerPositionsArray[i], 0);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
@@ -150,6 +153,8 @@ public class RotationManager : MonoBehaviour
     {
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
+            if (Vector3.Distance(playerPositionsArray[i].transform.position, playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y)) > 0.3f)
+                playerPositionsArray[i].GetMyManager().SetAnimation(playerPositionsArray[i], 1);
             if (i != 1)
             {
                 playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
@@ -164,17 +169,20 @@ public class RotationManager : MonoBehaviour
         yield return new WaitForSeconds(travelTime);
         for (int i = 0; i < playerPositionsArray.Length; i++)
         {
+
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
             playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
             playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
             if (i != 1)
             {
+                playerPositionsArray[i].GetMyManager().SetAnimation(playerPositionsArray[i], 0);
                 playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
                 playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y);
                 playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
             }
             else
             {
+                playerPositionsArray[i].GetMyManager().SetAnimation(playerPositionsArray[i], -1);
                 playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, false);
                 playerPositionsArray[i].transform.position = playerGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y) + new Vector3(-1, 0, 0);
                 playerGridManager.SetCellOccupied(playerPositionsArray[i].transform.position, true);
@@ -187,6 +195,8 @@ public class RotationManager : MonoBehaviour
     {
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
+            if (Vector3.Distance(aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y)) > 0.3f)
+                aiPositionsArray[i].GetMyManager().SetAnimation(aiPositionsArray[i], 1);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
             StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
         }
@@ -195,6 +205,7 @@ public class RotationManager : MonoBehaviour
 
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
+            aiPositionsArray[i].GetMyManager().SetAnimation(aiPositionsArray[i], 0);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
             aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
             aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
@@ -207,13 +218,17 @@ public class RotationManager : MonoBehaviour
     {
         for (int i = 0; i < aiPositionsArray.Length; i++)
         {
+            if (Vector3.Distance(aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y)) > 0.3f)
+                aiPositionsArray[i].GetMyManager().SetAnimation(aiPositionsArray[i], 1);
             if (i != 1)
             {
+                
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
                 StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y), travelTime));
             }
             else
             {
+                
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
                 StartCoroutine(Movement.MoveFromAtoB(aiPositionsArray[i].transform, aiPositionsArray[i].transform.position, aiGridManager.ForceGetGridPosition((int)positions[i].x, (int)positions[i].y) + new Vector3(1, 0, 0), travelTime));
 
@@ -226,12 +241,14 @@ public class RotationManager : MonoBehaviour
         {
             if (i != 1)
             {
+                aiPositionsArray[i].GetMyManager().SetAnimation(aiPositionsArray[i], 0);
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
                 aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y);
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);
             }
             else
             {
+                aiPositionsArray[i].GetMyManager().SetAnimation(aiPositionsArray[i], -1);
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, false);
                 aiPositionsArray[i].transform.position = aiGridManager.GetGridPosition((int)positions[i].x, (int)positions[i].y) + new Vector3(1, 0, 0);
                 aiGridManager.SetCellOccupied(aiPositionsArray[i].transform.position, true);

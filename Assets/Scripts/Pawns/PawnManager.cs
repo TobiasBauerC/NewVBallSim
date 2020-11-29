@@ -403,15 +403,34 @@ public class PawnManager : MonoBehaviour
         }
     }
 
-    public void SetBlockersAndDefendersSprites(int blockersColumn)
+    public void SetAllPawnAnimatorInteger(int animationNumber)
+    {
+        foreach (Pawn p in pawns)
+        {
+            SetAnimation(p, animationNumber);
+        }
+    }
+
+    public void SetAnimation(Pawn pawn, int animationNumber)
+    {
+        pawn.transform.GetComponentInChildren<Animator>().SetInteger("animationNumber", animationNumber);
+    }
+
+
+    public void SetBlockersAndDefendersSprites(int blockersColumn, int animationNumber = 5)
     {
         foreach(Pawn p in pawns)
         {
             if (GetPawnGridPositon(p).x == blockersColumn && rotationManager.IsPawnRotationFrontRow(p))
-                p.SetSprite(Pawn.Sprites.block);
-            else p.SetSprite(Pawn.Sprites.neutral);
+                SetAnimation(p, animationNumber);
+            //p.SetSprite(Pawn.Sprites.block);
+            else
+            {
+                SetAnimation(p, 0);
+            }
         }
     }
+
 }
 
 

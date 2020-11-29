@@ -19,6 +19,8 @@ public class Pawn : MonoBehaviour
 
     private Vector3 reactionStartPoint = Vector3.zero;
 
+    private int previousAnimationInt = 0;
+
 
 
     [Header("Starting Pos")]
@@ -77,6 +79,8 @@ public class Pawn : MonoBehaviour
             }
             pickupOrigin = pawnManager.gridManager.GetGridXYPosition(transform.position);
             selected = true;
+            previousAnimationInt = GetComponentInChildren<Animator>().GetInteger("animationNumber");
+            pawnManager.SetAnimation(this, 1);
             pawnManager.gridManager.SetCellOccupied(transform.position, false);
         }
         // if selected, have it follow mouse
@@ -102,6 +106,7 @@ public class Pawn : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 selected = false;
+                pawnManager.SetAnimation(this, previousAnimationInt);
                 if (!pawnManager.serveRecieve)
                 {
                     if (limitX >= 0 && limitY >= 0)

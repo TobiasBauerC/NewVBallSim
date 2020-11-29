@@ -461,7 +461,8 @@ public class AICoach : MonoBehaviour
         }
         else if (passValue == 3) // GOOD PASS BEHAVIOUR
         {
-            aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
+            if(aiTotalAttacks != 0)
+                aiHittingAverage = (aiStraightKills + aiTools - aiHittingErrors) / aiTotalAttacks;
             Debug.Log("Hitting average is " + aiHittingAverage);
             if(aiHittingAverage >= 0)
             {
