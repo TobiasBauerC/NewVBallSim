@@ -406,7 +406,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         rotationManager.SetAIOffensePositions(passNumber, travelTime, diggingPawn);
     }
-    private SkillManager.PlayerSkills AISetSelection(int digNumber, Pawn diggingPawn)
+    private SkillManager.PlayerSkills AISetSelection(int digNumber, Pawn diggingPawn, out Pawn hittingPawn)
     {
         Pawn newSetter = null;
         if (diggingPawn.pawnRole == PawnRole.Setter)
@@ -423,8 +423,15 @@ public class RallyManagerV2 : MonoBehaviour
             // Debug.Log("AI forced to set Power 1");
             UnityEngine.Vector2 playerLocation;
             if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
+            {
                 playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
-            else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                hittingPawn = rotationManager.aiPositionsArray[4];
+            }
+            else
+            {
+                playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                hittingPawn = rotationManager.aiPositionsArray[5];
+            }
             StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, 20, false));
             return skillManager.AIP1;
         }
@@ -437,8 +444,15 @@ public class RallyManagerV2 : MonoBehaviour
                 // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
+                {
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
-                else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                    hittingPawn = rotationManager.aiPositionsArray[4];
+                }
+                else
+                {
+                    playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                    hittingPawn = rotationManager.aiPositionsArray[5];
+                }
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, -20, false));
                 
                 return skillManager.AIP1;
@@ -448,8 +462,15 @@ public class RallyManagerV2 : MonoBehaviour
                 // Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[2] != newSetter)
+                {
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
-                else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                    hittingPawn = rotationManager.aiPositionsArray[2];
+                }
+                else
+                {
+                    playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                    hittingPawn = rotationManager.aiPositionsArray[1];
+                }
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, 20, false));
                 return skillManager.AIRS;
             }
@@ -464,8 +485,15 @@ public class RallyManagerV2 : MonoBehaviour
                 // Debug.Log("AI sets power 1");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[4].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[4] != newSetter)
+                {
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[4]);
-                else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                    hittingPawn = rotationManager.aiPositionsArray[4];
+                }
+                else
+                {
+                    playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[5]);
+                    hittingPawn = rotationManager.aiPositionsArray[5];
+                }
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, -20, false));
                 return skillManager.AIP1;
             }
@@ -474,8 +502,15 @@ public class RallyManagerV2 : MonoBehaviour
                 //Debug.Log("AI sets right side");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[2].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[2] != newSetter)
+                {
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[2]);
-                else playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                    hittingPawn = rotationManager.aiPositionsArray[2];
+                }
+                else
+                {
+                    playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                    hittingPawn = rotationManager.aiPositionsArray[1];
+                }
                 StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, -20, false));
                 return skillManager.AIRS;
             }
@@ -484,19 +519,30 @@ public class RallyManagerV2 : MonoBehaviour
                 //Debug.Log("AI sets middle 2");
                 UnityEngine.Vector2 playerLocation;
                 if (rotationManager.aiPositionsArray[3].pawnRole != PawnRole.Setter && rotationManager.aiPositionsArray[3] != newSetter)
+                {
                     playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[3]);
+                    hittingPawn = rotationManager.aiPositionsArray[3];
+                    StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, 20, false));
+                }
                 else
                 {
-                    if(rotationManager.aiPositionsArray[0] != newSetter && rotationManager.aiPositionsArray[0].pawnRole != PawnRole.Setter)
+                    if (rotationManager.aiPositionsArray[0] != newSetter && rotationManager.aiPositionsArray[0].pawnRole != PawnRole.Setter)
+                    {
                         playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[0]);
+                        hittingPawn = rotationManager.aiPositionsArray[0];
+                    }
                     else
+                    {
                         playerLocation = AIPawnManager.GetPawnGridPositon(rotationManager.aiPositionsArray[1]);
+                        hittingPawn = rotationManager.aiPositionsArray[1];
+                    }
+                    StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, 20, false));
                 }
-                StartCoroutine(ballScript.SetPosition(aiGridManager, Mathf.RoundToInt(playerLocation.x), Mathf.RoundToInt(playerLocation.y), 1, SoundManager.Instance.volleyballSetSounds, 20, false));
                 return skillManager.AIM1;
             }
         }
         Debug.LogError("AI Set selection didn't work, something broke. Likely no valid set options were available");
+        hittingPawn = rotationManager.aiPositionsArray[1];
         return skillManager.AIP1;
     }
 
@@ -822,13 +868,16 @@ public class RallyManagerV2 : MonoBehaviour
 
         // PASS SET
         // SET CHOICE
-        AIsetChoiceSkills = AISetSelection(BpassNumber, passingPawn); // ai set selection also sets the ai attack position, and the ball position
+        Pawn hittingPawn = null;
         AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
+        AIsetChoiceSkills = AISetSelection(BpassNumber, passingPawn, out hittingPawn); // ai set selection also sets the ai attack position, and the ball position
+        AIPawnManager.SetAnimation(hittingPawn, 4);
         yield return new WaitForSeconds(1); // ball travel time wait
         messageText.text = "AI making a set choice";
         attackersRow = ballScript.GetGridPosition().y;
         attackerPosition = ballScript.transform.position;
-        AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+        // AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+        
         yield return new WaitForSeconds(0.2f);
 
 
@@ -1165,13 +1214,16 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // PASS SET
                 // SET CHOICE
-                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn);
+                hittingPawn = null;
+                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn, out hittingPawn);
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
+                AIPawnManager.SetAnimation(hittingPawn, 4);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 messageText.text = "AI making a set choice";
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
-                AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+                // AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+                
                 yield return new WaitForSeconds(0.2f);
 
                 // get the set quality based on the pass
@@ -1312,6 +1364,7 @@ public class RallyManagerV2 : MonoBehaviour
         float setUpPositionTime = 0.5f;
         rotationManager.SetAIServicePositions(setUpPositionTime);
         ballScript.transform.position = ballScript.transform.position + new Vector3(1, 0, 0);
+        yield return new WaitForSeconds(setUpPositionTime);
 
         AIPawnManager.SetAllPawnAnimatorInteger(0);
         AIPawnManager.SetAnimation(rotationManager.aiPositionsArray[1], -1);
@@ -1638,13 +1691,16 @@ public class RallyManagerV2 : MonoBehaviour
 
                 // PASS SET
                 // SET CHOICE
-                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn);
+                Pawn hittingPawn = null;
+                AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn, out hittingPawn);
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
+                AIPawnManager.SetAnimation(hittingPawn, 4);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
                 messageText.text = "AI making a set choice";
-                AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+                // AIPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
+                
                 yield return new WaitForSeconds(0.2f);
 
 
