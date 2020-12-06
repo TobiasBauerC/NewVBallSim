@@ -416,6 +416,23 @@ public class PawnManager : MonoBehaviour
         pawn.transform.GetComponentInChildren<Animator>().SetInteger("animationNumber", animationNumber);
     }
 
+    public void SetAnimation(Pawn pawn, int animationNumber, Vector3 targetLocationPosition)
+    {
+        int returnNumber = animationNumber;
+
+        if (animationNumber == 1)
+        {
+            Vector2 startingGridPositionVector2 = gridManager.GetGridXYPosition(pawn.transform.position);
+            Vector2Int startingGridPositionVector2Int = new Vector2Int(Mathf.RoundToInt(startingGridPositionVector2.x), Mathf.RoundToInt(startingGridPositionVector2.y));
+            Vector2 targetGridPositionVector2 = gridManager.GetGridXYPosition(targetLocationPosition);
+            Vector2Int targetGridPositionVector2Int = new Vector2Int(Mathf.RoundToInt(targetGridPositionVector2.x), Mathf.RoundToInt(targetGridPositionVector2.y));
+            returnNumber = GetRunDirectionInteger(startingGridPositionVector2Int, targetGridPositionVector2Int);
+        }
+
+
+        pawn.transform.GetComponentInChildren<Animator>().SetInteger("animationNumber", returnNumber);
+    }
+
 
     public void SetBlockersAndDefendersSprites(int blockersColumn, int animationNumber = 5)
     {
@@ -429,6 +446,66 @@ public class PawnManager : MonoBehaviour
                 SetAnimation(p, 0);
             }
         }
+    }
+
+    private int GetRunDirectionInteger(Vector2Int startingGridPosition, Vector2Int targetLocationGridPosition)
+    {
+        int startingX = startingGridPosition.x;
+        int startingY = startingGridPosition.y;
+
+        int targetX = targetLocationGridPosition.x;
+        int targetY = targetLocationGridPosition.y;
+
+        int xDifference = startingX - targetX;
+        int yDifference = startingY - targetY;
+
+        if(xDifference > 0)  // moving to the left
+        {
+            if(yDifference > 0) // moving down
+            {
+                return -6;
+            }
+            else if(yDifference < 0)  // moving up
+            {
+                return -3;
+            }
+            else if(yDifference == 0) // no up or down movement
+            {
+                return -5;
+            }
+        }
+        else if (xDifference < 0)  // moving to the right
+        {
+            if (yDifference > 0)   // moving down
+            {
+                return -7;
+            }
+            else if (yDifference < 0)   // moving up
+            {
+                return -4;
+            }
+            else if (yDifference == 0)
+            {
+                return 1;
+            }
+        }
+        else if (xDifference == 0)   // no left or right movement
+        {
+            if (yDifference > 0)  // moving down
+            {
+                return -8;
+            }
+            else if (yDifference < 0)   // moving up
+            {
+                return -2;
+            }
+            else if (yDifference == 0)   // no up or down movement
+            {
+                return 0;
+            }
+        }
+
+        return 1;
     }
 
 }

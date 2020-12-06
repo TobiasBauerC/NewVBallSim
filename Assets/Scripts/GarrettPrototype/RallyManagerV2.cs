@@ -836,7 +836,7 @@ public class RallyManagerV2 : MonoBehaviour
         aiGridManager.SetCellOccupied(passingPawn.transform.position, false); // setting the passing pawn's tile occupation to false before moving towards the ball
         StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, aiGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), serveTravelTime));
         StartCoroutine(ballScript.SetPosition(aiGridManager, serveLocation.x, serveLocation.y, serveTravelTime, SoundManager.Instance.volleyballSpikeSounds, 500, true));
-        AIPawnManager.SetAnimation(passingPawn, 1);
+        AIPawnManager.SetAnimation(passingPawn, 1, aiGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y));
         messageText.text = "Player serves";
         rotationManager.SetPlayerDefensivePositions(serveTravelTime);
         // playerPawnManager.SetAnimation(rotationManager.playerPositionsArray[1], 1);
@@ -1474,7 +1474,7 @@ public class RallyManagerV2 : MonoBehaviour
         StartCoroutine(Movement.MoveFromAtoB(passingPawn.transform, passingPawn.transform.position, playerGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime));
         // StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, playerGridManager.GetGridPosition(serveLocation.x, serveLocation.y), AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds));
         StartCoroutine(ballScript.SetPosition(playerGridManager, serveLocation.x, serveLocation.y, AIServeTravelTime, SoundManager.Instance.volleyballSpikeSounds, 500, false));
-        playerPawnManager.SetAnimation(passingPawn, 1);
+        playerPawnManager.SetAnimation(passingPawn, 1, playerGridManager.ForceGetGridPosition(serveLocation.x, serveLocation.y));
         yield return new WaitForSeconds(AIServeTravelTime + .001f);
         AIPawnManager.SetAllPawnAnimatorInteger(0);
         // Debug.Log("A Passed " + ApassNumber);
