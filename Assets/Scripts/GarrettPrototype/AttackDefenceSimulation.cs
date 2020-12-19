@@ -261,19 +261,35 @@ public class AttackDefenceSimulation : MonoBehaviour
         // does it hit the block
         int blockChance = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
         bool contactBlock = false;
-        float threshold = blockQuality * 30;    // before I added the boxcollider system, the mod value was 15, changing to 30 -> if I attack right at one blocker it'll give me a block quality of 2 giving a 60% chance it hits the block, maybe even a bit low
+        float threshold = blockQuality * 50;    // before I added the boxcollider system, the mod value was 15, changing to 30 -> if I attack right at one blocker it'll give me a block quality of 2 giving a 60% chance it hits the block, maybe even a bit low
+        // upped the threshold to 50, so when a player hits it right into the meat of the block, there will be a threshold of 100, almost certain to contact the block
         if (blockChance < threshold)
             contactBlock = true;
         if (contactBlock)
         {
+            if(blockQuality == 1) // specific values for when the attacker is only hitting one hand of the blocker
+            // setting mod value to +30 to make it far more likely for a tool than a block when attacking an outstretched single hand
+            {
+                if (trueAttackStrength + 30 >= blockValue)
+                {
+                    // Debug.Log("Attack tools the block");
+                    return -1;
+                }
+                else if (trueAttackStrength + 30 < blockValue)
+                {
+                    // Debug.Log("Block stops the attack");
+                    return 100;
+                }
+            }
             // lowering the benefit to attackers from 20 to 10 given that they can now try to hit around the block, making it easier to get a block
+            // lowering the benefit to attackers from 10 to -40, given that they are hitting it right into the block and are more likely to get slammed
             // ball hit the block, solve for tool or block
-            if (trueAttackStrength + 10 >= blockValue)
+            if (trueAttackStrength - 40 >= blockValue)
             {
                 // Debug.Log("Attack tools the block");
                 return -1;
             }
-            else if (trueAttackStrength + 10 < blockValue)
+            else if (trueAttackStrength - 40  < blockValue)
             {
                 // Debug.Log("Block stops the attack");
                 return 100;
@@ -282,7 +298,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         }
         // Debug.Log("Ball makes it past the block");
 
-        int distanceMod = 12;
+        int distanceMod = 14; // raised distance mod from 12 to 14 to try and emphasize distance from the ball
         // account for passers distance from ball
         if (xDistance > 4 || yDistance > 3)
         {
@@ -298,7 +314,7 @@ public class AttackDefenceSimulation : MonoBehaviour
 
         // if attack beats block, continue to check defense
         // compare attack and defence value
-        int defenceMod = 35;
+        int defenceMod = 20; // lowering defence mod from 35 down to 20 to try and balance digging
         if (defenceValue + defenceMod > trueAttackStrength)
         {
             // calculate the quality of dig

@@ -149,7 +149,7 @@ public class ServePassSimulation : MonoBehaviour
         int passQuality = 3;
         int serve = serveNumber;
         int pass = CalculatePass(_basePassAbility);
-        int distanceMod = 8;
+        int distanceMod = 10; // moving distance mod from 8 to 10 to put more emphasis on serving farther away from players
 
         // account for passers distance from ball
         if(xDistance > 4 || yDistance > 3)
@@ -172,13 +172,14 @@ public class ServePassSimulation : MonoBehaviour
         }
 
         // look for an ace
-        if ((serve - pass) > 55)
+        if ((serve - pass) > 70) // making random aces less likely, moving mod from 55 to 70 
+            // moving again from 70 to 90 to stop having as many aces
         {
             // ace
             passQuality = 0;
             return passQuality;
         }
-        else if ((serve - pass) > 30)
+        else if ((serve - pass) > 40) // moving from 30 to 40
         {
             // one pass
             passQuality = 1;

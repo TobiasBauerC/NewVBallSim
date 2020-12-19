@@ -225,11 +225,13 @@ public class RallyManagerV2 : MonoBehaviour
     {
         Vector2Int returnVector = Vector2Int.zero;
         int mod = 0;
-        if (serveNumber > 60)
+        if (serveNumber > 80) // changing mod from 60 to 80, making it more likely a serve will be slightly off target
             mod = 0;
-        else if (serveNumber > 30)
+        else if (serveNumber > 50) // changing mod from 30 to 50 making it more likely a serve will be more off target
             mod = 1;
-        else mod = 2;
+        else if (serveNumber > 10) // adding a third option, creating a small 10 percent section where a serve goes 3 tiles away from the target
+            mod = 2;
+        else mod = 3;
 
         int xChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
         int yChange = Mathf.RoundToInt(UnityEngine.Random.Range(-mod, mod));
@@ -890,7 +892,10 @@ public class RallyManagerV2 : MonoBehaviour
         // PLAYER INTERACTION
         waitingForPlayerInteraction = true;
         playerInteractionButton.SetActive(true);
-        playerPawnManager.EnableLimitedMove(1, 1);
+        int playerBlockerMoveLimit = 2;
+        if (BpassNumber == 3)
+            playerBlockerMoveLimit = 1;
+        playerPawnManager.EnableLimitedMove(1, playerBlockerMoveLimit);
         playerPawnManager.EnablePawnMove(true);
         messageText.text = "Player has a chance to have their blockers react";
         yield return new WaitUntil(() => !waitingForPlayerInteraction);
@@ -1064,7 +1069,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.001f);
 
                 blockersReactTime = 0.2f;
-                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime, digNumber));
                 
                 yield return new WaitForSeconds(blockersReactTime);
                 AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn, 6);
@@ -1235,7 +1240,10 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnableLimitedMove(1, 1);
+                playerBlockerMoveLimit = 2;
+                if (digNumber == 3)
+                    playerBlockerMoveLimit = 1;
+                playerPawnManager.EnableLimitedMove(1, playerBlockerMoveLimit);
                 playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
@@ -1393,8 +1401,8 @@ public class RallyManagerV2 : MonoBehaviour
 
         // SERVE PASS
         messageText.text = "AI up to serve";
-        int x = Mathf.CeilToInt((UnityEngine.Random.Range(0, 6)));
-        int y = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        int x = Mathf.CeilToInt((UnityEngine.Random.Range(1, 6)));
+        int y = Mathf.CeilToInt((UnityEngine.Random.Range(1, 5)));
         Vector2Int serveLocation = new Vector2Int(x, y);
         aiBallIndicator.SetPosition(playerGridManager, x, y);
         yield return new WaitForSeconds(0.1f);
@@ -1539,7 +1547,7 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(0.001f);
 
         blockersReactTime = 0.2f;
-        StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+        StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime, ApassNumber));
         
         yield return new WaitForSeconds(blockersReactTime);
         AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn, 6);
@@ -1713,7 +1721,10 @@ public class RallyManagerV2 : MonoBehaviour
                 // PLAYER INTERACTION
                 waitingForPlayerInteraction = true;
                 playerInteractionButton.SetActive(true);
-                playerPawnManager.EnableLimitedMove(1, 1);
+                int playerBlockerMoveLimit = 2;
+                if (digNumber == 3)
+                    playerBlockerMoveLimit = 1;
+                playerPawnManager.EnableLimitedMove(1, playerBlockerMoveLimit);
                 playerPawnManager.EnablePawnMove(true);
                 messageText.text = "Player has a chance to have their blockers react";
                 yield return new WaitUntil(() => !waitingForPlayerInteraction);
@@ -1875,7 +1886,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.001f);
 
                 blockersReactTime = 0.2f;
-                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime));
+                StartCoroutine(AIMovements.BlockersReactToPlayerSetChoice(aiGridManager.ForceGetGridPosition(Mathf.RoundToInt(aiGridManager.GetGridXYPosition(ballScript.transform.position).x), Mathf.RoundToInt(aiGridManager.GetGridXYPosition(attackerPosition).y)), aiGridManager, playerGridManager, AIPawnManager, rotationManager, blockersReactTime, digNumber));
                 
                 yield return new WaitForSeconds(blockersReactTime);
                 AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn, 6);

@@ -37,7 +37,7 @@ public static class AIMovements
         yield break;
     }
 
-    public static IEnumerator BlockersReactToPlayerSetChoice(Vector3 targetPosition, GridManager aiGridManager, GridManager playerGridManager, PawnManager aiPawnManager, RotationManager rotationManager, float time)
+    public static IEnumerator BlockersReactToPlayerSetChoice(Vector3 targetPosition, GridManager aiGridManager, GridManager playerGridManager, PawnManager aiPawnManager, RotationManager rotationManager, float time, int passValue)
     {
         List<Pawn> blockers = new List<Pawn>();
         blockers.Add(rotationManager.aiPositionsArray[3]);
@@ -54,6 +54,10 @@ public static class AIMovements
             // get the closest pawn in the list
             Pawn closestBlocker = aiPawnManager.GetClosestPawn(properTargetPosition, blockers);
 
+            int xMovementLimit = 2;
+            if (passValue == 3)
+                xMovementLimit = 1;
+
             // move that pawn closer to the target location
             if (aiGridManager.GetGridXYPosition(properTargetPosition) != aiGridManager.GetGridXYPosition(closestBlocker.transform.position))
             {
@@ -66,7 +70,7 @@ public static class AIMovements
                     aiXMovementLimit = 1;
                     properTargetPosition = aiGridManager.ForceGetGridPosition(1, targetGridPosition.y);
                 }
-                aiGridManager.StartCoroutine(AIMovements.MoveSingleAITowardsTarget(closestBlocker, aiXMovementLimit, 1, properTargetPosition, aiGridManager, aiPawnManager, rotationManager, time));
+                aiGridManager.StartCoroutine(AIMovements.MoveSingleAITowardsTarget(closestBlocker, aiXMovementLimit, xMovementLimit, properTargetPosition, aiGridManager, aiPawnManager, rotationManager, time));
             }
 
             // pop that blocker from the list
