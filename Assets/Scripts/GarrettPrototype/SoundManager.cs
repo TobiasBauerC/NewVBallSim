@@ -39,6 +39,7 @@ public class SoundManager : MonoBehaviour
     
     [Header("Music Tracks")]
     [SerializeField] private AudioClip gameMusicTrack = null;
+    [SerializeField] private AudioClip mainMenuMusicTrack = null;
 
     //[Header("Announcer Lines")]
     //[SerializeField] private AudioClip[] announcerGameStartLines = null;
@@ -48,6 +49,13 @@ public class SoundManager : MonoBehaviour
     {
         musicSource.Stop();
         musicSource.clip = gameMusicTrack;
+        musicSource.Play();
+    }
+
+    public void PlayMainMenuMusic()
+    {
+        musicSource.Stop();
+        musicSource.clip = mainMenuMusicTrack;
         musicSource.Play();
     }
 
