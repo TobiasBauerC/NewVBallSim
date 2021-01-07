@@ -106,10 +106,12 @@ public class RallyManagerV2 : MonoBehaviour
     //    playerSetDecision = false;
     //    setDecisionButtons.SetActive(true);
     //    yield return new WaitUntil(() => playerSetDecision);
-        
+
     //    setDecisionButtons.SetActive(false);
     //    yield return null;
     //}
+
+    public Pawn attackingPawn = null;
 
     public void PlayerSetLeftSide1()
     {
@@ -118,7 +120,7 @@ public class RallyManagerV2 : MonoBehaviour
         
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+        attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds,20, false));
         playerSetDecision = true;
@@ -131,7 +133,7 @@ public class RallyManagerV2 : MonoBehaviour
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Power2);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+         attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds, -20, false));
         playerSetDecision = true;
@@ -144,7 +146,7 @@ public class RallyManagerV2 : MonoBehaviour
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Middle1);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+         attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds, 20, false));
         playerSetDecision = true;
@@ -157,7 +159,7 @@ public class RallyManagerV2 : MonoBehaviour
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Middle2);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+         attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds, -20, false));
         playerSetDecision = true;
@@ -170,7 +172,7 @@ public class RallyManagerV2 : MonoBehaviour
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.RightSide);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+         attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds, 20, false));
         playerSetDecision = true;
@@ -183,7 +185,7 @@ public class RallyManagerV2 : MonoBehaviour
         UnityEngine.Vector2 playerLocation = playerPawnManager.GetPawnGridPositon(PawnRole.Setter);
         int x = Mathf.RoundToInt(playerLocation.x);
         int y = Mathf.RoundToInt(playerLocation.y);
-        Pawn attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
+         attackingPawn = playerPawnManager.GetClosestPawn(playerGridManager.ForceGetGridPosition(x, y));
         playerPawnManager.SetAnimation(attackingPawn, 4);
         StartCoroutine(ballScript.SetPosition(playerGridManager, x, y, 1, SoundManager.Instance.volleyballSetSounds, 20, false));
         playerSetDecision = true;
@@ -873,6 +875,7 @@ public class RallyManagerV2 : MonoBehaviour
         Pawn hittingPawn = null;
         AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
         AIsetChoiceSkills = AISetSelection(BpassNumber, passingPawn, out hittingPawn); // ai set selection also sets the ai attack position, and the ball position
+        attackingPawn = hittingPawn;
         AIPawnManager.SetAnimation(hittingPawn, 4);
         yield return new WaitForSeconds(1); // ball travel time wait
         messageText.text = "AI making a set choice";
@@ -965,7 +968,7 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         // compare the attack values to the defence values
-        resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
+        resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
         if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber== 3)  && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
         {
             messageText.text = "AI attacks it just out of bounds";
@@ -1148,7 +1151,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
 
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
+                resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
                 {
                     
@@ -1221,6 +1224,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET CHOICE
                 hittingPawn = null;
                 AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn, out hittingPawn);
+                attackingPawn = hittingPawn;
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
                 AIPawnManager.SetAnimation(hittingPawn, 4);
                 yield return new WaitForSeconds(1); // ball travel time wait
@@ -1311,7 +1315,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
 
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
+                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
                     messageText.text = "AI attacks it just out of bounds";
@@ -1622,7 +1626,7 @@ public class RallyManagerV2 : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         // compare the attack values to the defence values
-        resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
+        resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
         if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
         {
             messageText.text = "Player hits it out of bounds";
@@ -1701,6 +1705,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // SET CHOICE
                 Pawn hittingPawn = null;
                 AIsetChoiceSkills = AISetSelection(digNumber, diggingPawn, out hittingPawn);
+                attackingPawn = hittingPawn;
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
                 AIPawnManager.SetAnimation(hittingPawn, 4);
                 yield return new WaitForSeconds(1); // ball travel time wait
@@ -1792,7 +1797,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
 
                 // compare the attack values to the defence values
-                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance);
+                resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (aiAttackLocation.x > 8 || aiAttackLocation.x < 0 || aiAttackLocation.y > 8 || aiAttackLocation.y < 0))
                 {
                     //Debug.Log("B Hitting Error");
@@ -1962,7 +1967,7 @@ public class RallyManagerV2 : MonoBehaviour
                 yield return new WaitForSeconds(0.4f);
 
                 // compare the attack values to the defence values
-                resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance);
+                resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber, diggersXDistance, diggersYDistance, attackingPawn);
                 if ((resultNumber == 0 || resultNumber == 1 || resultNumber == 2 || resultNumber == 3) && (playerAttackLocation.x > 8 || playerAttackLocation.x < 0 || playerAttackLocation.y > 8 || playerAttackLocation.y < 0))
                 {
                     messageText.text = "Player hits it out of bounds";

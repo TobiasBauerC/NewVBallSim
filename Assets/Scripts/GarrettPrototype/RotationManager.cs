@@ -853,6 +853,15 @@ public class RotationManager : MonoBehaviour
         else return true;
     }
 
+    public bool IsAnyPawnRotationFrontRow(Pawn pawn)
+    {
+        if (pawn == playerPositionsArray[0] || pawn == playerPositionsArray[5] || pawn == playerPositionsArray[1] || pawn == aiPositionsArray[0] || pawn == aiPositionsArray[5] || pawn == aiPositionsArray[1])
+        {
+            return false;
+        }
+        else return true;
+    }
+
     public bool IsPlayerPawnLocatedInBackRow(Pawn pawn)
     {
         if (playerGridManager.GetGridXYPosition(pawn.transform.position).x > 5)

@@ -250,7 +250,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         // return -2;
     }
 
-    public int GetResultNumber(int attackValue, int attackQuality, int blockValue, float blockQuality, int defenceValue, int xDistance, int yDistance)
+    public int GetResultNumber(int attackValue, int attackQuality, int blockValue, float blockQuality, int defenceValue, int xDistance, int yDistance, Pawn attackingPawn)
     {
         float q = attackQuality * 1.0f;
         float v = attackValue * 1.0f;
@@ -263,6 +263,9 @@ public class AttackDefenceSimulation : MonoBehaviour
         bool contactBlock = false;
         float threshold = blockQuality * 50;    // before I added the boxcollider system, the mod value was 15, changing to 30 -> if I attack right at one blocker it'll give me a block quality of 2 giving a 60% chance it hits the block, maybe even a bit low
         // upped the threshold to 50, so when a player hits it right into the meat of the block, there will be a threshold of 100, almost certain to contact the block
+        if (!attackingPawn.GetMyManager().rotationManager.IsAnyPawnRotationFrontRow(attackingPawn)) // reducing threshold of hitting the block for back row players
+            threshold = blockQuality * 30;
+
         if (blockChance < threshold)
             contactBlock = true;
         if (contactBlock)
@@ -315,6 +318,8 @@ public class AttackDefenceSimulation : MonoBehaviour
         // if attack beats block, continue to check defense
         // compare attack and defence value
         int defenceMod = 20; // lowering defence mod from 35 down to 20 to try and balance digging
+        if (!attackingPawn.GetMyManager().rotationManager.IsAnyPawnRotationFrontRow(attackingPawn)) // raising defence mod for when the attacking player is back row
+            defenceMod = 35;
         if (defenceValue + defenceMod > trueAttackStrength)
         {
             // calculate the quality of dig
