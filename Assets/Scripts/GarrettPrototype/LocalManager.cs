@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class LocalManager : MonoBehaviour
 {
-    public void SceneManagerChangeToGameScene(int level)
+    public void SceneManagerChangeToGameScene(DifficultyData difficultyData)
     {
-        SceneManager.Instance.ChangeScene(level);
+        DifficultyTracker.currentDifficulty = difficultyData;
+        SceneManager.Instance.ChangeScene(1);
     }
 
     public void SceneManagerChangeToMainMenu()
