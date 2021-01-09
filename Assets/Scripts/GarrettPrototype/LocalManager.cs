@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class LocalManager : MonoBehaviour
 {
-
-
-    public void SceneManagerChangeToGameScene()
+    public void SceneManagerChangeToGameScene(int level)
     {
-        SceneManager.Instance.ChangeScene(1);
+        SceneManager.Instance.ChangeScene(level);
     }
 
     public void SceneManagerChangeToMainMenu()
     {
         SceneManager.Instance.ChangeScene(0);
     }
-
-    
-
 }
