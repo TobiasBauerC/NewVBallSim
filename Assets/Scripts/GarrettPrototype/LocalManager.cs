@@ -13,4 +13,13 @@ public class LocalManager : MonoBehaviour
     {
         SceneManager.Instance.ChangeScene(0);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 }
