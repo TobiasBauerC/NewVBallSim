@@ -772,7 +772,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         // SERVE PASS
         // Debug.Log("A serves");
-        AservePass.SetServeAbility(skillManager.AIM2.serve);
+        AservePass.SetServeAbility(skillManager.PlayerS.serve);
         // Debug.Log("Servers skill is: " + skillManager.AIM2.serve);
         AserveNumber = AservePass.GetServeNumber();
         // serve location may change based on serve quality
@@ -1882,7 +1882,7 @@ public class RallyManagerV2 : MonoBehaviour
                 playerPawnManager.GetClosestPawn(ballScript.transform.position, false, 10).SetSprite(Pawn.Sprites.spike);
 
                 // get the set quality based on the pass
-                ApassSet.SetSettingAbility(skillManager.SetterSliders.transform.Find("SetSlider").GetComponent<Slider>().value);
+                ApassSet.SetSettingAbility(skillManager.PlayerS.set);
                 //Debug.Log("Setters Skill is: " + skillManager.SetterSliders.transform.Find("SetSlider").GetComponent<Slider>().value);
                 AsetNumber = ApassSet.GetSetNumber(digNumber);
                 //Debug.Log("A Set " + AsetNumber);

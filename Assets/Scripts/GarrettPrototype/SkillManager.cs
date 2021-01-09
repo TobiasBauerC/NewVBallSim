@@ -17,20 +17,6 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private AttackDefenceSimulation BattackDefence = null;
     [SerializeField] private Slider bSlider = null;
 
-    [SerializeField] [Range(75, 125)] private int aServe = 100;
-    [SerializeField] [Range(75, 125)] private int aPass = 100;
-    [SerializeField] [Range(75, 125)] private int aSet = 100;
-    [SerializeField] [Range(75, 125)] private int aAttack = 100;
-    [SerializeField] [Range(75, 125)] private int aBlock = 100;
-    [SerializeField] [Range(75, 125)] private int aDefence = 100;
-
-    [SerializeField] [Range(75, 125)] private int bServe = 100;
-    [SerializeField] [Range(75, 125)] private int bPass = 100;
-    [SerializeField] [Range(75, 125)] private int bSet = 100;
-    [SerializeField] [Range(75, 125)] private int bAttack = 100;
-    [SerializeField] [Range(75, 125)] private int bBlock = 100;
-    [SerializeField] [Range(75, 125)] private int bDefence = 100;
-
     public GameObject M1Sliders;
     public GameObject P2Sliders;
     public GameObject SetterSliders;
@@ -67,47 +53,89 @@ public class SkillManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AIP1.serve = 100;
-        AIP1.pass = 100;
-        AIP1.set = 100;
-        AIP1.attack = 100;
-        AIP1.block = 100;
-        AIP1.defence = 100;
+        PlayerP1.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerP1.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerP1.set = DifficultyTracker.currentDifficulty.player;
+        PlayerP1.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerP1.block = DifficultyTracker.currentDifficulty.player;
+        PlayerP1.defence = DifficultyTracker.currentDifficulty.player;
 
-        AIP2.serve = 100;
-        AIP2.pass = 100;
-        AIP2.set = 100;
-        AIP2.attack = 100;
-        AIP2.block = 100;
-        AIP2.defence = 100;
+        PlayerP2.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerP2.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerP2.set = DifficultyTracker.currentDifficulty.player;
+        PlayerP2.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerP2.block = DifficultyTracker.currentDifficulty.player;
+        PlayerP2.defence = DifficultyTracker.currentDifficulty.player;
 
-        AIM1.serve = 100;
-        AIM1.pass = 100;
-        AIM1.set = 100;
-        AIM1.attack = 100;
-        AIM1.block = 100;
-        AIM1.defence = 100;
+        PlayerM1.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerM1.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerM1.set = DifficultyTracker.currentDifficulty.player;
+        PlayerM1.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerM1.block = DifficultyTracker.currentDifficulty.player;
+        PlayerM1.defence = DifficultyTracker.currentDifficulty.player;
 
-        AIM2.serve = 100;
-        AIM2.pass = 100;
-        AIM2.set = 100;
-        AIM2.attack = 100;
-        AIM2.block = 100;
-        AIM2.defence = 100;
+        PlayerM2.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerM2.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerM2.set = DifficultyTracker.currentDifficulty.player;
+        PlayerM2.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerM2.block = DifficultyTracker.currentDifficulty.player;
+        PlayerM2.defence = DifficultyTracker.currentDifficulty.player;
 
-        AIS.serve = 100;
-        AIS.pass = 100;
-        AIS.set = 100;
-        AIS.attack = 100;
-        AIS.block = 100;
-        AIS.defence = 100;
+        PlayerS.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerS.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerS.set = DifficultyTracker.currentDifficulty.player;
+        PlayerS.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerS.block = DifficultyTracker.currentDifficulty.player;
+        PlayerS.defence = DifficultyTracker.currentDifficulty.player;
 
-        AIRS.serve = 100;
-        AIRS.pass = 100;
-        AIRS.set = 100;
-        AIRS.attack = 100;
-        AIRS.block = 100;
-        AIRS.defence = 100;
+        PlayerRS.serve = DifficultyTracker.currentDifficulty.player;
+        PlayerRS.pass = DifficultyTracker.currentDifficulty.player;
+        PlayerRS.set = DifficultyTracker.currentDifficulty.player;
+        PlayerRS.attack = DifficultyTracker.currentDifficulty.player;
+        PlayerRS.block = DifficultyTracker.currentDifficulty.player;
+        PlayerRS.defence = DifficultyTracker.currentDifficulty.player;
+
+        AIP1.serve = DifficultyTracker.currentDifficulty.ai;
+        AIP1.pass = DifficultyTracker.currentDifficulty.ai;
+        AIP1.set = DifficultyTracker.currentDifficulty.ai;
+        AIP1.attack = DifficultyTracker.currentDifficulty.ai;
+        AIP1.block = DifficultyTracker.currentDifficulty.ai;
+        AIP1.defence = DifficultyTracker.currentDifficulty.ai;
+
+        AIP2.serve = DifficultyTracker.currentDifficulty.ai;
+        AIP2.pass = DifficultyTracker.currentDifficulty.ai;
+        AIP2.set = DifficultyTracker.currentDifficulty.ai;
+        AIP2.attack = DifficultyTracker.currentDifficulty.ai;
+        AIP2.block = DifficultyTracker.currentDifficulty.ai;
+        AIP2.defence = DifficultyTracker.currentDifficulty.ai;
+
+        AIM1.serve = DifficultyTracker.currentDifficulty.ai;
+        AIM1.pass = DifficultyTracker.currentDifficulty.ai;
+        AIM1.set = DifficultyTracker.currentDifficulty.ai;
+        AIM1.attack = DifficultyTracker.currentDifficulty.ai;
+        AIM1.block = DifficultyTracker.currentDifficulty.ai;
+        AIM1.defence = DifficultyTracker.currentDifficulty.ai;
+
+        AIM2.serve = DifficultyTracker.currentDifficulty.ai;
+        AIM2.pass = DifficultyTracker.currentDifficulty.ai;
+        AIM2.set = DifficultyTracker.currentDifficulty.ai;
+        AIM2.attack = DifficultyTracker.currentDifficulty.ai;
+        AIM2.block = DifficultyTracker.currentDifficulty.ai;
+        AIM2.defence = DifficultyTracker.currentDifficulty.ai;
+
+        AIS.serve = DifficultyTracker.currentDifficulty.ai;
+        AIS.pass = DifficultyTracker.currentDifficulty.ai;
+        AIS.set = DifficultyTracker.currentDifficulty.ai;
+        AIS.attack = DifficultyTracker.currentDifficulty.ai;
+        AIS.block = DifficultyTracker.currentDifficulty.ai;
+        AIS.defence = DifficultyTracker.currentDifficulty.ai;
+
+        AIRS.serve = DifficultyTracker.currentDifficulty.ai;
+        AIRS.pass = DifficultyTracker.currentDifficulty.ai;
+        AIRS.set = DifficultyTracker.currentDifficulty.ai;
+        AIRS.attack = DifficultyTracker.currentDifficulty.ai;
+        AIRS.block = DifficultyTracker.currentDifficulty.ai;
+        AIRS.defence = DifficultyTracker.currentDifficulty.ai;
     }
 
     // Update is called once per frame
@@ -160,27 +188,6 @@ public class SkillManager : MonoBehaviour
         BattackDefence.SetAttackAbility(bSlider.value);
         BattackDefence.SetBlockAbility(bSlider.value);
         BattackDefence.SetDefenceAbility(bSlider.value);
-    }
-
-    public void SetSpecificSkillValues()
-    {
-        Debug.Log("Setting specific team skill values");
-
-        AservePass.SetServeAbility(aServe);
-        AservePass.SetPassAbility(aPass);
-        ApassSet.SetSettingAbility(aSet);
-        AsetAttack.SetAttackAbility(aAttack);
-        AattackDefence.SetAttackAbility(aAttack);
-        AattackDefence.SetBlockAbility(aBlock);
-        AattackDefence.SetDefenceAbility(aDefence);
-
-        BservePass.SetServeAbility(bServe);
-        BservePass.SetPassAbility(bPass);
-        BpassSet.SetSettingAbility(bSet);
-        BsetAttack.SetAttackAbility(bAttack);
-        BattackDefence.SetAttackAbility(bAttack);
-        BattackDefence.SetBlockAbility(bBlock);
-        BattackDefence.SetDefenceAbility(bDefence);
     }
 
     
