@@ -19,7 +19,7 @@ public class AICoach : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        _instance = this;
     }
 
 
