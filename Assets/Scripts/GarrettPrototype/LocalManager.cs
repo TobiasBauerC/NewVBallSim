@@ -23,4 +23,9 @@ public class LocalManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+
+    public void PlayDifficultyAnnouncerLine()
+    {
+        SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerDifficultyChoice);
+    }
 }

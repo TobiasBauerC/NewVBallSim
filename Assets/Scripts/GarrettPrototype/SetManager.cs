@@ -71,6 +71,7 @@ public class SetManager : MonoBehaviour
 
     public void PlaySet()
     {
+        SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerGameStart);
         StartCoroutine(SimulateSet());
         SoundManager.Instance.PlayGameMusic();
         playSetButton.SetActive(false);
@@ -105,6 +106,7 @@ public class SetManager : MonoBehaviour
             bool didServingTeamWinTheRally = false;
             if (AteamServing)
             {
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerRedTeamServe);
                 // Debug.Log("A team should be serving");
                 // didServingTeamWinTheRally = StartCoroutine(rallyManagerV2.SimulateRallyAServing());
                 // Debug.Log("Starting a new rally A serving");
@@ -119,6 +121,7 @@ public class SetManager : MonoBehaviour
             }
             else if (!AteamServing)
             {
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerBlueTeamServe);
                 // Debug.Log("B team should be serving");
                 // didServingTeamWinTheRally = rallyManagerV2.SimulateRallyBServing();
                 // Debug.Log("Starting a new rally B serving");
@@ -136,6 +139,7 @@ public class SetManager : MonoBehaviour
             if (didServingTeamWinTheRally && AteamServing)
             {
                 // Debug.Log("A wins the point, continues serving");
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerRedWinsPoint);
                 AteamScore++;
             }
 
@@ -143,6 +147,7 @@ public class SetManager : MonoBehaviour
             else if(didServingTeamWinTheRally && !AteamServing)
             {
                 // Debug.Log("B wins the point, continues serving");
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerBlueWinsPoint);
                 BteamScore++;
             }
 
@@ -150,6 +155,7 @@ public class SetManager : MonoBehaviour
             else if(!didServingTeamWinTheRally && AteamServing)
             {
                 // Debug.Log("B wins the point, takes over the serve");
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerBlueWinsPoint);
                 BteamScore++;
                 AteamServing = !AteamServing;
                 rotationManager.RotateAI();
@@ -159,6 +165,7 @@ public class SetManager : MonoBehaviour
             else if (!didServingTeamWinTheRally && !AteamServing)
             {
                 // Debug.Log("A wins the point, takes over the serve");
+                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerRedWinsPoint);
                 AteamScore++;
                 AteamServing = !AteamServing;
                 rotationManager.RotatePlayer();
