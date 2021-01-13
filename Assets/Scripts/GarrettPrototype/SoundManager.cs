@@ -45,11 +45,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip mainMenuMusicTrack = null;
 
     [Header("Announcer Clips")]
-    public AudioClip[] announcerGameStart;
+    public AudioClip[] announcerGameStart; // interrupt
     public AudioClip[] announcerBlueTeamServe;
     public AudioClip[] announcerRedTeamServe;
     public AudioClip[] announcerPlayerReception;
-    public AudioClip[] announcerServeHappens;
+    public AudioClip[] announcerServeHappens; // interrupt
     public AudioClip[] announcer1Pass;
     public AudioClip[] announcer2Pass;
     public AudioClip[] announcer3Pass;
@@ -58,16 +58,16 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] announcerServeInNet;
     public AudioClip[] announcerPlayerToOffence;
     public AudioClip[] announcerPlayerSetChoice;
-    public AudioClip[] announcerSetHappens;
+    public AudioClip[] announcerSetHappens; // interrupt
     public AudioClip[] announcerPlayerAttackChoice;
     public AudioClip[] announcerTool;
     public AudioClip[] announcerKill;
     public AudioClip[] announcerHitOut;
     public AudioClip[] announcerBlock;
     public AudioClip[] announcerHitIntoNet;
-    public AudioClip[] announcer1Dig;
-    public AudioClip[] announcer2Dig;
-    public AudioClip[] announcer3Dig;
+    public AudioClip[] announcer1Dig; // interrupt
+    public AudioClip[] announcer2Dig; // interrupt
+    public AudioClip[] announcer3Dig; // interrupt
     public AudioClip[] announcerRedWinsPoint;
     public AudioClip[] announcerBlueWinsPoint;
     public AudioClip[] announcerPlayerDefenseSetUp;
@@ -171,7 +171,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayAnnouncerLineQueue(AudioClip[] clips)
     {
-        Debug.Log("calling the announcer queue line function");
+        // Debug.Log("calling the announcer queue line function");
         if (announcerSource.isPlaying)
         {
             Debug.Log("announcer queue is already playing");
@@ -180,18 +180,18 @@ public class SoundManager : MonoBehaviour
             if (announcerCoroutineRunning)
             {
                 // if the coroutine is already running, do nothing
-                Debug.Log("Coroutine is already running, NOT starting it again");
+                // Debug.Log("Coroutine is already running, NOT starting it again");
             }
             else
             {
                 // if the coroutine is not running, start it
-                Debug.Log("Coroutine is not running, going to start it");
+                // Debug.Log("Coroutine is not running, going to start it");
                 StartCoroutine(PlayAnnouncerQueue());
             }
         }
         else
         {
-            Debug.Log("Announcer Queue is not playing");
+            // Debug.Log("Announcer Queue is not playing");
             int clipNumber = Random.Range(0, clips.Length);
             announcerSource.clip = clips[clipNumber];
             announcerSource.Play();
@@ -201,13 +201,13 @@ public class SoundManager : MonoBehaviour
     private IEnumerator PlayAnnouncerQueue()
     {
         announcerCoroutineRunning = true;
-        Debug.Log("Coroutine Starting");
+        // Debug.Log("Coroutine Starting");
         while (announcerQueue.Count > 0)
         {
             // Debug.Log("Stuff still in the queue list");
             if (!announcerSource.isPlaying)
             {
-                Debug.Log("announcer source no longer playing, so trying to do stuff");
+                // Debug.Log("announcer source no longer playing, so trying to do stuff");
                 int clipNumber = Random.Range(0, announcerQueue[0].Length);
                 announcerSource.clip = announcerQueue[0][clipNumber];
                 announcerQueue.RemoveAt(0);
@@ -221,7 +221,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    public void PlayAnnouncerLineQueueBasedOnResult(int resultNumber)
+    public void PlayAnnouncerLineBasedOnResult(int resultNumber)
     {
         switch (resultNumber)
         {
@@ -232,13 +232,13 @@ public class SoundManager : MonoBehaviour
                 PlayAnnouncerLineQueue(announcerKill);
                 break;
             case 1: // dig 1
-                PlayAnnouncerLineQueue(announcer1Dig);
+                PlayAnnouncerLineInterrupt(announcer1Dig);
                 break;
             case 2: // dig 2
-                PlayAnnouncerLineQueue(announcer2Dig);
+                PlayAnnouncerLineInterrupt(announcer2Dig);
                 break;
             case 3: // dig 3
-                PlayAnnouncerLineQueue(announcer3Dig);
+                PlayAnnouncerLineInterrupt(announcer3Dig);
                 break;
             case 100: // block
                 PlayAnnouncerLineQueue(announcerBlock);

@@ -770,7 +770,7 @@ public class RallyManagerV2 : MonoBehaviour
         playerPawnManager.SetAnimation(rotationManager.playerPositionsArray[1], 0);
 
         yield return new WaitForSeconds(0.5f);
-        SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerServeHappens);
+        SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerServeHappens);
 
         // SERVE PASS
         // Debug.Log("A serves");
@@ -884,7 +884,7 @@ public class RallyManagerV2 : MonoBehaviour
         AIsetChoiceSkills = AISetSelection(BpassNumber, passingPawn, out hittingPawn); // ai set selection also sets the ai attack position, and the ball position
         attackingPawn = hittingPawn;
         AIPawnManager.SetAnimation(hittingPawn, 4);
-        SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+        SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
         yield return new WaitForSeconds(1); // ball travel time wait
         messageText.text = "AI making a set choice";
         attackersRow = ballScript.GetGridPosition().y;
@@ -1002,7 +1002,7 @@ public class RallyManagerV2 : MonoBehaviour
                 StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, false));
             yield return new WaitForSeconds(0.2f);
             bool result = CompareResultsB(resultNumber, aiAttackLocation);
-            SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+            SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
             yield return new WaitForSeconds(1 + .001f);
             if (result)
                 trueCallback();
@@ -1027,7 +1027,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // A SIDE WITH A DIG
                 // Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
-                SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(digNumber);
+                SoundManager.Instance.PlayAnnouncerLineBasedOnResult(digNumber);
                 AICoach.Instance.StatPlayerDig();
                 float playerPassDigTravelTime = 1;
                 SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
@@ -1068,7 +1068,7 @@ public class RallyManagerV2 : MonoBehaviour
                 SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerPlayerSetChoice);
                 yield return new WaitUntil(() => playerSetDecision);
                 rotationManager.TurnOffAllSetButtons();
-                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+                SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
                 yield return new WaitForSeconds(1); // waiting for ball to travel
                 //setLeftSideButton.SetActive(false);
                 //setMiddleButton.SetActive(false);
@@ -1194,7 +1194,7 @@ public class RallyManagerV2 : MonoBehaviour
                         StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, true));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result3 = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
-                    SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+                    SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
                     yield return new WaitForSeconds(1 + .001f);
                     if (result3)
                         trueCallback();
@@ -1215,7 +1215,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 // Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
-                SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(digNumber);
+                SoundManager.Instance.PlayAnnouncerLineBasedOnResult(digNumber);
                 AICoach.Instance.StatAIDig();
                 // diggingPawn.SetSprite(Pawn.Sprites.dig);
                 SetBallPositionOffDigAI(digNumber, AIPassDigTime);
@@ -1249,7 +1249,7 @@ public class RallyManagerV2 : MonoBehaviour
                 attackingPawn = hittingPawn;
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
                 AIPawnManager.SetAnimation(hittingPawn, 4);
-                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+                SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 messageText.text = "AI making a set choice";
                 attackersRow = ballScript.GetGridPosition().y;
@@ -1364,7 +1364,7 @@ public class RallyManagerV2 : MonoBehaviour
                         StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, false));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result4 = CompareResultsB(resultNumber, aiAttackLocation);
-                    SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+                    SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
                     yield return new WaitForSeconds(1 + .001f);
                     if (result4)
                         trueCallback();
@@ -1464,7 +1464,7 @@ public class RallyManagerV2 : MonoBehaviour
         ApassNumber = AservePass.GetPassNumber(BserveNumber, passersXDistance, passersYDistance);
 
         // AIPawnManager.SetPositions(AIPawnManager.allPositionSets[1].positions);
-        SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerServeHappens);
+        SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerServeHappens);
 
         // check for aces or misses
         if (serveLocation.x > 8 || serveLocation.x < 0 || serveLocation.y > 8 || serveLocation.y < 0)
@@ -1566,7 +1566,7 @@ public class RallyManagerV2 : MonoBehaviour
 
         yield return new WaitUntil(() => playerSetDecision);
         rotationManager.TurnOffAllSetButtons();
-        SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+        SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
         yield return new WaitForSeconds(1);
         attackersRow = ballScript.GetGridPosition().y;
         attackerPosition = ballScript.transform.position;
@@ -1687,7 +1687,7 @@ public class RallyManagerV2 : MonoBehaviour
                 StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, true));
             yield return new WaitForSeconds(0.2f + .001f);
             bool result = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
-            SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+            SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
             yield return new WaitForSeconds(1 + .001f);
             if (result) trueCallback();
             else falseCallback();
@@ -1713,7 +1713,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // A SIDE WITH A DIG
                 //Debug.Log("B Dug " + digNumber);
                 messageText.text = "AI digs it up";
-                SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(digNumber);
+                SoundManager.Instance.PlayAnnouncerLineBasedOnResult(digNumber);
                 AICoach.Instance.StatAIDig();
                 // diggingPawn.SetSprite(Pawn.Sprites.dig);
                 float AIPassDigTime = 1;
@@ -1749,7 +1749,7 @@ public class RallyManagerV2 : MonoBehaviour
                 attackingPawn = hittingPawn;
                 AIPawnManager.SetAnimation(AIPawnManager.GetClosestPawn(ballScript.transform.position), 3);
                 AIPawnManager.SetAnimation(hittingPawn, 4);
-                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+                SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
                 yield return new WaitForSeconds(1); // ball travel time wait
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
@@ -1865,7 +1865,7 @@ public class RallyManagerV2 : MonoBehaviour
                         StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, playerGridManager.ForceGetGridPosition(aiAttackLocation.x, aiAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, true));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result3 = CompareResultsB(resultNumber, aiAttackLocation);
-                    SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+                    SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
                     yield return new WaitForSeconds(1 + .001f);
                     if (result3) trueCallback();
                     else falseCallback();
@@ -1884,7 +1884,7 @@ public class RallyManagerV2 : MonoBehaviour
                 // B SIDE WITH A DIG
                 //Debug.Log("A Dug " + digNumber);
                 messageText.text = "Player digs it up";
-                SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(digNumber);
+                SoundManager.Instance.PlayAnnouncerLineBasedOnResult(digNumber);
                 AICoach.Instance.StatPlayerDig();
                 SetBallPositionOffDigPlayer(digNumber, playerPassDigTravelTime, diggingPawn);
                 diggingPawn.SetSprite(Pawn.Sprites.dig);
@@ -1922,7 +1922,7 @@ public class RallyManagerV2 : MonoBehaviour
                 SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerPlayerSetChoice);
                 yield return new WaitUntil(() => playerSetDecision);
                 rotationManager.TurnOffAllSetButtons();
-                SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerSetHappens);
+                SoundManager.Instance.PlayAnnouncerLineInterrupt(SoundManager.Instance.announcerSetHappens);
                 yield return new WaitForSeconds(1);
                 attackersRow = ballScript.GetGridPosition().y;
                 attackerPosition = ballScript.transform.position;
@@ -2043,7 +2043,7 @@ public class RallyManagerV2 : MonoBehaviour
                         StartCoroutine(Movement.MoveFromAtoBWithStartSound(ballScript.transform, ballScript.transform.position, GetNetContactPointWithAttackDirection(ballScript.transform.position, aiGridManager.ForceGetGridPosition(playerAttackLocation.x, playerAttackLocation.y)), 0.2f, SoundManager.Instance.volleyballSpikeSounds, 50, true));
                     yield return new WaitForSeconds(0.2f + .001f);
                     bool result4 = CompareResultsA(resultNumber, playerAttackLocation, playerAttackLocation);
-                    SoundManager.Instance.PlayAnnouncerLineQueueBasedOnResult(resultNumber);
+                    SoundManager.Instance.PlayAnnouncerLineBasedOnResult(resultNumber);
                     yield return new WaitForSeconds(1 + .001f);
                     if (result4) trueCallback();
                     else falseCallback();
