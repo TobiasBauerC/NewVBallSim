@@ -10,6 +10,16 @@ public class LocalManager : MonoBehaviour
         SceneManager.Instance.ChangeScene(1);
     }
 
+    public void SceneManagerChangeToGameScene(int sceneIndex)
+    {
+        SceneManager.Instance.ChangeScene(sceneIndex);
+    }
+
+    public void SetDifficulty(DifficultyData difficultyData)
+    {
+        DifficultyTracker.currentDifficulty = difficultyData;
+    }
+
     public void SceneManagerChangeToMainMenu()
     {
         SceneManager.Instance.ChangeScene(0);
