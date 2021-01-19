@@ -29,5 +29,8 @@ public class SceneManager : MonoBehaviour
     public void ChangeScene(int sceneToChangeTo)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToChangeTo);
+
+        if (sceneToChangeTo == 0)
+            SoundManager.Instance.PlayMainMenuMusic();
     }
 }

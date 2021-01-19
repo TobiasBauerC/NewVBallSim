@@ -38,4 +38,9 @@ public class LocalManager : MonoBehaviour
     {
         SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerDifficultyChoice);
     }
+
+    public void PlayMenuMusic()
+    {
+        SoundManager.Instance.PlayMainMenuMusic();
+    }
 }
