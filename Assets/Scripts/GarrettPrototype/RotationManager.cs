@@ -824,11 +824,12 @@ public class RotationManager : MonoBehaviour
 
         // update the positions with values taken from the coach
         Vector2Int[] updatedFrontRowPositions = AICoach.Instance.GetFrontRowHittersLineup(passValue);
-        if((aiPositionsArray[2].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[2].pawnRole == PawnRole.RightSide && setterDug))
+
+        if((aiPositionsArray[2].pawnRole != PawnRole.Setter && !setterDug) && !(aiPositionsArray[2].pawnRole == PawnRole.RightSide && setterDug))
             positions[2] = updatedFrontRowPositions[0];
-        if ((aiPositionsArray[3].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[3].pawnRole == PawnRole.RightSide && setterDug))
+        if ((aiPositionsArray[3].pawnRole != PawnRole.Setter && !setterDug) && !(aiPositionsArray[3].pawnRole == PawnRole.RightSide && setterDug))
             positions[3] = updatedFrontRowPositions[1];
-        if ((aiPositionsArray[4].pawnRole != PawnRole.Setter && !setterDug) || (aiPositionsArray[4].pawnRole == PawnRole.RightSide && setterDug))
+        if ((aiPositionsArray[4].pawnRole != PawnRole.Setter && !setterDug) && !(aiPositionsArray[4].pawnRole == PawnRole.RightSide && setterDug))
             positions[4] = updatedFrontRowPositions[2];
 
         StartCoroutine(SetAIPawnPositions(positions, travelTime));

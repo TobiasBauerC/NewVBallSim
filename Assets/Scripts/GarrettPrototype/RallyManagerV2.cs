@@ -1533,8 +1533,9 @@ public class RallyManagerV2 : MonoBehaviour
         playerPawnManager.SetAnimation(passingPawn, 1);
         // rotationManager.SetPlayerOffensePositions(ApassNumber, playerPassDigTravelTime);
         yield return new WaitForSeconds(playerPassDigTravelTime);
+        AIPawnManager.SetBlockersAndDefendersSprites(aiBlockingColumn);
 
-        
+
 
 
         // PASS SET
