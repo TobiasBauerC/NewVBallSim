@@ -378,7 +378,7 @@ public class PawnManager : MonoBehaviour
         attackDirection.x = aix;
         attackDirection.y = aiy;
 
-        Debug.Log("Attack location decided to be " + attackDirection);
+        // Debug.Log("Attack location decided to be " + attackDirection);
 
         return attackDirection;
     }

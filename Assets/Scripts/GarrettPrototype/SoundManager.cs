@@ -174,7 +174,7 @@ public class SoundManager : MonoBehaviour
         // Debug.Log("calling the announcer queue line function");
         if (announcerSource.isPlaying)
         {
-            Debug.Log("announcer queue is already playing");
+            // Debug.Log("announcer queue is already playing");
             announcerQueue.Add(clips);
 
             if (announcerCoroutineRunning)
