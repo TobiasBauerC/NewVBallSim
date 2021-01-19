@@ -85,6 +85,7 @@ public class RallyManagerV2 : MonoBehaviour
 
     private Vector3Int playerOutOfBoundsVectorUp = new Vector3Int(1, 1, 0);
     private Vector3Int playerOutOfBoundsVectorDown = new Vector3Int(1, -1, 0);
+    private Vector3Int playerInTheNetVector = new Vector3Int(0, 0, 0);
     private Vector3Int aiOutOfBoundsVectorUp = new Vector3Int(-1, 1, 0);
     private Vector3Int aiOutOfBoundsVectorDown = new Vector3Int(-1, -1, 0);
 
@@ -784,7 +785,7 @@ public class RallyManagerV2 : MonoBehaviour
         // need to determine the closest passer and use their ability
         // also need to impact the pass value based on distance from the ball
         // Pawn passingPawn = AIPawnManager.GetClosestPawn(playerBallIndicator.transform.position, false, aiBlockingColumn);
-        Pawn passingPawn = AIPawnManager.GetClosestPawn(aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y), false, aiBlockingColumn);
+        Pawn passingPawn = AIPawnManager.GetClosestPawn(aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y), false, -1);
         SkillManager.PlayerSkills passerSkills = GetPlayerSkillFromAIPawn(passingPawn);
         BservePass.SetPassAbility(passerSkills.pass);
         // Debug.Log("Passers skill is: " + passerSkills.pass);
@@ -801,11 +802,18 @@ public class RallyManagerV2 : MonoBehaviour
         {
             messageText.text = "Player crushed it just out of bounds";
             Vector3Int modVector = Vector3Int.zero;
+            bool ballOnOpposite = true;
             if (serveLocation.y > 4)
                 modVector = playerOutOfBoundsVectorUp;
             else modVector = playerOutOfBoundsVectorDown;
+            if (serveLocation.x < 0) // ball has been served in the net
+            {
+                modVector = playerInTheNetVector;
+                serveLocation.x = 0;
+                ballOnOpposite = false;
+            }
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(serveLocation.x, serveLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true, 500, true));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, serveLocation.x + modVector.x, serveLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, ballOnOpposite, 500, true));
             // Debug.Log("A Miss Serve");
             yield return new WaitForSeconds(1.001f);
             SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerMissServe);
@@ -1176,11 +1184,18 @@ public class RallyManagerV2 : MonoBehaviour
                     // Debug.Log("A Hitting Error");
                     messageText.text = "Player hits it out of bounds";
                     Vector3Int modVector = Vector3Int.zero;
+                    bool ballOnOpposite = true;
                     if (playerAttackLocation.y > 4)
                         modVector = playerOutOfBoundsVectorUp;
                     else modVector = playerOutOfBoundsVectorDown;
+                    if (playerAttackLocation.x < 0) // ball has been attacked in the net
+                    {
+                        modVector = playerInTheNetVector;
+                        playerAttackLocation.x = 0;
+                        ballOnOpposite = false;
+                    }
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true, 500, true));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, ballOnOpposite, 500, true));
                     yield return new WaitForSeconds(1.001f);
                     SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerHitOut);
                     AICoach.Instance.StatPlayerHittingError();
@@ -1669,11 +1684,18 @@ public class RallyManagerV2 : MonoBehaviour
         {
             messageText.text = "Player hits it out of bounds";
             Vector3Int modVector = Vector3Int.zero;
+            bool ballOnOpposite = true;
             if (playerAttackLocation.y > 4)
                 modVector = playerOutOfBoundsVectorUp;
             else modVector = playerOutOfBoundsVectorDown;
+            if (playerAttackLocation.x < 0) // ball has been attacked in the net
+            {
+                modVector = playerInTheNetVector;
+                playerAttackLocation.x = 0;
+                ballOnOpposite = false;
+            }
             // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true, 1000, true));
+            StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, ballOnOpposite, 1000, true));
             //Debug.Log("A Hitting Error");
             yield return new WaitForSeconds(1.001f);
             SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerHitOut);
@@ -2025,11 +2047,18 @@ public class RallyManagerV2 : MonoBehaviour
                 {
                     messageText.text = "Player hits it out of bounds";
                     Vector3Int modVector = Vector3Int.zero;
+                    bool ballOnOpposite = true;
                     if (playerAttackLocation.y > 4)
                         modVector = playerOutOfBoundsVectorUp;
                     else modVector = playerOutOfBoundsVectorDown;
+                    if (playerAttackLocation.x < 0) // ball has been attacked in the net
+                    {
+                        modVector = playerInTheNetVector;
+                        playerAttackLocation.x = 0;
+                        ballOnOpposite = false;
+                    }
                     // StartCoroutine(Movement.MoveFromAtoBWithStartAndEndSound(ballScript.transform, ballScript.transform.position, aiGridManager.GetGridPosition(playerAttackLocation.x, playerAttackLocation.y) + modVector, 1f, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds));
-                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, true, 1000, true));
+                    StartCoroutine(ballScript.SetPositionOutOfBounds(aiGridManager, playerAttackLocation.x + modVector.x, playerAttackLocation.y + modVector.y, 1, SoundManager.Instance.volleyballSpikeSounds, SoundManager.Instance.volleyballToolSounds, ballOnOpposite, 1000, true));
                     //Debug.Log("A Hitting Error");
                     yield return new WaitForSeconds(1.001f);
                     SoundManager.Instance.PlayAnnouncerLineQueue(SoundManager.Instance.announcerHitOut);
