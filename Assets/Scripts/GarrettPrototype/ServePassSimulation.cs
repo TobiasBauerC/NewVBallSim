@@ -152,7 +152,7 @@ public class ServePassSimulation : MonoBehaviour
         int distanceMod = 10; // moving distance mod from 8 to 10 to put more emphasis on serving farther away from players
 
         // account for passers distance from ball
-        if(xDistance > 4 || yDistance > 3)
+        if(xDistance > 4 || yDistance > 4)
         {
             // ball is too far from the player, lands for an ace
             Debug.Log("Ball is too far from the player, lands for an ace");

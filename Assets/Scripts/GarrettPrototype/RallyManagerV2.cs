@@ -228,7 +228,7 @@ public class RallyManagerV2 : MonoBehaviour
     {
         Vector2Int returnVector = Vector2Int.zero;
         int mod = 0;
-        if (serveNumber > 80) // changing mod from 60 to 80, making it more likely a serve will be slightly off target
+        if (serveNumber > 90) // changing mod from 80 to 90, making it more likely a serve will be slightly off target
             mod = 0;
         else if (serveNumber > 50) // changing mod from 30 to 50 making it more likely a serve will be more off target
             mod = 1;
@@ -1448,8 +1448,8 @@ public class RallyManagerV2 : MonoBehaviour
 
         // SERVE PASS
         messageText.text = "AI up to serve";
-        int x = Mathf.CeilToInt((UnityEngine.Random.Range(1, 6)));
-        int y = Mathf.CeilToInt((UnityEngine.Random.Range(1, 5)));
+        int x = Mathf.CeilToInt((UnityEngine.Random.Range(0, 7)));
+        int y = Mathf.CeilToInt((UnityEngine.Random.Range(0, 8)));
         Vector2Int serveLocation = new Vector2Int(x, y);
         aiBallIndicator.SetPosition(playerGridManager, x, y);
         yield return new WaitForSeconds(0.1f);
