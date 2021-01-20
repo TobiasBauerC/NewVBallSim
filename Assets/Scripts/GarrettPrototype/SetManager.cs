@@ -94,6 +94,7 @@ public class SetManager : MonoBehaviour
         AteamServing = false;
         AteamScore = 0;
         BteamScore = 0;
+        scoreText.text = "Score \n" + AteamScore + " - " + BteamScore;
         coroutineResult = 3;
         rotationManager.ResetRotations();
         AICoach.Instance.ResetAllStats();
