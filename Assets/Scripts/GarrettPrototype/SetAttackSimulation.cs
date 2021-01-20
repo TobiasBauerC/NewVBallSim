@@ -387,7 +387,7 @@ public class SetAttackSimulation : MonoBehaviour
                 hitQuality = 3;
                 return hitQuality;
             }
-            else if (hitValue >= 7)
+            else if (hitValue >= 5)
             {
                 // bad hit
                 hitQuality = 2;
@@ -420,7 +420,7 @@ public class SetAttackSimulation : MonoBehaviour
                 hitQuality = 3;
                 return hitQuality;
             }
-            else if (hitValue >= 15)
+            else if (hitValue >= 8)
             {
                 // bad hit
                 hitQuality = 2;

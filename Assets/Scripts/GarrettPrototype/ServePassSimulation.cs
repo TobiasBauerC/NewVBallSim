@@ -164,7 +164,7 @@ public class ServePassSimulation : MonoBehaviour
         // Debug.LogWarning("Passers number modified from " + pass + " to " + newPass);
         pass = newPass;
 
-        if (serve < 5)
+        if (serve < 3)
         {
             // missed serve
 
