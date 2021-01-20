@@ -10,7 +10,7 @@ public class SetVolume : MonoBehaviour
 
     void Start()
     {
-        SetLevel(PlayerPrefs.GetFloat(volumeParamName, 1.0f));
+        SetLevel(PlayerPrefs.GetFloat(volumeParamName, 100.0f));
     }
 
     public void SetLevel(float sliderValue)
