@@ -318,13 +318,14 @@ public class SetAttackSimulation : MonoBehaviour
         return attackValue;
     }
 
-    public int GetAttackNumber(int setNumber, Pawn attackingPlayer)
+    public int GetAttackNumber(Pawn attackingPlayer, bool isPlayerPawn)
     {
-        float attackMax = _attackingAbility;
+        float attackMax = SkillManager.Instance.GetPlayerSkillsFromPawn(attackingPlayer, isPlayerPawn).attack;
+        //Debug.Log("Attack skill was determined to be " + attackMax);
         if (rotationManager.IsPlayerPawnLocatedInBackRow(attackingPlayer))
             attackMax -= 20;
         int attackValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, attackMax));
-        // Debug.Log("Attack value was " + attackValue);
+        //Debug.Log("returning attack value of " + attackValue);
         return attackValue;
     }
 

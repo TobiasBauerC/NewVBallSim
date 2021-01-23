@@ -130,8 +130,8 @@ public class RallyManager : MonoBehaviour
         isAteamServing = true;
         // SERVE PASS
         Debug.Log("A serves");
-        AserveNumber = AservePass.GetServeNumber();
-        BpassNumber = BservePass.GetPassNumber(AserveNumber);
+        //AserveNumber = AservePass.GetServeNumber();
+        //BpassNumber = BservePass.GetPassNumber(AserveNumber);
         // check for aces or misses
         if(BpassNumber == 4)
         {
@@ -151,7 +151,7 @@ public class RallyManager : MonoBehaviour
 
         // PASS SET
         // get the set quality based on the pass
-        BsetNumber = BpassSet.GetSetNumber(BpassNumber);
+        //BsetNumber = BpassSet.GetSetNumber(BpassNumber);
         Debug.Log("B Set " + BsetNumber);
 
         // SET ATTACK
@@ -169,9 +169,9 @@ public class RallyManager : MonoBehaviour
 
         // ATTACK DEFENCE
         // get the block and defence values
-        AblockNumber = AattackDefence.GetBlockNumber();
+        //AblockNumber = AattackDefence.GetBlockNumber();
         AblockQuality = AattackDefence.GetBlockQuality();
-        AdefenceNumber = AattackDefence.GetDefenceNumber();
+        //AdefenceNumber = AattackDefence.GetDefenceNumber();
         // compare the attack values to the defence values
         resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
@@ -200,7 +200,7 @@ public class RallyManager : MonoBehaviour
                 digCount3++;
             // PASS SET
             // get the set quality based on the pass
-            AsetNumber = ApassSet.GetSetNumber(digNumber);
+            //AsetNumber = ApassSet.GetSetNumber(digNumber);
             Debug.Log("A Set " + AsetNumber);
 
             // SET ATTACK
@@ -217,9 +217,9 @@ public class RallyManager : MonoBehaviour
             }
             // ATTACK DEFENCE
             // get the block and defence values
-            BblockNumber = BattackDefence.GetBlockNumber();
+            //BblockNumber = BattackDefence.GetBlockNumber();
             BblockQuality = BattackDefence.GetBlockQuality();
-            BdefenceNumber = BattackDefence.GetDefenceNumber();
+            //BdefenceNumber = BattackDefence.GetDefenceNumber();
             // compare the attack values to the defence values
             resultNumber = BattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
             if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
@@ -241,7 +241,7 @@ public class RallyManager : MonoBehaviour
                 digCount3++;
             // PASS SET
             // get the set quality based on the pass
-            BsetNumber = BpassSet.GetSetNumber(digNumber);
+            //BsetNumber = BpassSet.GetSetNumber(digNumber);
             Debug.Log("B Set " + BsetNumber);
 
             // SET ATTACK
@@ -258,9 +258,9 @@ public class RallyManager : MonoBehaviour
             }
             // ATTACK DEFENCE
             // get the block and defence values
-            AblockNumber = AattackDefence.GetBlockNumber();
+            //AblockNumber = AattackDefence.GetBlockNumber();
             AblockQuality = AattackDefence.GetBlockQuality();
-            AdefenceNumber = AattackDefence.GetDefenceNumber();
+            //AdefenceNumber = AattackDefence.GetDefenceNumber();
             // compare the attack values to the defence values
             resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
             if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
@@ -278,8 +278,8 @@ public class RallyManager : MonoBehaviour
         isAteamServing = false;
         // SERVE PASS
         Debug.Log("B serves");
-        BserveNumber = BservePass.GetServeNumber();
-        ApassNumber = AservePass.GetPassNumber(BserveNumber);
+        //BserveNumber = BservePass.GetServeNumber();
+        //ApassNumber = AservePass.GetPassNumber(BserveNumber);
         // check for aces or misses
         if (ApassNumber == 4)
         {
@@ -299,7 +299,7 @@ public class RallyManager : MonoBehaviour
 
         // PASS SET
         // get the set quality based on the pass
-        AsetNumber = ApassSet.GetSetNumber(ApassNumber);
+        //AsetNumber = ApassSet.GetSetNumber(ApassNumber);
         Debug.Log("A Set " + AsetNumber);
 
         // SET ATTACK
@@ -317,9 +317,9 @@ public class RallyManager : MonoBehaviour
 
         // ATTACK DEFENCE
         // get the block and defence values
-        BblockNumber = BattackDefence.GetBlockNumber();
+        //BblockNumber = BattackDefence.GetBlockNumber();
         BblockQuality = BattackDefence.GetBlockQuality();
-        BdefenceNumber = BattackDefence.GetDefenceNumber();
+        //BdefenceNumber = BattackDefence.GetDefenceNumber();
         // compare the attack values to the defence values
         resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
         if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
@@ -348,7 +348,7 @@ public class RallyManager : MonoBehaviour
                 digCount3++;
             // PASS SET
             // get the set quality based on the pass
-            BsetNumber = BpassSet.GetSetNumber(digNumber);
+            //BsetNumber = BpassSet.GetSetNumber(digNumber);
             Debug.Log("B Set " + AsetNumber);
 
             // SET ATTACK
@@ -365,9 +365,9 @@ public class RallyManager : MonoBehaviour
             }
             // ATTACK DEFENCE
             // get the block and defence values
-            AblockNumber = AattackDefence.GetBlockNumber();
+            //AblockNumber = AattackDefence.GetBlockNumber();
             AblockQuality = AattackDefence.GetBlockQuality();
-            AdefenceNumber = AattackDefence.GetDefenceNumber();
+            //AdefenceNumber = AattackDefence.GetDefenceNumber();
             // compare the attack values to the defence values
             resultNumber = BattackDefence.GetResultNumber(BattackNumber, BattackQuality, AblockNumber, AblockQuality, AdefenceNumber);
             if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)
@@ -389,7 +389,7 @@ public class RallyManager : MonoBehaviour
                 digCount3++;
             // PASS SET
             // get the set quality based on the pass
-            AsetNumber = ApassSet.GetSetNumber(digNumber);
+            //AsetNumber = ApassSet.GetSetNumber(digNumber);
             Debug.Log("A Set " + AsetNumber);
 
             // SET ATTACK
@@ -406,9 +406,9 @@ public class RallyManager : MonoBehaviour
             }
             // ATTACK DEFENCE
             // get the block and defence values
-            BblockNumber = BattackDefence.GetBlockNumber();
+            //BblockNumber = BattackDefence.GetBlockNumber();
             BblockQuality = BattackDefence.GetBlockQuality();
-            BdefenceNumber = BattackDefence.GetDefenceNumber();
+            //BdefenceNumber = BattackDefence.GetDefenceNumber();
             // compare the attack values to the defence values
             resultNumber = AattackDefence.GetResultNumber(AattackNumber, AattackQuality, BblockNumber, BblockQuality, BdefenceNumber);
             if (resultNumber != 1 && resultNumber != 2 && resultNumber != 3)

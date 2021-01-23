@@ -178,16 +178,17 @@ public class PassSetSimulation : MonoBehaviour
         return setQuality;
     }
 
-    public int GetSetNumber(int passNumber)
+    public int GetSetNumber(int passNumber, Pawn settingPawn, bool isPlayerPawn)
     {
         int setQuality = 1;
         // set quality scale
         // 1 is bad set
         // 2 is medium set
         // 3 is good set
-
-        int setValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _settingAbility));
-        // Debug.Log("Set value was " + setValue);
+        float setSkill = SkillManager.Instance.GetPlayerSkillsFromPawn(settingPawn, isPlayerPawn).set;
+        // Debug.Log("Set skill was determined to be " + setSkill);
+        int setValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, setSkill));
+        // Debug.Log("returning set value of " + setValue);
 
         int goodThreshold = 100 - (passNumber * 28);
 

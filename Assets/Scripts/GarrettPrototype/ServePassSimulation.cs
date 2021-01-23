@@ -51,18 +51,6 @@ public class ServePassSimulation : MonoBehaviour
         threeCounter = 0;
     }
 
-    public void SimulateServe()
-    {
-        ResetSimulation();
-        int index = 0;
-        while (index < 1000)
-        {
-            DoOneSimulation(_baseServeAbility, _basePassAbility);
-            index++;
-        }
-        CalculatePassingAverage();
-    }
-
     private void CalculatePassingAverage()
     {
         int totalPasses = 1000 - missCounter;
@@ -71,12 +59,6 @@ public class ServePassSimulation : MonoBehaviour
         Debug.Log(average);
         string averageString = average.ToString("#.##");
         messageText.text = "Passing Average: " + averageString;
-    }
-
-    private void DoOneSimulation(float serveAbility, float passAbility)
-    {
-        int passQuality = GetPassQuality(serveAbility, passAbility);
-        ResolvePassQuality(passQuality);
     }
 
     private int CalculateServe(float serveAbility)
@@ -89,29 +71,33 @@ public class ServePassSimulation : MonoBehaviour
     }
 
     // called from the rally manager
-    public int GetServeNumber()
+    public int GetServeNumber(Pawn servingPawn, bool isPlayerPawn)
     {
         int serveValue = 0;
         // calculate the serve value
-        serveValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _baseServeAbility));
-        // Debug.Log("Serve Value was " + serveValue);
+        float serveSkill = SkillManager.Instance.GetPlayerSkillsFromPawn(servingPawn, isPlayerPawn).serve;
+        // Debug.Log("Serve skill was determined to be " + serveSkill);
+        serveValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, serveSkill));
+        // Debug.Log("returning serve value of " + serveValue);
         return serveValue;
     }
 
-    private int CalculatePass(float passAbility)
+    private int CalculatePass(Pawn passingPawn, bool isPlayerPawn)
     {
         int passValue = 0;
         // calculate the pass value
-        passValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, passAbility));
-        // Debug.Log("Pass Value was " + passValue);
+        float passSkill = SkillManager.Instance.GetPlayerSkillsFromPawn(passingPawn, isPlayerPawn).pass;
+        // Debug.Log("Pass skill was determined to be " + passSkill);
+        passValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, passSkill));
+        // Debug.Log("returning pass value of " + passValue);
         return passValue;
     }
 
-    public int GetPassNumber(int serveNumber)
+    public int GetPassNumber(int serveNumber, Pawn passingPawn, bool isPlayerPawn)
     {
         int passQuality = 3;
         int serve = serveNumber;
-        int pass = CalculatePass(_basePassAbility);
+        int pass = CalculatePass(passingPawn, isPlayerPawn);
 
         if (serve < 5)
         {
@@ -144,11 +130,11 @@ public class ServePassSimulation : MonoBehaviour
         return passQuality;
     }
 
-    public int GetPassNumber(int serveNumber, int xDistance, int yDistance)
+    public int GetPassNumber(int serveNumber, int xDistance, int yDistance, Pawn passingPawn, bool isPlayerPawn)
     {
         int passQuality = 3;
         int serve = serveNumber;
-        int pass = CalculatePass(_basePassAbility);
+        int pass = CalculatePass(passingPawn, isPlayerPawn);
         int distanceMod = 10; // moving distance mod from 8 to 10 to put more emphasis on serving farther away from players
 
         // account for passers distance from ball
@@ -196,11 +182,11 @@ public class ServePassSimulation : MonoBehaviour
         return passQuality;
     }
 
-    private int GetPassQuality(float serveAbility, float passAbility)
+    private int GetPassQuality(float serveAbility, float passAbility, Pawn passingPawn, bool isPlayerPawn)
     {
         int passQuality = 3;
         int serve = CalculateServe(_baseServeAbility);
-        int pass = CalculatePass(_basePassAbility);
+        int pass = CalculatePass(passingPawn, isPlayerPawn);
 
         if(serve < 10)
         {

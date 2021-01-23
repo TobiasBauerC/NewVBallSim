@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dac63b55f00124eaf829351b9fd4e9, type: 3}
   m_Name: EasyDifficulty
   m_EditorClassIdentifier: 
-  player: 115
-  ai: 85
+  player: 110
+  ai: 95

@@ -5,6 +5,24 @@ using UnityEngine.UI;
 
 public class SkillManager : MonoBehaviour
 {
+    private static SkillManager _instance;
+    public static SkillManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<SkillManager>();
+            }
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
     [SerializeField] private ServePassSimulation AservePass = null;
     [SerializeField] private PassSetSimulation ApassSet = null;
     [SerializeField] private SetAttackSimulation AsetAttack = null;
@@ -49,10 +67,60 @@ public class SkillManager : MonoBehaviour
         public float defence;
     }
 
+    public PlayerSkills GetPlayerSkillsFromPawn(Pawn playerPawn, bool isPlayerTeam)
+    {
+        if (isPlayerTeam)
+        {
+            // Debug.Log("Returning a player pawn skills");
+            switch (playerPawn.pawnRole)
+            {
+                case PawnRole.Setter:
+                    return PlayerS;
+                case PawnRole.Power1:
+                    return PlayerP1;
+                case PawnRole.Power2:
+                    return PlayerP2;
+                case PawnRole.Middle1:
+                    return PlayerM1;
+                case PawnRole.Middle2:
+                    return PlayerM2;
+                case PawnRole.RightSide:
+                    return PlayerRS;
+            }
+            Debug.LogWarning("Something went weird here");
+            return AIP1;
+        }
+        else
+        {
+            //Debug.Log("Returning an ai pawn skills");
+            switch (playerPawn.pawnRole)
+            {
+                case PawnRole.Setter:
+                    return AIS;
+                case PawnRole.Power1:
+                    return AIP1;
+                case PawnRole.Power2:
+                    return AIP2;
+                case PawnRole.Middle1:
+                    return AIM1;
+                case PawnRole.Middle2:
+                    return AIM2;
+                case PawnRole.RightSide:
+                    return AIRS;
+            }
+            Debug.LogWarning("Something went weird here");
+            return PlayerP1;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.LogWarning("Current Difficulty is " + DifficultyTracker.currentDifficulty);
+        Debug.LogWarning("Player Skill is " + DifficultyTracker.currentDifficulty.player);
+        Debug.LogWarning("AI Skill is " + DifficultyTracker.currentDifficulty.ai);
+
         PlayerP1.serve = DifficultyTracker.currentDifficulty.player;
         PlayerP1.pass = DifficultyTracker.currentDifficulty.player;
         PlayerP1.set = DifficultyTracker.currentDifficulty.player;
@@ -142,16 +210,6 @@ public class SkillManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void SetPlayersTeamSkills()
-    {
-        PlayerRS = GetPlayerSkills(RsSliders);
-        PlayerS = GetPlayerSkills(SetterSliders);
-        PlayerP1 = GetPlayerSkills(P1Sliders);
-        PlayerP2 = GetPlayerSkills(P2Sliders);
-        PlayerM1 = GetPlayerSkills(M1Sliders);
-        PlayerM2 = GetPlayerSkills(M2Sliders);
     }
 
     public PlayerSkills GetPlayerSkills(GameObject SliderObject)

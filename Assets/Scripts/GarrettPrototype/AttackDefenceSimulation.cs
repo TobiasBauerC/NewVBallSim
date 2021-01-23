@@ -128,7 +128,7 @@ public class AttackDefenceSimulation : MonoBehaviour
         int trueAttackStrength = Mathf.CeilToInt(attackStrength);
 
         // take block value and quality
-        int blockValue = GetBlockValue(blockAbility);
+        int blockValue = 50;//GetBlockValue(blockAbility);
         float blockQuality = GetBlockQuality();
 
         // check if hitter makes an error
@@ -460,17 +460,15 @@ public class AttackDefenceSimulation : MonoBehaviour
         return hitQuality;
     }
 
-    private int GetBlockValue(float blockAbility)
+    public int GetBlockNumber(Pawn blockingPawn, bool isPlayerPawn)
     {
-        int blockValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, blockAbility));
-        // Debug.Log("Block value was: " + blockValue);
-        return blockValue;
-    }
-
-    public int GetBlockNumber()
-    {
-        int blockValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _blockAbility));
-        // Debug.Log("Block number was " + blockValue);
+        int blockValue = 0;
+        //Debug.Log("Blocking Pawn was determined to be " + blockingPawn);
+        // calculate the block value
+        float blockSkill = SkillManager.Instance.GetPlayerSkillsFromPawn(blockingPawn, isPlayerPawn).block;
+        //Debug.Log("block skill was determined to be " + blockSkill);
+        blockValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, blockSkill));
+        //Debug.Log("returning block value of " + blockValue);
         return blockValue;
     }
 
@@ -502,10 +500,12 @@ public class AttackDefenceSimulation : MonoBehaviour
         return defenceValue;
     }
 
-    public int GetDefenceNumber()
+    public int GetDefenceNumber(Pawn diggingPawn, bool isPlayerPawn)
     {
-        int defenceValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, _defenceAbility));
-        //Debug.Log("Defence value was " + defenceValue);
+        float defenceSkill = SkillManager.Instance.GetPlayerSkillsFromPawn(diggingPawn, isPlayerPawn).defence;
+        //Debug.Log("defence skill was determined to be " + defenceSkill);
+        int defenceValue = Mathf.CeilToInt(UnityEngine.Random.Range(0, defenceSkill));
+        //Debug.Log("Returning Defence value of " + defenceValue);
         return defenceValue;
     }
 

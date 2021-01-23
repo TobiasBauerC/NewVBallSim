@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dac63b55f00124eaf829351b9fd4e9, type: 3}
   m_Name: HardDifficulty
   m_EditorClassIdentifier: 
-  player: 85
-  ai: 115
+  player: 95
+  ai: 110

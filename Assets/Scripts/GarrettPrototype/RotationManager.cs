@@ -65,9 +65,9 @@ public class RotationManager : MonoBehaviour
     private static Vector2 aiPosition1ReceiveLocation = new Vector2(5, 6);
     private static Vector2 aiPosition6ReceiveLocation = new Vector2(5, 4);
     private static Vector2 aiPosition5ReceiveLocation = new Vector2(5, 2);
-    private static Vector2 aiPosition4ReceiveLocation = new Vector2(2, 0);
-    private static Vector2 aiPosition3ReceiveLocation = new Vector2(0, 4);
-    private static Vector2 aiPosition2ReceiveLocation = new Vector2(3, 8);
+    private static Vector2 aiPosition4ReceiveLocation = new Vector2(3, 1);
+    private static Vector2 aiPosition3ReceiveLocation = new Vector2(1, 4);
+    private static Vector2 aiPosition2ReceiveLocation = new Vector2(4, 7);
     private static Vector2[] aiRecievePositions = new Vector2[] { aiPosition6ReceiveLocation, aiPosition1ReceiveLocation, aiPosition2ReceiveLocation, aiPosition3ReceiveLocation, aiPosition4ReceiveLocation, aiPosition5ReceiveLocation };
 
     private static Vector2 aiPosition1OffenseLocation = new Vector2(3, 8);
@@ -78,12 +78,12 @@ public class RotationManager : MonoBehaviour
     private static Vector2 aiPosition2OffenseLocation = new Vector2(0, 7);
     private static Vector2[] aiOffensePositions = new Vector2[] { aiPosition6OffenseLocation, aiPosition1OffenseLocation, aiPosition2OffenseLocation, aiPosition3OffenseLocation, aiPosition4OffenseLocation, aiPosition5OffenseLocation };
 
-    private static Vector2 aiSetterPosition1ReceiveLocation = new Vector2(4, 8);
+    private static Vector2 aiSetterPosition1ReceiveLocation = new Vector2(5, 8);
     private static Vector2 aiSetterPosition2ReceiveLocation = new Vector2(0, 6);
     private static Vector2 aiSetterPosition3ReceiveLocation = new Vector2(0, 5);
     private static Vector2 aiSetterPosition4ReceiveLocation = new Vector2(0, 3);
     private static Vector2 aiSetterPosition5ReceiveLocation = new Vector2(3, 0);
-    private static Vector2 aiSetterPosition6ReceiveLocation = new Vector2(1, 4);
+    private static Vector2 aiSetterPosition6ReceiveLocation = new Vector2(2, 4);
     private static Vector2[] aiSetterRecievePositions = new Vector2[] { aiSetterPosition6ReceiveLocation, aiSetterPosition1ReceiveLocation, aiSetterPosition2ReceiveLocation, aiSetterPosition3ReceiveLocation, aiSetterPosition4ReceiveLocation, aiSetterPosition5ReceiveLocation };
     private static Vector2 aiSetterPosition1Pass = new Vector2(4, 4);
     private static Vector2 aiSetterPosition2Pass = new Vector2(2, 6);
